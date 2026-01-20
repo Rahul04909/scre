@@ -1,9 +1,9 @@
 <?php
 // Database Configuration
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'jghfrodu_pace_foundation'); // Change this to your actual database name
-define('DB_USER', 'root');            // Default WAMP username
-define('DB_PASS', '');                // Default WAMP password is empty
+define('DB_NAME', 'u531386621_scredb'); // Change this to your actual database name
+define('DB_USER', 'u531386621_scredb');            // Default WAMP username
+define('DB_PASS', 'Rd14072003@./');                // Default WAMP password is empty
 
 try {
     $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
