@@ -297,7 +297,7 @@ try {
         </table>
         
         <!-- Footer: Summary & Signatures -->
-        <div style="margin-top: 30px;">
+        <div style="margin-top: 10px;">
             <table width="100%">
                 <tr>
                     <td width="40%" valign="top">
@@ -316,11 +316,10 @@ try {
                          <!-- QR Code Placeholder -->
                          <!-- Implementation of real QR requires a library or API. -->
                          <!-- Mpdf has basic QR support. -->
-                         <br><br><br>
+                         <br><br>
                          <div style="text-align: center;">
-                            <br><br>
-                            <b>Authorize<br>Signature</b><br>
-                            With Stamp
+                            <br>
+                            <b>Authorize<br>Signature</b>
                          </div>
                     </td>
                 </tr>
