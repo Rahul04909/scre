@@ -105,7 +105,7 @@ try {
     // Background
     // Assuming background image is at student/marksheet/background/marksheet-background.png
     // Need absolute path for mPDF usually, or relative to script.
-    $bg_path = __DIR__ . '/background/marksheet-background.png';
+    $bg_path = __DIR__ . '/background/marksheet.png';
     if (file_exists($bg_path)) {
         $mpdf->SetDefaultBodyCSS('background', "url('{$bg_path}')");
         $mpdf->SetDefaultBodyCSS('background-image-resize', 6);
