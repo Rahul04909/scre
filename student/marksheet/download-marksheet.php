@@ -124,13 +124,13 @@ try {
     $html = '
     <style>
         body { font-family: sans-serif; color: #000; }
-        .container { padding: 40px 50px; padding-top: 260px; } /* Push main content down below the BG header */
+        .container { padding: 40px 80px; padding-top: 260px; } /* Increased side padding to 80px */
         
         .header-overlay {
             position: absolute;
-            top: 78px; /* Position higher above the title */
-            left: 50px;
-            right: 50px;
+            top: 78px;
+            left: 80px; /* Matched to container */
+            right: 80px; /* Matched to container */
             text-align: center;
             font-weight: bold;
             font-size: 14px;
