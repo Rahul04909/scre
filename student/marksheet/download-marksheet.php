@@ -124,11 +124,11 @@ try {
     $html = '
     <style>
         body { font-family: sans-serif; color: #000; }
-        .container { padding: 40px 50px; padding-top: 240px; } /* Push main content down below the BG header */
+        .container { padding: 40px 50px; padding-top: 260px; } /* Push main content down below the BG header */
         
         .header-overlay {
             position: absolute;
-            top: 55px; /* Position at the very top */
+            top: 30px; /* Position higher above the title */
             left: 50px;
             right: 50px;
             text-align: center;
@@ -168,16 +168,16 @@ try {
         /* Specific adjustments to match sample */
         .blue-bar { background-color: #2c64b6; color: white; padding: 5px; text-align: center; font-weight: bold; margin: 10px 0; }
         
-        .meta-table td { white-space: nowrap; padding: 0 10px; }
+        .meta-table td { white-space: nowrap; padding: 0 20px; font-weight: bold; font-size: 14px; }
     </style>
     
     <!-- Absolute Header Meta -->
     <div class="header-overlay">
         <table width="100%" class="meta-table">
             <tr>
-                <td align="center">National ID:<br>'.($student['national_id'] ?? 'N/A').'</td>
-                <td align="center">Serial No:<br>SC-'.str_pad($student['id'], 6, '0', STR_PAD_LEFT).'</td>
-                <td align="center">Enrollment No:<br>'.$student['enrollment_no'].'</td>
+                <td align="center">National ID: <span style="font-weight: bold;">'.($student['national_id'] ?? 'N/A').'</span></td>
+                <td align="center">Serial No: <span style="font-weight: bold;">SC-'.str_pad($student['id'], 6, '0', STR_PAD_LEFT).'</span></td>
+                <td align="center">Enrollment No: <span style="font-weight: bold;">'.$student['enrollment_no'].'</span></td>
             </tr>
         </table>
     </div>
