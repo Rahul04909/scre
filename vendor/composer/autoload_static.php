@@ -87,11 +87,17 @@ class ComposerStaticInit2185d2f99bcd56787481d9357a5972d3
         '4af1dca6db8c527c6eed27bff85ff0e5' => __DIR__ . '/..' . '/thecodingmachine/safe/generated/yaz.php',
         'fe43ca06499ac37bc2dedd823af71eb5' => __DIR__ . '/..' . '/thecodingmachine/safe/generated/zip.php',
         '356736db98a6834f0a886b8d509b0ecd' => __DIR__ . '/..' . '/thecodingmachine/safe/generated/zlib.php',
+        '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '941748b3c8cae4466c827dfb5ca9602a' => __DIR__ . '/..' . '/rmccue/requests/library/Deprecated.php',
+        'db356362850385d08a5381de2638b5fd' => __DIR__ . '/..' . '/mpdf/mpdf/src/functions.php',
         '13906c19e3d8fcd1341b24ed4d51cf72' => __DIR__ . '/..' . '/razorpay/razorpay/Deprecated.php',
     );
 
     public static $prefixLengthsPsr4 = array (
+        's' => 
+        array (
+            'setasign\\Fpdi\\' => 14,
+        ),
         'W' => 
         array (
             'WpOrg\\Requests\\' => 15,
@@ -108,10 +114,15 @@ class ComposerStaticInit2185d2f99bcd56787481d9357a5972d3
         ),
         'P' => 
         array (
+            'Psr\\Log\\' => 8,
+            'Psr\\Http\\Message\\' => 17,
             'PHPMailer\\PHPMailer\\' => 20,
         ),
         'M' => 
         array (
+            'Mpdf\\PsrLogAwareTrait\\' => 22,
+            'Mpdf\\PsrHttpMessageShim\\' => 24,
+            'Mpdf\\' => 5,
             'Masterminds\\' => 12,
         ),
         'F' => 
@@ -125,6 +136,7 @@ class ComposerStaticInit2185d2f99bcd56787481d9357a5972d3
         'D' => 
         array (
             'Dompdf\\' => 7,
+            'DeepCopy\\' => 9,
             'DASPRiD\\Enum\\' => 13,
         ),
         'B' => 
@@ -134,6 +146,10 @@ class ComposerStaticInit2185d2f99bcd56787481d9357a5972d3
     );
 
     public static $prefixDirsPsr4 = array (
+        'setasign\\Fpdi\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/setasign/fpdi/src',
+        ),
         'WpOrg\\Requests\\' => 
         array (
             0 => __DIR__ . '/..' . '/rmccue/requests/src',
@@ -154,9 +170,29 @@ class ComposerStaticInit2185d2f99bcd56787481d9357a5972d3
         array (
             0 => __DIR__ . '/..' . '/razorpay/razorpay/src',
         ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/src',
+        ),
+        'Psr\\Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
         'PHPMailer\\PHPMailer\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+        ),
+        'Mpdf\\PsrLogAwareTrait\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mpdf/psr-log-aware-trait/src',
+        ),
+        'Mpdf\\PsrHttpMessageShim\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mpdf/psr-http-message-shim/src',
+        ),
+        'Mpdf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mpdf/mpdf/src',
         ),
         'Masterminds\\' => 
         array (
@@ -173,6 +209,10 @@ class ComposerStaticInit2185d2f99bcd56787481d9357a5972d3
         'Dompdf\\' => 
         array (
             0 => __DIR__ . '/..' . '/dompdf/dompdf/src',
+        ),
+        'DeepCopy\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
         ),
         'DASPRiD\\Enum\\' => 
         array (

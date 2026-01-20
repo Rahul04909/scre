@@ -86,6 +86,8 @@ return array(
     '4af1dca6db8c527c6eed27bff85ff0e5' => $vendorDir . '/thecodingmachine/safe/generated/yaz.php',
     'fe43ca06499ac37bc2dedd823af71eb5' => $vendorDir . '/thecodingmachine/safe/generated/zip.php',
     '356736db98a6834f0a886b8d509b0ecd' => $vendorDir . '/thecodingmachine/safe/generated/zlib.php',
+    '6124b4c8570aa390c21fafd04a26c69f' => $vendorDir . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
     '941748b3c8cae4466c827dfb5ca9602a' => $vendorDir . '/rmccue/requests/library/Deprecated.php',
+    'db356362850385d08a5381de2638b5fd' => $vendorDir . '/mpdf/mpdf/src/functions.php',
     '13906c19e3d8fcd1341b24ed4d51cf72' => $vendorDir . '/razorpay/razorpay/Deprecated.php',
 );
