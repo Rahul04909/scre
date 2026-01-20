@@ -1,0 +1,120 @@
+/* Dashboard Stats Cards */
+.stat-card {
+    border: none;
+    border-radius: 12px;
+    /* Slightly more rounded */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 24px;
+    height: 140px;
+    /* Fixed height for consistency */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.stat-card .card-body {
+    padding: 24px;
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    /* Default text color white */
+}
+
+/* Background Icons */
+.stat-icon-bg {
+    position: absolute;
+    right: 15px;
+    bottom: -10px;
+    /* Partial cutoff */
+    font-size: 7rem;
+    /* Very large */
+    opacity: 0.2;
+    /* Subtle transparency */
+    z-index: 1;
+    transform: rotate(0deg);
+    transition: all 0.3s;
+    color: #fff;
+}
+
+.stat-card:hover .stat-icon-bg {
+    transform: scale(1.1) rotate(-5deg);
+    opacity: 0.3;
+}
+
+/* Typography */
+.stat-content h3 {
+    font-size: 3.5rem;
+    /* Huge Numbers */
+    font-weight: 700;
+    margin-bottom: 0;
+    line-height: 1;
+    color: #fff;
+}
+
+.stat-content h6 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-transform: capitalize;
+    /* Ensure nice casing */
+    color: rgba(255, 255, 255, 0.9);
+    margin-top: 5px;
+    margin-bottom: 0;
+    font-style: italic;
+    /* Matches the reference style slightly */
+}
+
+/* Vibrant Solid Colors */
+.card-vibrant-blue {
+    background-color: #3b5bdb;
+    /* Royal Blue */
+}
+
+.card-vibrant-green {
+    background-color: #0ca678;
+    /* Teal/Green */
+}
+
+.card-vibrant-cyan {
+    background-color: #1098ad;
+    /* Cyan/Info */
+}
+
+.card-vibrant-orange {
+    background-color: #f59f00;
+    /* Orange/Yellow */
+}
+
+/* Table Styling (Unchanged mostly) */
+.card-header-custom {
+    background-color: #fff;
+    border-bottom: 1px solid #f1f1f1;
+    padding: 1.25rem;
+}
+
+.table-responsive {
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+}
+
+.table thead th {
+    background-color: #f8f9fc;
+    border-bottom: 2px solid #e3e6f0;
+    color: #495057;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.table td {
+    vertical-align: middle;
+    padding: 1rem 0.75rem;
+}

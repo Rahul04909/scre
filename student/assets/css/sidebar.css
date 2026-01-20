@@ -1,0 +1,157 @@
+/* Modern Student Sidebar CSS */
+:root {
+    --sidebar-bg: #F8FAFC;
+    --sidebar-border: #E2E8F0;
+    --primary-color: #4F46E5;
+    /* Indigo Blue */
+    --hover-bg: #EEF2FF;
+    --active-bg: #E0E7FF;
+    --text-primary: #0F172A;
+    /* Dark Slate */
+    --text-muted: #64748B;
+    --transition-speed: 0.3s;
+}
+
+#wrapper {
+    overflow-x: hidden;
+}
+
+#sidebar-wrapper {
+    min-height: 100vh;
+    margin-left: -280px;
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--sidebar-border);
+    width: 280px;
+    position: fixed;
+    z-index: 1000;
+    transition: margin var(--transition-speed) ease-out;
+}
+
+/* Heading */
+.sidebar-heading {
+    background-color: transparent;
+    border-bottom: 1px solid var(--sidebar-border) !important;
+}
+
+/* List Items */
+.list-group-item {
+    background-color: transparent;
+    color: var(--text-muted);
+    border: none;
+    padding: 12px 20px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-radius: 10px;
+    /* Rounded corners */
+    margin-bottom: 5px;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+}
+
+/* Icons */
+.list-group-item i {
+    width: 25px;
+    text-align: center;
+    margin-right: 10px;
+    font-size: 1.1em;
+    transition: color 0.2s;
+}
+
+/* Hover State */
+.list-group-item:hover {
+    background-color: var(--hover-bg);
+    color: var(--primary-color);
+    transform: translateX(5px);
+    /* Slide right */
+    box-shadow: 0 2px 5px rgba(79, 70, 229, 0.05);
+    /* Subtle shadow */
+}
+
+.list-group-item:hover i {
+    color: var(--primary-color);
+}
+
+/* Active State */
+.list-group-item.active {
+    background-color: var(--active-bg);
+    color: var(--primary-color);
+    font-weight: 700;
+    /* Bold */
+    border-color: transparent;
+    /* Remove bootstrap default border */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Active Accent Bar */
+.list-group-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 70%;
+    width: 4px;
+    /* 3px visual + rounded adjustments */
+    background-color: var(--primary-color);
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+/* Profile Section */
+.profile-section {
+    background: transparent;
+}
+
+/* Logout Button Special Styling */
+.list-group-item.text-danger:hover {
+    background-color: #FEF2F2;
+    /* Light Red */
+    color: #DC2626;
+    transform: translateX(5px);
+}
+
+.list-group-item.text-danger.active {
+    background-color: #FEE2E2;
+    color: #B91C1C;
+}
+
+/* Page Content Transition */
+#page-content-wrapper {
+    width: 100%;
+    margin-left: 0;
+    transition: margin var(--transition-speed) ease-out;
+}
+
+/* Toggled Logic */
+@media (min-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    #page-content-wrapper {
+        margin-left: 280px;
+    }
+
+    body.toggled #sidebar-wrapper {
+        margin-left: -280px;
+    }
+
+    body.toggled #page-content-wrapper {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    #page-content-wrapper {
+        margin-left: 0 !important;
+        /* Force content full width */
+    }
+
+    /* Mobile logic: normally hidden (-280). toggled class shows it (0). */
+    body.toggled #sidebar-wrapper {
+        margin-left: 0;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+}

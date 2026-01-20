@@ -1,0 +1,263 @@
+/* Sidebar CSS */
+:root {
+    --sidebar-bg: #1e3a56;
+    /* Dark Blue */
+    --sidebar-width: 280px;
+    --sidebar-text: #ffffff;
+    --sidebar-active-bg: #ffc107;
+    /* Yellow */
+    --sidebar-active-text: #1e3a56;
+    /* Dark Blue Text on Yellow */
+    --hover-bg: #2c4d6e;
+    /* Slightly lighter blue for hover */
+    --border-color: #1e3a56;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #f5f7fb;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#wrapper {
+    display: flex;
+    width: 100%;
+}
+
+#sidebar-wrapper {
+    height: 100vh;
+    width: var(--sidebar-width);
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    transition: margin 0.25s ease-out;
+    overflow-y: auto;
+}
+
+/* Scrollbar Styling */
+#sidebar-wrapper::-webkit-scrollbar {
+    width: 6px;
+}
+
+#sidebar-wrapper::-webkit-scrollbar-track {
+    background: #152b41;
+}
+
+#sidebar-wrapper::-webkit-scrollbar-thumb {
+    background: #4a6b8c;
+    border-radius: 3px;
+}
+
+#sidebar-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #5b81a8;
+}
+
+/* Heading / Logo Area - kept minimal or hidden if profile is top */
+.sidebar-heading {
+    padding: 1rem 1.5rem;
+    /* Reduced padding */
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+    display: none;
+    /* Hiding default logo if we want profile top, but keeping logic just in case user wants it back*/
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sidebar-profile {
+    padding: 30px 20px;
+    background-color: var(--sidebar-bg);
+    /* Match sidebar bg */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.profile-img-container {
+    position: relative;
+}
+
+.profile-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ffc107;
+    /* Yellow border */
+}
+
+.status-indicator {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 14px;
+    height: 14px;
+    background-color: #28a745;
+    /* Green */
+    border: 2px solid var(--sidebar-bg);
+    border-radius: 50%;
+}
+
+.profile-info {
+    flex-grow: 1;
+}
+
+.profile-info h6 {
+    margin: 0 0 2px 0;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #fff;
+}
+
+.profile-info .role-text {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    display: block;
+    margin-bottom: 10px;
+}
+
+.btn-edit-profile {
+    font-size: 0.8rem;
+    padding: 4px 12px;
+    border: 1px solid #fff;
+    color: #fff;
+    background: transparent;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+.btn-edit-profile:hover {
+    background: #fff;
+    color: var(--sidebar-bg);
+}
+
+.btn-edit-profile i {
+    margin-right: 5px;
+}
+
+.list-group-item {
+    border: none;
+    padding: 14px 25px;
+    font-weight: 500;
+    color: var(--sidebar-text);
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-decoration: none;
+    transition: all 0.2s;
+    margin-bottom: 0;
+    /* Removing margin for seamless look */
+    border-left: 4px solid transparent;
+}
+
+.list-group-item:hover {
+    background-color: var(--hover-bg);
+    color: #fff;
+    border-left-color: rgba(255, 255, 255, 0.5);
+    padding-left: 30px;
+    /* Slide effect */
+}
+
+/* Fix for bootstrap focus overriding colors */
+.list-group-item:focus {
+    background-color: transparent;
+    /* Or hover bg if preferred, but transparent avoids sticky hover look on click */
+    color: var(--sidebar-text);
+    box-shadow: none;
+    /* Remove blue outline */
+}
+
+.list-group-item:focus:hover {
+    background-color: var(--hover-bg);
+    color: #fff;
+}
+
+.list-group-item:hover .menu-icon {
+    transform: scale(1.2);
+    /* Icon pop effect */
+    transition: transform 0.2s;
+}
+
+.list-group-item.active,
+.list-group-item.active:focus,
+.list-group-item.active:hover {
+    background-color: var(--sidebar-active-bg) !important;
+    color: var(--sidebar-active-text) !important;
+    border-radius: 0;
+    margin: 0;
+    width: 100%;
+    border-left-color: transparent !important;
+}
+
+.menu-icon {
+    width: 24px;
+    text-align: center;
+    margin-right: 12px;
+    font-size: 1.1rem;
+}
+
+/* Submenu */
+.sub-menu {
+    background-color: rgba(0, 0, 0, 0.2);
+    /* Darker background for submenu */
+}
+
+.sub-menu .list-group-item {
+    padding-left: 65px;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.sub-menu .list-group-item:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding-left: 70px;
+    /* Slide effect */
+}
+
+/* Active state for expanded menu */
+/* Active state for expanded menu */
+.list-group-item[aria-expanded="true"],
+.list-group-item[aria-expanded="true"]:focus,
+.list-group-item[aria-expanded="true"]:hover {
+    background-color: var(--sidebar-active-bg) !important;
+    color: var(--sidebar-active-text) !important;
+    border-left-color: transparent !important;
+}
+
+.list-group-item[aria-expanded="true"] .menu-icon,
+.list-group-item.active .menu-icon {
+    color: var(--sidebar-active-text) !important;
+}
+
+/* Arrow rotation */
+.menu-arrow {
+    font-size: 0.8rem;
+    transition: transform 0.2s;
+}
+
+.list-group-item[aria-expanded="true"] .menu-arrow {
+    transform: rotate(180deg);
+    /* Full flip */
+}
+
+@media (max-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: calc(-1 * var(--sidebar-width));
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: 0;
+    }
+}
