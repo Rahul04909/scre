@@ -124,10 +124,16 @@ try {
     $html = '
     <style>
         body { font-family: sans-serif; color: #000; }
-        .container { padding: 40px 50px; padding-top: 180px; } /* Adjust padding-top based on BG header height */
+        .container { padding: 40px 50px; padding-top: 240px; } /* Push main content down below the BG header */
         
-        .header-meta {
-            text-align: center; font-weight: bold; font-size: 14px; margin-bottom: 20px;
+        .header-overlay {
+            position: absolute;
+            top: 45px; /* Position at the very top */
+            left: 50px;
+            right: 50px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
         }
         
         .section-box {
@@ -161,21 +167,23 @@ try {
         
         /* Specific adjustments to match sample */
         .blue-bar { background-color: #2c64b6; color: white; padding: 5px; text-align: center; font-weight: bold; margin: 10px 0; }
+        
+        .meta-table td { white-space: nowrap; padding: 0 10px; }
     </style>
+    
+    <!-- Absolute Header Meta -->
+    <div class="header-overlay">
+        <table width="100%" class="meta-table">
+            <tr>
+                <td align="center">National ID:<br>'.($student['national_id'] ?? 'N/A').'</td>
+                <td align="center">Serial No:<br>SC-'.str_pad($student['id'], 6, '0', STR_PAD_LEFT).'</td>
+                <td align="center">Enrollment No:<br>'.$student['enrollment_no'].'</td>
+            </tr>
+        </table>
+    </div>
     
     <div class="container">
         
-        <!-- Header Meta IDs -->
-        <div style="text-align: center; font-weight: bold; font-size: 13px; margin-bottom: 30px;">
-            <table width="100%">
-                <tr>
-                    <td align="center">National ID:<br>'.($student['national_id'] ?? 'N/A').'</td>
-                    <td align="center">Serial No:<br>SC-'.str_pad($student['id'], 6, '0', STR_PAD_LEFT).'</td>
-                    <td align="center">Enrollment No:<br>'.$student['enrollment_no'].'</td>
-                </tr>
-            </table>
-        </div>
-
         <!-- Student Details -->
         <div class="blue-bar">STUDENT DETAILS</div>
         
