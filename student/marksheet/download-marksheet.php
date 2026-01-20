@@ -128,7 +128,7 @@ try {
         
         .header-overlay {
             position: absolute;
-            top: 45px; /* Position at the very top */
+            top: 55px; /* Position at the very top */
             left: 50px;
             right: 50px;
             text-align: center;
