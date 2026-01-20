@@ -326,7 +326,7 @@ try {
             </table>
         </div>
         
-        <div style="position: absolute; bottom: 10px; width: 100%; text-align: center; font-size: 10px; color: #666;">
+        <div style="position: absolute; bottom: 10px; width: 100%; text-align: center; font-size: 10px; color: #666; margin-top: 20px;">
             This Certificate/Diploma is issued by PACE FOUNDATION. Result may be verified on www.pacefoundation.com
         </div>
 
