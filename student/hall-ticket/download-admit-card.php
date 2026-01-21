@@ -1,10 +1,9 @@
 <?php
 session_start();
 require_once '../../database/config.php';
-require_once '../../vendor/autoload.php'; // Adjust path if vendor is elsewhere
+require_once '../../vendor/autoload.php'; // Adjust path if needed
 
-use Dompdf\Dompdf;
-use Dompdf\Options;
+use Mpdf\Mpdf;
 
 if (!isset($_SESSION['student_id'])) {
     die("Access Denied");
@@ -35,7 +34,7 @@ if (!$student) die("Student not found");
 
 // Exams
 $sqlExams = "
-    SELECT es.*, sub.subject_name, sub.theory_marks, sub.practical_marks, sub.exam_duration
+    SELECT es.*, sub.subject_name, sub.theory_marks, sub.practical_marks, sub.exam_duration, sub.unit_no
     FROM exam_schedules es
     JOIN subjects sub ON es.subject_id = sub.id
     WHERE es.course_id = ? AND es.session_id = ?
@@ -55,72 +54,47 @@ $stmtExams->execute($params);
 $exams = $stmtExams->fetchAll(PDO::FETCH_ASSOC);
 
 // --- 2. Image Handling ---
-// Helper to get base64
+
+// Helper for Base64 (mPDF handles normal paths well, but Base64 is safe for restrictive environs)
 function getBase64Image($path) {
     if (file_exists($path)) {
         $type = pathinfo($path, PATHINFO_EXTENSION);
         $data = file_get_contents($path);
         return 'data:image/' . $type . ';base64,' . base64_encode($data);
     }
-    return ''; // Handle missing image gracefully or return placeholder
+    return ''; 
 }
 
 // Prepare Images
-$bgImage = getBase64Image(__DIR__ . '/background/admit-card-background.jpg'); // Adjust if needed
-$studentPhoto = getBase64Image('../../' . $student['student_image']);
-$studentSign = getBase64Image('../../' . $student['student_signature']);
+// Note: mPDF works best with absolute system paths if not using Base64.
+// Let's rely on standard absolute paths for mPDF where possible, or stick to Base64 for consistency.
+$bgPath = __DIR__ . '/background/admit-card-background.jpg';
+$studentPhotoPath = '../../' . $student['student_image'];
+$studentSignPath = '../../' . $student['student_signature'];
+
+$bgImage = getBase64Image($bgPath);
+$studentPhoto = getBase64Image($studentPhotoPath); 
+$studentSign = getBase64Image($studentSignPath);
+
 
 // --- 3. HTML Layout ---
-// Load Font File - Embed as Base64 to avoid path/permission issues with Dompdf
-// Try absolute path first, then relative
-$fontPath = __DIR__ . '/../../assets/fonts/NotoSansDevanagari-Regular.ttf';
-$fontBase64 = '';
-
-if (file_exists($fontPath)) {
-    $fontData = file_get_contents($fontPath);
-    $fontBase64 = base64_encode($fontData);
-}
-
-// Fallback check
-if (empty($fontBase64)) {
-    // Attempt to locate it via relative path if __DIR__ resolution behaves oddly
-    $relPath = '../../assets/fonts/NotoSansDevanagari-Regular.ttf';
-    if (file_exists($relPath)) {
-        $fontBase64 = base64_encode(file_get_contents($relPath));
-    }
-}
+// CSS notes: mPDF supports most CSS. @page margin is handled in constructor.
 
 $html = '
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <style>
-        @font-face {
-            font-family: \'HindiFont\';
-            src: url(data:font/truetype;charset=utf-8;base64,' . $fontBase64 . ') format(\'truetype\');
-            font-weight: normal;
-            font-style: normal;
-        }
-        
         body {
-            font-family: \'HindiFont\', sans-serif;
+            font-family: hindifont; /* Custom font defined in mPDF config */
             font-size: 12px;
             color: #000;
         }
-        @page {
-            margin: 0px; 
-            size: A4;
-        }
-        .bg-watermark {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1000;
-            opacity: 1; /* Adjust opacity in image itself if possible, or here */
-        }
+        
+        /* Watermark as a full page background is handled via mPDF SetDefaultBodyCSS usually,
+           but an absolute div works too if z-index is handled. mPDF handles watermarks differently.
+           Best way in mPDF: SetWatermarkImage or CSS background on body. */
+        
         .container {
             padding: 40px;
             position: relative;
@@ -177,7 +151,7 @@ $html = '
             vertical-align: middle;
         }
         .details-label {
-            width: 130px;
+            width: 150px;
             font-weight: bold;
             background-color: #f0f0f0;
         }
@@ -226,7 +200,6 @@ $html = '
     </style>
 </head>
 <body>
-    ' . ($bgImage ? '<img src="' . $bgImage . '" class="bg-watermark">' : '') . '
     
     <div class="container">
         <!-- Header -->
@@ -250,15 +223,15 @@ $html = '
                 </td>
             </tr>
             <tr>
-                <td class="details-label">उम्मीदवारका नाम/Candidate Name</td>
+                <td class="details-label">उम्मीदवार का नाम/Candidate Name</td>
                 <td style="text-transform: uppercase;">' . $student['first_name'] . ' ' . $student['last_name'] . '</td>
             </tr>
             <tr>
-                <td class="details-label">पिताका नाम/Father Name</td>
+                <td class="details-label">पिता का नाम/Father Name</td>
                 <td style="text-transform: uppercase;">' . $student['father_name'] . '</td>
             </tr>
             <tr>
-                <td class="details-label">आमाका नाम/Mother Name</td>
+                <td class="details-label">माँ का नाम/Mother Name</td>
                 <td style="text-transform: uppercase;">' . $student['mother_name'] . '</td>
             </tr>
             <tr>
@@ -341,20 +314,49 @@ $html .= '  </tbody>
 </body>
 </html>';
 
-// --- 4. Render PDF ---
-$options = new Options();
-$options->set('isHtml5ParserEnabled', true);
-$options->set('isRemoteEnabled', true); // Vital for images
-$options->set('defaultFont', 'HindiFont'); // Set default font
-$options->set('isFontSubsettingEnabled', true); // Crucial for Unicode to keep PDF size small and correct
+// --- 4. Render mPDF ---
+try {
+    // Custom Font Directory
+    $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+    $fontDirs = $defaultConfig['fontDir'];
 
-$dompdf = new Dompdf($options);
+    $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+    $fontData = $defaultFontConfig['fontdata'];
 
-// Ensure HTML entites are valid for UTF-8
-$dompdf->loadHtml(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+    $mpdf = new Mpdf([
+        'mode' => 'utf-8', 
+        'format' => 'A4',
+        'margin_left' => 0,
+        'margin_right' => 0,
+        'margin_top' => 0,
+        'margin_bottom' => 0,
+        'orientation' => 'P',
+        'fontDir' => array_merge($fontDirs, [
+            __DIR__ . '/../../assets/fonts', // Correct path to fonts
+        ]),
+        'fontdata' => $fontData + [
+            'hindifont' => [ // Define custom font name
+                'R' => 'NotoSansDevanagari-Regular.ttf', // filename
+                'useOTL' => 0xFF,
+                'useKashida' => 75,
+            ]
+        ],
+        'default_font' => 'hindifont' // Set as default
+    ]);
 
-$dompdf->setPaper('A4', 'portrait');
-$dompdf->render();
+    // Set Background
+    // mPDF SetDefaultBodyCSS for background image
+    if ($bgImage) {
+        // Since we have Base64, we can set it. 
+        // mPDF 7+ supports CSS background url with base64.
+        $mpdf->SetDefaultBodyCSS('background', "url('" . $bgImage . "')");
+        $mpdf->SetDefaultBodyCSS('background-image-resize', 6); // Cover
+    }
 
-$dompdf->stream("Admit_Card_" . $student['enrollment_no'] . ".pdf", ["Attachment" => 0]); // 0 = PReview, 1 = Download
+    $mpdf->WriteHTML($html);
+    $mpdf->Output("Admit_Card_" . $student['enrollment_no'] . ".pdf", 'I');
+
+} catch (\Mpdf\MpdfException $e) {
+    echo "PDF Generation Error: " . $e->getMessage();
+}
 ?>
