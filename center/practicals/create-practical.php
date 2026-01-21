@@ -72,12 +72,16 @@ if (isset($_POST['save_practical'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="../../assets/css/sidebar.css" rel="stylesheet">
+    <style>
+        #page-content-wrapper { margin-left: 280px; transition: margin 0.3s; }
+        @media (max-width: 768px) { #page-content-wrapper { margin-left: 0; } }
+    </style>
 </head>
 <body>
     <div class="d-flex" id="wrapper">
         <?php include '../sidebar.php'; ?>
         
-        <div id="page-content-wrapper">
+        <div id="page-content-wrapper" style="width: 100%;">
             <?php include '../header.php'; ?>
             
             <div class="container-fluid px-4 py-4">
