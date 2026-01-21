@@ -316,13 +316,7 @@ $html .= '  </tbody>
 
 // --- 4. Render mPDF ---
 try {
-    // Custom Font Directory
-    $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
-    $fontDirs = $defaultConfig['fontDir'];
-
-    $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
-    $fontData = $defaultFontConfig['fontdata'];
-
+    // Use FreeSerif (Standard in mPDF) to avoid GPOS and Missing File errors
     $mpdf = new Mpdf([
         'mode' => 'utf-8', 
         'format' => 'A4',
@@ -331,17 +325,7 @@ try {
         'margin_top' => 0,
         'margin_bottom' => 0,
         'orientation' => 'P',
-        'fontDir' => array_merge($fontDirs, [
-            __DIR__ . '/../../assets/fonts', 
-        ]),
-        'fontdata' => $fontData + [
-            'hindifont' => [ 
-                'R' => 'Lohit-Devanagari.ttf', // Switched to Lohit for better mPDF compatibility
-                'useOTL' => 0xFF,
-                'useKashida' => 75,
-            ]
-        ],
-        'default_font' => 'hindifont'
+        'default_font' => 'freeserif' 
     ]);
 
     // Set Background
@@ -351,7 +335,7 @@ try {
     }
 
     $mpdf->WriteHTML($html);
-    $mpdf->Output("Admit_Card_" . $student['enrollment_no'] . ".pdf", 'I');
+    $mpdf->Output("Admit_Card_" . $student['enrollment_no'] . ".pdf", 'I'); 
 
 } catch (\Mpdf\MpdfException $e) {
     echo "PDF Generation Error: " . $e->getMessage();
