@@ -100,79 +100,76 @@ $html = '
     <style>
         body {
             font-family: freeserif;
-            font-size: 8pt;
+            font-size: 7pt; /* Reduced font size */
             color: #000;
         }
-        /* Background set via body or mPDF method */
         
         .field-label { 
             font-weight: bold; 
-            width: 110px; 
+            width: 85px; 
             display: inline-block;
-            font-size: 8pt;
+            vertical-align: top;
         }
         .field-value {
             font-weight: bold;
-            font-size: 8pt;
             text-transform: uppercase;
+            line-height: 1.2;
         }
         
-        /* Positioning based on IGNOU Sample roughly */
+        /* Layout Adjustments */
         .content-area {
             position: absolute;
-            top: 50px; /* Adjust based on header height in background image */
-            left: 5px;
-            width: 70%; /* Left side content */
+            top: 20mm; /* Moved down to clear header */
+            left: 3mm;
+            width: 65%; 
         }
         
+        /* QR Code - Top Right but smaller */
+        .qr-area {
+            position: absolute;
+            top: 2mm;
+            right: 2mm;
+            width: 14mm; 
+            height: 14mm;
+        }
+        
+        /* Photo - aligned with content top roughly */
         .photo-area {
             position: absolute;
-            top: 55px; /* Adjust */
-            right: 5px;
-            width: 25%;
+            top: 18mm; 
+            right: 4mm;
+            width: 20mm;
             text-align: center;
         }
         
-        .qr-area {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            width: 18mm; 
-            height: 18mm;
-        }
-        
-        .row-item { margin-bottom: 2px; }
-        
+        /* Enrollment Overlay on/below photo */
         .enroll-no {
             position: absolute;
-            top: 104px;
-            right: 8px;
+            top: 42mm; /* Just below photo */
+            right: 2mm;
+            width: 24mm;
+            text-align: center;
             font-weight: bold;
-            font-size: 10pt;
-            background: white; /* overlay photo slightly if needed or below */
+            font-size: 8pt;
             z-index: 10;
         }
         
         .signature-area {
             position: absolute;
-            bottom: 25px; /* Adjust */
-            right: 5px;
-            width: 25%;
+            bottom: 3mm;
+            right: 4mm;
+            width: 20mm;
             text-align: center;
         }
 
-        .auth-sig {
-             position: absolute;
-             bottom: 5px;
-             right: 5px;
-             font-size: 6pt;
-             text-align: center;
-             width: 50px;
-        }
-        
-        /* Specific tweaks for "IGNOU" style layout */
         table { border-collapse: collapse; width: 100%; }
-        td { padding: 1px 2px; vertical-align: top; }
+        td { padding: 2px 0; vertical-align: top; }
+        
+        .address-box {
+            font-size: 6pt;
+            max-height: 20px;
+            overflow: hidden;
+        }
     </style>
 </head>
 <body>
