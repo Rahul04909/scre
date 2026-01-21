@@ -1,4 +1,8 @@
-<?php
+
+// Enable Error Reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 session_start();
 require_once '../../database/config.php';
 
@@ -16,7 +20,7 @@ $messageType = '';
 // Usually centers are "Allotted" courses. Checking `center_course_allotment` ?
 // For now, let's fetch ALL active courses as per usual flow, or check allotment if simple.
 // Let's stick to ALL active courses as user didn't specify strict allotment check here.
-$courses = $pdo->query("SELECT id, course_name FROM courses WHERE status = 'Active' ORDER BY course_name ASC")->fetchAll();
+$courses = $pdo->query("SELECT id, course_name FROM courses ORDER BY course_name ASC")->fetchAll();
 
 
 // Handle Form Submission
