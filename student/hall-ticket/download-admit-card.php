@@ -72,14 +72,22 @@ $studentSign = getBase64Image('../../' . $student['student_signature']);
 
 // --- 3. HTML Layout ---
 // Load Font File - Embed as Base64 to avoid path/permission issues with Dompdf
+// Try absolute path first, then relative
 $fontPath = __DIR__ . '/../../assets/fonts/NotoSansDevanagari-Regular.ttf';
 $fontBase64 = '';
+
 if (file_exists($fontPath)) {
     $fontData = file_get_contents($fontPath);
     $fontBase64 = base64_encode($fontData);
-} else {
-    // Fallback or error logging if needed, but let's proceed
-    // echo "Font file not found: $fontPath";
+}
+
+// Fallback check
+if (empty($fontBase64)) {
+    // Attempt to locate it via relative path if __DIR__ resolution behaves oddly
+    $relPath = '../../assets/fonts/NotoSansDevanagari-Regular.ttf';
+    if (file_exists($relPath)) {
+        $fontBase64 = base64_encode(file_get_contents($relPath));
+    }
 }
 
 $html = '
@@ -89,14 +97,14 @@ $html = '
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <style>
         @font-face {
-            font-family: \'Noto Sans Devanagari\';
+            font-family: \'HindiFont\';
             src: url(data:font/truetype;charset=utf-8;base64,' . $fontBase64 . ') format(\'truetype\');
             font-weight: normal;
             font-style: normal;
         }
         
         body {
-            font-family: \'Noto Sans Devanagari\', sans-serif;
+            font-family: \'HindiFont\', sans-serif;
             font-size: 12px;
             color: #000;
         }
@@ -337,11 +345,14 @@ $html .= '  </tbody>
 $options = new Options();
 $options->set('isHtml5ParserEnabled', true);
 $options->set('isRemoteEnabled', true); // Vital for images
-$options->set('defaultFont', 'Noto Sans Devanagari'); // Set default font
+$options->set('defaultFont', 'HindiFont'); // Set default font
 $options->set('isFontSubsettingEnabled', true); // Crucial for Unicode to keep PDF size small and correct
 
 $dompdf = new Dompdf($options);
-$dompdf->loadHtml($html);
+
+// Ensure HTML entites are valid for UTF-8
+$dompdf->loadHtml(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
 
