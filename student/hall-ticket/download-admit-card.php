@@ -215,41 +215,41 @@ $html = '
         <!-- Student Details Table (Bordered) -->
         <table class="details-table">
             <tr>
-                <td class="details-label">Enrollment No</td>
+                <td class="details-label">पंजीक्रम/Enrollment No</td>
                 <td style="font-weight: bold;">' . $student['enrollment_no'] . '</td>
                 <td class="photo-cell" rowspan="6">
                     ' . ($studentPhoto ? '<img src="' . $studentPhoto . '" style="width: 100px; height: 120px; object-fit: cover; border: 1px solid #000; padding: 2px;">' : 'No Photo') . '
                 </td>
             </tr>
             <tr>
-                <td class="details-label">Candidate Name</td>
+                <td class="details-label">उम्मीदवारका नाम/Candidate Name</td>
                 <td style="text-transform: uppercase;">' . $student['first_name'] . ' ' . $student['last_name'] . '</td>
             </tr>
             <tr>
-                <td class="details-label">Father Name</td>
+                <td class="details-label">पिताका नाम/Father Name</td>
                 <td style="text-transform: uppercase;">' . $student['father_name'] . '</td>
             </tr>
             <tr>
-                <td class="details-label">Mother Name</td>
+                <td class="details-label">आमाका नाम/Mother Name</td>
                 <td style="text-transform: uppercase;">' . $student['mother_name'] . '</td>
             </tr>
             <tr>
-                <td class="details-label">Course Name</td>
+                <td class="details-label">कोर्स नाम/Course Name</td>
                 <td>' . $student['course_name'] . '</td>
             </tr>
             <tr>
-                <td class="details-label">Session</td>
+                <td class="details-label">सत्र/Session</td>
                 <td>' . $student['session_name'] . '</td>
             </tr>
             <tr>
-                <td class="details-label">Center Name</td>
+                <td class="details-label">सेंटर नाम/Center Name</td>
                 <td>' . $student['center_name'] . '</td>
                 <td class="photo-cell">
                     ' . ($studentSign ? '<img src="' . $studentSign . '" style="width: 100px; height: 40px; object-fit: contain;">' : 'Signature') . '
                 </td>
             </tr>
             <tr>
-                <td class="details-label">Mobile No</td>
+                <td class="details-label">मोबाइल नंबर/Mobile No</td>
                 <td colspan="2">' . $student['mobile'] . '</td>
             </tr>
         </table>
