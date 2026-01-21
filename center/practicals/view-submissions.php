@@ -27,15 +27,24 @@ if (!$practical) die("Practical not found");
 if (isset($_POST['update_marks'])) {
     $sub_id = intval($_POST['submission_id']);
     $marks = floatval($_POST['marks']);
-    
-    try {
-        $stmtUpdate = $pdo->prepare("UPDATE practical_submissions SET marks_obtained = ?, status = 'Graded' WHERE id = ?");
-        $stmtUpdate->execute([$marks, $sub_id]);
-        $message = "Marks updated successfully.";
-        $messageType = "success";
-    } catch (PDOException $e) {
-        $message = "Error: " . $e->getMessage();
+    $max_marks = floatval($practical['practical_marks']);
+
+    if ($marks > $max_marks) {
+        $message = "Error: Marks cannot exceed total marks (" . $max_marks . ").";
         $messageType = "danger";
+    } elseif ($marks < 0) {
+        $message = "Error: Marks cannot be negative.";
+        $messageType = "danger";
+    } else {
+        try {
+            $stmtUpdate = $pdo->prepare("UPDATE practical_submissions SET marks_obtained = ?, status = 'Graded' WHERE id = ?");
+            $stmtUpdate->execute([$marks, $sub_id]);
+            $message = "Marks updated successfully.";
+            $messageType = "success";
+        } catch (PDOException $e) {
+            $message = "Error: " . $e->getMessage();
+            $messageType = "danger";
+        }
     }
 }
 
@@ -100,7 +109,7 @@ $submissions = $stmtSub->fetchAll();
                                         <th class="ps-4">Student Info</th>
                                         <th>File</th>
                                         <th>Submission Date</th>
-                                        <th>Marks</th>
+                                        <th>Marks / <?php echo floatval($practical['practical_marks']); ?></th>
                                         <th class="text-end pe-4">Action</th>
                                     </tr>
                                 </thead>
@@ -128,7 +137,8 @@ $submissions = $stmtSub->fetchAll();
                                                     <form method="POST" class="d-flex align-items-center" style="max-width: 150px;">
                                                         <input type="hidden" name="submission_id" value="<?php echo $sub['id']; ?>">
                                                         <input type="number" step="0.5" name="marks" class="form-control form-control-sm me-2" 
-                                                               value="<?php echo $sub['marks_obtained']; ?>" placeholder="0.0" required>
+                                                               value="<?php echo $sub['marks_obtained']; ?>" placeholder="0.0" 
+                                                               max="<?php echo floatval($practical['practical_marks']); ?>" min="0" required>
                                                 </td>
                                                 <td class="text-end pe-4">
                                                         <button type="submit" name="update_marks" class="btn btn-sm btn-primary">
