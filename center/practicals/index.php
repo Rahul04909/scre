@@ -1,4 +1,8 @@
 <?php
+// Enable Error Reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 session_start();
 require_once '../../database/config.php';
 
