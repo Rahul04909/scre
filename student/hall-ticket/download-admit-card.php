@@ -71,16 +71,16 @@ $studentPhoto = getBase64Image('../../' . $student['student_image']);
 $studentSign = getBase64Image('../../' . $student['student_signature']);
 
 // --- 3. HTML Layout ---
-// Load Font File
-$fontPath = realpath('../../assets/fonts/NotoSansDevanagari-Regular.ttf');
-// Ensure font path is valid for Dompdf. 
-// Standard method: Use standard CSS @font-face with local path (needs to be absolute or relative correctly).
-// Dompdf likes absolute file paths for local resources usually.
-// Let's use getBase64 for font too to be 100% sure it loads without permission/path issues? 
-// No, file path usually works if chroot is correct. Let's try relative first as per existing logic.
-// But to be safe, let's use the absolute path approach in CSS URL if possible or just relative.
-// The script is in `student/hall-ticket/`, font is in `student/assets/fonts/` (Wait, I put it in global `assets/fonts`).
-// So path is `../../assets/fonts/NotoSansDevanagari-Regular.ttf`.
+// Load Font File - Embed as Base64 to avoid path/permission issues with Dompdf
+$fontPath = __DIR__ . '/../../assets/fonts/NotoSansDevanagari-Regular.ttf';
+$fontBase64 = '';
+if (file_exists($fontPath)) {
+    $fontData = file_get_contents($fontPath);
+    $fontBase64 = base64_encode($fontData);
+} else {
+    // Fallback or error logging if needed, but let's proceed
+    // echo "Font file not found: $fontPath";
+}
 
 $html = '
 <!DOCTYPE html>
@@ -90,7 +90,7 @@ $html = '
     <style>
         @font-face {
             font-family: \'Noto Sans Devanagari\';
-            src: url(\'../../assets/fonts/NotoSansDevanagari-Regular.ttf\') format(\'truetype\');
+            src: url(data:font/truetype;charset=utf-8;base64,' . $fontBase64 . ') format(\'truetype\');
             font-weight: normal;
             font-style: normal;
         }
@@ -129,6 +129,7 @@ $html = '
             text-transform: uppercase;
             margin-bottom: 5px;
         }
+
         .subtext {
             font-size: 10px;
             font-weight: bold;
