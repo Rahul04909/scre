@@ -40,7 +40,8 @@ $sql = "
     SELECT p.*, 
            c.course_name, c.course_code, c.has_units, c.unit_type,
            ac.session_name,
-           s.subject_name
+           s.subject_name,
+           (SELECT COUNT(*) FROM practical_submissions ps WHERE ps.practical_id = p.id) as submission_count
     FROM practicals p
     JOIN courses c ON p.course_id = c.id
     JOIN academic_sessions ac ON p.session_id = ac.id
@@ -129,8 +130,8 @@ $practicals = $stmt->fetchAll();
                                         <th class="ps-4 py-3">Title / Subject</th>
                                         <th>Course Info</th>
                                         <th>Dates</th>
-                                        <th>File</th>
-                                        <th class="text-end pe-4">Created</th>
+                                        <th>Files</th>
+                                        <th class="text-end pe-4">Submissions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -158,11 +159,16 @@ $practicals = $stmt->fetchAll();
                                                 </td>
                                                 <td>
                                                     <a href="../../<?php echo htmlspecialchars($p['file_path']); ?>" target="_blank" class="btn btn-sm btn-outline-danger">
-                                                        <i class="fas fa-file-pdf me-1"></i> View
+                                                        <i class="fas fa-file-pdf me-1"></i> View PDF
                                                     </a>
                                                 </td>
-                                                <td class="text-end pe-4 text-muted small">
-                                                    <?php echo date('d M Y', strtotime($p['created_at'])); ?>
+                                                <td class="text-end pe-4">
+                                                    <a href="view-submissions.php?id=<?php echo $p['id']; ?>" class="btn btn-sm btn-outline-primary position-relative">
+                                                        Submissions
+                                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                                            <?php echo $p['submission_count']; ?>
+                                                        </span>
+                                                    </a>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>

@@ -42,7 +42,17 @@ $stmtP = $pdo->prepare($sql);
 $stmtP->execute([$center_id, $course_id, $session_id]);
 $all_practicals = $stmtP->fetchAll();
 
-// 4. Group by Unit
+// 4. Fetch Submissions
+$stmtSub = $pdo->prepare("SELECT practical_id, marks_obtained, status FROM practical_submissions WHERE student_id = ?");
+$stmtSub->execute([$student_id]);
+$submissions = $stmtSub->fetchAll(PDO::FETCH_KEY_PAIR); // practical_id => marks_obtained logic needs object?
+// FETCH_KEY_PAIR only suitable for id -> value. I need status and marks. 
+// Let's use FETCH_GROUP | FETCH_UNIQUE to get practical_id as key.
+$stmtSub = $pdo->prepare("SELECT practical_id, marks_obtained, status, created_at FROM practical_submissions WHERE student_id = ?");
+$stmtSub->execute([$student_id]);
+$submissions = $stmtSub->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_ASSOC);
+
+// 5. Group by Unit
 $grouped_practicals = [];
 if ($has_units) {
     // Initialize buckets for all units
@@ -129,7 +139,7 @@ if ($has_units) {
                                             </div>
                                         <?php else: ?>
                                             <div class="row g-3">
-                                                <?php foreach($grouped_practicals[$i] as $p): renderPracticalCard($p); endforeach; ?>
+                                                <?php foreach($grouped_practicals[$i] as $p): renderPracticalCard($p, $submissions); endforeach; ?>
                                             </div>
                                         <?php endif; ?>
                                     </div>
@@ -145,7 +155,7 @@ if ($has_units) {
                                 </div>
                             <?php else: ?>
                                 <div class="row g-3">
-                                    <?php foreach($grouped_practicals[0] as $p): renderPracticalCard($p); endforeach; ?>
+                                    <?php foreach($grouped_practicals[0] as $p): renderPracticalCard($p, $submissions); endforeach; ?>
                                 </div>
                             <?php endif; ?>
                         <?php endif; ?>
@@ -163,7 +173,7 @@ if ($has_units) {
 
 <?php
 // Helper to render card
-function renderPracticalCard($p) {
+function renderPracticalCard($p, $submissions) {
     // Relative path fix: file_path is relative to root, but we are in student/practicals/
     // file_path in DB is 'assets/uploads/...'
     // So link should be '../../' . $file_path
@@ -171,9 +181,15 @@ function renderPracticalCard($p) {
     $startDate = date('d M Y', strtotime($p['submission_start_date']));
     $lastDate = date('d M Y', strtotime($p['submission_last_date']));
     
+    // Check Submission
+    $pid = $p['id'];
+    $isSubmitted = isset($submissions[$pid]);
+    $subStatus = $isSubmitted ? $submissions[$pid]['status'] : 'Pending';
+    $marks = $isSubmitted ? $submissions[$pid]['marks_obtained'] : null;
+    
     echo '
     <div class="col-md-6 col-lg-4">
-        <div class="practical-card p-3 rounded-3 bg-white h-100">
+        <div class="practical-card p-3 rounded-3 bg-white h-100 position-relative">
             <div class="d-flex justify-content-between align-items-start mb-2">
                 <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3">Practical</span>
                 <i class="fas fa-flask text-primary opacity-25"></i>
@@ -187,9 +203,26 @@ function renderPracticalCard($p) {
                 <div class="date-badge text-danger"><i class="far fa-bell me-1"></i> End: '.$lastDate.'</div>
             </div>
             
-            <a href="'.$link.'" target="_blank" class="btn btn-outline-primary w-100 rounded-pill btn-sm">
-                <i class="fas fa-download me-2"></i> Download File
-            </a>
+            <div class="d-flex gap-2">
+                <a href="'.$link.'" target="_blank" class="btn btn-outline-dark w-100 rounded-pill btn-sm">
+                    <i class="fas fa-download me-1"></i> File
+                </a>
+                ';
+    
+    if ($isSubmitted) {
+        $marksDisplay = ($marks !== null) ? '<span class="fw-bold">'.$marks.' Marks</span>' : 'Submitted';
+        $badgeClass = ($marks !== null) ? 'btn-success' : 'btn-info text-white';
+        echo '<button class="btn '.$badgeClass.' w-100 rounded-pill btn-sm" disabled>
+                <i class="fas fa-check-circle me-1"></i> '.$marksDisplay.'
+              </button>';
+    } else {
+        echo '<a href="submit-practical.php?id='.$pid.'" class="btn btn-primary w-100 rounded-pill btn-sm">
+                <i class="fas fa-upload me-1"></i> Submit
+              </a>';
+    }
+    
+    echo '
+            </div>
         </div>
     </div>
     ';
