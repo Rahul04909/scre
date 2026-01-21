@@ -71,13 +71,32 @@ $studentPhoto = getBase64Image('../../' . $student['student_image']);
 $studentSign = getBase64Image('../../' . $student['student_signature']);
 
 // --- 3. HTML Layout ---
+// Load Font File
+$fontPath = realpath('../../assets/fonts/NotoSansDevanagari-Regular.ttf');
+// Ensure font path is valid for Dompdf. 
+// Standard method: Use standard CSS @font-face with local path (needs to be absolute or relative correctly).
+// Dompdf likes absolute file paths for local resources usually.
+// Let's use getBase64 for font too to be 100% sure it loads without permission/path issues? 
+// No, file path usually works if chroot is correct. Let's try relative first as per existing logic.
+// But to be safe, let's use the absolute path approach in CSS URL if possible or just relative.
+// The script is in `student/hall-ticket/`, font is in `student/assets/fonts/` (Wait, I put it in global `assets/fonts`).
+// So path is `../../assets/fonts/NotoSansDevanagari-Regular.ttf`.
+
 $html = '
 <!DOCTYPE html>
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <style>
+        @font-face {
+            font-family: \'Noto Sans Devanagari\';
+            src: url(\'../../assets/fonts/NotoSansDevanagari-Regular.ttf\') format(\'truetype\');
+            font-weight: normal;
+            font-style: normal;
+        }
+        
         body {
-            font-family: sans-serif;
+            font-family: \'Noto Sans Devanagari\', sans-serif;
             font-size: 12px;
             color: #000;
         }
@@ -317,6 +336,8 @@ $html .= '  </tbody>
 $options = new Options();
 $options->set('isHtml5ParserEnabled', true);
 $options->set('isRemoteEnabled', true); // Vital for images
+$options->set('defaultFont', 'Noto Sans Devanagari'); // Set default font
+$options->set('isFontSubsettingEnabled', true); // Crucial for Unicode to keep PDF size small and correct
 
 $dompdf = new Dompdf($options);
 $dompdf->loadHtml($html);
