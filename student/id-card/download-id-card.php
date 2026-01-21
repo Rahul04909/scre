@@ -11,14 +11,10 @@ require_once '../../vendor/autoload.php';
 use Mpdf\Mpdf;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Encoding\Encoding;
-use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow; // Updated for v5/v6 if needed, checking standard
+use Endroid\QrCode\ErrorCorrectionLevel; // v5+ Enum
 use Endroid\QrCode\Label\LabelAlignment;
-use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use Endroid\QrCode\RoundBlockSizeMode; // v5+ Enum
 use Endroid\QrCode\Writer\PngWriter;
-
-// Ensure correct ErrorCorrectionLevel class usage based on version.
-// v4/v5 uses ErrorCorrectionLevelHigh::class usually.
-// Let's assume v4+ standard.
 
 if (!isset($_SESSION['student_id'])) {
     die("Access Denied");
@@ -68,9 +64,7 @@ $signImg = getBase64Image($studentSignPath);
 
 // --- 3. QR Code Generation ---
 // Using Endroid QR Code
-// Content: URL to verify or JSON data
 $qrContent = "Student: " . $student['first_name'] . "\nEnrollment: " . $student['enrollment_no']; 
-// Or a verification link: https://pacefoundation.com/verify?id=...
 
 try {
     $result = Builder::create()
@@ -78,11 +72,15 @@ try {
         ->writerOptions([])
         ->data($qrContent)
         ->encoding(new Encoding('UTF-8'))
+        ->errorCorrectionLevel(ErrorCorrectionLevel::Low) // v5+ Enum usage
         ->size(150)
         ->margin(0)
+        ->roundBlockSizeMode(RoundBlockSizeMode::Margin) // v5+ Enum usage
         ->build();
     $qrImage = $result->getDataUri();
 } catch (Exception $e) {
+    // If QR fails, proceed without it but log error if needed
+    // echo $e->getMessage();
     $qrImage = '';
 }
 
