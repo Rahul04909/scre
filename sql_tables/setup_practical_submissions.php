@@ -1,5 +1,5 @@
 <?php
-require_once '../database/config.php';
+require_once __DIR__ . '/../database/config.php';
 
 try {
     $sql = "
@@ -13,8 +13,8 @@ try {
         remarks TEXT,
         status ENUM('Submitted', 'Graded') DEFAULT 'Submitted',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (practical_id) REFERENCES practicals(id) ON DELETE CASCADE,
-        FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
+        -- FOREIGN KEY (practical_id) REFERENCES practicals(id) ON DELETE CASCADE,
+        -- FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
         UNIQUE KEY unique_submission (practical_id, student_id)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     ";
