@@ -40,7 +40,7 @@ $sql = "
     SELECT p.*, 
            c.course_name, c.course_code, c.has_units, c.unit_type,
            ac.session_name,
-           s.subject_name, s.subject_code
+           s.subject_name
     FROM practicals p
     JOIN courses c ON p.course_id = c.id
     JOIN academic_sessions ac ON p.session_id = ac.id
@@ -139,7 +139,7 @@ $practicals = $stmt->fetchAll();
                                             <tr>
                                                 <td class="ps-4">
                                                     <div class="fw-bold text-dark"><?php echo htmlspecialchars($p['title']); ?></div>
-                                                    <small class="text-secondary"><?php echo htmlspecialchars($p['subject_name']); ?> (<?php echo $p['subject_code']; ?>)</small>
+                                                    <small class="text-secondary"><?php echo htmlspecialchars($p['subject_name']); ?></small>
                                                 </td>
                                                 <td>
                                                     <div class="d-flex flex-column">
