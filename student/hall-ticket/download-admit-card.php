@@ -332,25 +332,22 @@ try {
         'margin_bottom' => 0,
         'orientation' => 'P',
         'fontDir' => array_merge($fontDirs, [
-            __DIR__ . '/../../assets/fonts', // Correct path to fonts
+            __DIR__ . '/../../assets/fonts', 
         ]),
         'fontdata' => $fontData + [
-            'hindifont' => [ // Define custom font name
-                'R' => 'NotoSansDevanagari-Regular.ttf', // filename
+            'hindifont' => [ 
+                'R' => 'Lohit-Devanagari.ttf', // Switched to Lohit for better mPDF compatibility
                 'useOTL' => 0xFF,
                 'useKashida' => 75,
             ]
         ],
-        'default_font' => 'hindifont' // Set as default
+        'default_font' => 'hindifont'
     ]);
 
     // Set Background
-    // mPDF SetDefaultBodyCSS for background image
     if ($bgImage) {
-        // Since we have Base64, we can set it. 
-        // mPDF 7+ supports CSS background url with base64.
         $mpdf->SetDefaultBodyCSS('background', "url('" . $bgImage . "')");
-        $mpdf->SetDefaultBodyCSS('background-image-resize', 6); // Cover
+        $mpdf->SetDefaultBodyCSS('background-image-resize', 6); 
     }
 
     $mpdf->WriteHTML($html);
