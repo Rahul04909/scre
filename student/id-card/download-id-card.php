@@ -9,7 +9,7 @@ require_once '../../database/config.php';
 require_once '../../vendor/autoload.php';
 
 use Mpdf\Mpdf;
-use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel; // v5+ Enum
 use Endroid\QrCode\Label\LabelAlignment;
@@ -62,27 +62,30 @@ $bgImage = getBase64Image($bgPath);
 $profileImg = getBase64Image($studentPhotoPath);
 $signImg = getBase64Image($studentSignPath);
 
+
 // --- 3. QR Code Generation ---
 // Using Endroid QR Code
 $qrContent = "Student: " . $student['first_name'] . "\nEnrollment: " . $student['enrollment_no']; 
 
 try {
-    $result = Builder::create()
-        ->writer(new PngWriter())
-        ->writerOptions([])
-        ->data($qrContent)
-        ->encoding(new Encoding('UTF-8'))
-        ->errorCorrectionLevel(ErrorCorrectionLevel::Low) // v5+ Enum usage
-        ->size(150)
-        ->margin(0)
-        ->roundBlockSizeMode(RoundBlockSizeMode::Margin) // v5+ Enum usage
-        ->build();
+    $qrCode = new QrCode(
+        data: $qrContent,
+        encoding: new Encoding('UTF-8'),
+        errorCorrectionLevel: ErrorCorrectionLevel::Low,
+        size: 150,
+        margin: 0,
+        roundBlockSizeMode: RoundBlockSizeMode::Margin
+    );
+    
+    $writer = new PngWriter();
+    $result = $writer->write($qrCode);
     $qrImage = $result->getDataUri();
 } catch (Exception $e) {
     // If QR fails, proceed without it but log error if needed
     // echo $e->getMessage();
     $qrImage = '';
 }
+
 
 // --- 4. HTML Layout ---
 // ID Card Standard Size: 86mm x 54mm (Landscape)
