@@ -47,8 +47,8 @@ $unit_label = ucfirst($student['unit_type'] ?? 'Semester');
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Custom CSS -->
-    <link href="../assets/css/sidebar.css" rel="stylesheet">
-    <link href="../assets/css/dashboard.css" rel="stylesheet">
+    <link href="assets/css/sidebar.css" rel="stylesheet">
+    <link href="assets/css/dashboard.css" rel="stylesheet">
     <style>
         .marksheet-card {
             border: none;
@@ -160,6 +160,6 @@ $unit_label = ucfirst($student['unit_type'] ?? 'Semester');
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/sidebar.js"></script>
+    <script src="assets/js/sidebar.js"></script>
 </body>
 </html>
