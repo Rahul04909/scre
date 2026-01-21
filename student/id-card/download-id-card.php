@@ -143,16 +143,7 @@ $html = '
         }
         
         /* Enrollment Overlay on/below photo */
-        .enroll-no {
-            position: absolute;
-            top: 42mm; /* Just below photo */
-            right: 2mm;
-            width: 24mm;
-            text-align: center;
-            font-weight: bold;
-            font-size: 8pt;
-            z-index: 10;
-        }
+
         
         .signature-area {
             position: absolute;
@@ -217,13 +208,10 @@ $html = '
 
     <!-- Student Photo -->
     <div class="photo-area">
-        ' . ($profileImg ? '<img src="' . $profileImg . '" style="width: 22mm; height: 26mm; border: 1px solid #000;">' : '') . '
+        ' . ($profileImg ? '<img src="' . $profileImg . '" style="width: 22mm; height: 22mm; border: 1px solid #000;">' : '') . '
     </div>
     
-    <!-- Enrollment Overlay under photo (IGNOU style) -->
-    <div class="enroll-no">
-        ' . $student['enrollment_no'] . '
-    </div>
+
 
     <!-- Signature -->
     <div class="signature-area">
