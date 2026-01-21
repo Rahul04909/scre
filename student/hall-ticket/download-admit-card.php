@@ -34,14 +34,24 @@ $student = $stmtStudent->fetch(PDO::FETCH_ASSOC);
 if (!$student) die("Student not found");
 
 // Exams
-$stmtExams = $pdo->prepare("
+$sqlExams = "
     SELECT es.*, sub.subject_name, sub.theory_marks, sub.practical_marks, sub.exam_duration
     FROM exam_schedules es
     JOIN subjects sub ON es.subject_id = sub.id
     WHERE es.course_id = ? AND es.session_id = ?
-    ORDER BY es.exam_date ASC, es.start_time ASC
-");
-$stmtExams->execute([$student['course_id'], $student['session_id']]);
+";
+$params = [$student['course_id'], $student['session_id']];
+
+if (isset($_GET['unit'])) {
+    $unit = intval($_GET['unit']);
+    $sqlExams .= " AND sub.unit_no = ?";
+    $params[] = $unit;
+}
+
+$sqlExams .= " ORDER BY es.exam_date ASC, es.start_time ASC";
+
+$stmtExams = $pdo->prepare($sqlExams);
+$stmtExams->execute($params);
 $exams = $stmtExams->fetchAll(PDO::FETCH_ASSOC);
 
 // --- 2. Image Handling ---
