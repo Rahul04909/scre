@@ -20,8 +20,8 @@
         <?php include 'sidebar.php'; ?>
         
         <!-- Page Content -->
-        <div id="page-content-wrapper" style="margin-left: 280px; transition: margin 0.25s ease-out;">
-            <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm px-4">
+        <div id="page-content-wrapper">
+            <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm px-4 sticky-top">
                 <div class="container-fluid p-0">
                     <button class="btn btn-outline-secondary btn-sm" id="sidebarToggle"><i class="fas fa-bars"></i></button>
                     
@@ -227,20 +227,21 @@
     <!-- Custom Scripts -->
     <script src="assets/js/sidebar.js"></script>
     <script>
-        // Simple toggle for mobile testing/demo
-        document.getElementById("sidebarToggle").addEventListener("click", function(){
-            const wrapper = document.getElementById('wrapper');
-            const sidebar = document.getElementById('sidebar-wrapper');
-            const content = document.getElementById('page-content-wrapper');
-            
-            if (sidebar.style.marginLeft === '-280px') {
-                sidebar.style.marginLeft = '0px';
-                content.style.marginLeft = '280px';
-            } else {
-                sidebar.style.marginLeft = '-280px';
-                content.style.marginLeft = '0px';
-            }
+        // Toggle for hamburger menu
+        document.getElementById("sidebarToggle").addEventListener("click", function(e){
+            e.preventDefault();
+            document.getElementById('wrapper').classList.toggle('toggled');
         });
+
+        // Toggle for close button in sidebar (mobile)
+        const closeBtn = document.getElementById("toggle-sidebar");
+        if(closeBtn) {
+            closeBtn.addEventListener("click", function(e){
+                e.preventDefault();
+                document.getElementById('wrapper').classList.toggle('toggled');
+            });
+        }
     </script>
+
 </body>
 </html>
