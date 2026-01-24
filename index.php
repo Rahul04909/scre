@@ -1,1 +1,2 @@
-<h1>SIR CHHOTU RAM EDUCATION PVT LTD</h1>
+<?php include 'includes/header.php'; ?>
+<?php include 'includes/footer.php'; ?>
