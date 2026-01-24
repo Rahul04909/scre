@@ -21,7 +21,39 @@
         
         <!-- Page Content -->
         <div id="page-content-wrapper" style="margin-left: 280px; transition: margin 0.25s ease-out;">
-            <?php include 'header.php'; ?>
+            <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm px-4">
+                <div class="container-fluid p-0">
+                    <button class="btn btn-outline-secondary btn-sm" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+                    
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto mt-2 mt-lg-0 align-items-center">
+                            <li class="nav-item position-relative mx-3">
+                                <a class="nav-link text-secondary" href="#"><i class="fas fa-bell fa-lg"></i>
+                                <span class="position-absolute top-10 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                                    <span class="visually-hidden">New alerts</span>
+                                </span>
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img src="https://i.pravatar.cc/150?img=11" alt="admin" class="rounded-circle me-2" style="width:32px; height: 32px;">
+                                    <span class="fw-semibold text-dark">Saurabh Goel</span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end shadow-lg border-0" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="#"><i class="fas fa-user me-2 text-muted"></i> Profile</a>
+                                    <a class="dropdown-item" href="#"><i class="fas fa-cog me-2 text-muted"></i> Settings</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item text-danger" href="#"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
 
             <div class="container-fluid py-5 px-lg-5">
                 <div class="row mb-4">
