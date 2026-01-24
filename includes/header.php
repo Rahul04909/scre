@@ -824,7 +824,7 @@ $baseUrl = $protocol . $domain . ($basePath === '/' ? '' : $basePath);
     <!-- Institute Header Row -->
     <div class="institute-header-row">
         <div class="header-logo">
-            <img src="<?php echo $baseUrl; ?>/logo/logo.png" alt="Institute Logo" class="main-logo" />
+            <img src="<?php echo $baseUrl; ?>../../assets/logo/frontpage-logo.webp" alt="Institute Logo" class="main-logo" />
         </div>
         <div class="header-center">
             <div class="inst-name header-center-animated">SIR CHHOTU RAM EDUCATION PVT. LTD.</div>
@@ -835,7 +835,7 @@ $baseUrl = $protocol . $domain . ($basePath === '/' ? '' : $basePath);
             <div class="inst-name header-center-animated"><strong>Goverment Of India</strong></div>
         </div> 
         <div class="header-badges">
-            <img src="<?php echo $baseUrl; ?>/logo/iso.png" alt="ISO Certified" class="main-logo" />
+            <img src="<?php echo $baseUrl; ?>../../assets/logo/iso.webp" alt="ISO Certified" class="main-logo" />
         </div>
     </div>
 
