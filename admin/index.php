@@ -23,8 +23,10 @@
         <div id="page-content-wrapper">
             <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm px-4 sticky-top">
                 <div class="container-fluid p-0">
-                    <button class="btn btn-outline-secondary btn-sm" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+                    <button class="btn btn-outline-secondary btn-sm me-3" id="sidebarToggle"><i class="fas fa-bars"></i></button>
                     
+                    <h5 class="navbar-brand m-0 text-dark fw-bold">Admin Dashboard</h5>
+
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
