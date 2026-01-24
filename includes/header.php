@@ -3,51 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?php
-    // Get SEO settings from database
-    try {
-        require_once dirname(__DIR__) . '/database/config.php';
-        $conn = getDbConnection();
-        
-        // Check if general_settings table exists
-        $tableExists = false;
-        $tables = $conn->query("SHOW TABLES LIKE 'general_settings'")->fetchAll();
-        if (count($tables) > 0) {
-            $tableExists = true;
-        }
-        
-        if ($tableExists) {
-            $settingsSql = "SELECT setting_key, setting_value FROM general_settings";
-            $stmt = $conn->query($settingsSql);
-            $settings = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
-            
-            $website_title = $settings['website_title'] ?? 'SIR CHHOTU RAM EDUCATION';
-            $meta_title = $settings['meta_title'] ?? 'SIR CHHOTU RAM EDUCATION - Quality Education Portal';
-            $meta_description = $settings['meta_description'] ?? '';
-            $meta_keywords = $settings['meta_keywords'] ?? '';
-            $seo_schema = $settings['seo_schema'] ?? '';
-        } else {
-            $website_title = 'SIR CHHOTU RAM EDUCATION';
-            $meta_title = 'SIR CHHOTU RAM EDUCATION - Quality Education Portal';
-        }
-    } catch (Exception $e) {
-        $website_title = 'SIR CHHOTU RAM EDUCATION';
-        $meta_title = 'SIR CHHOTU RAM EDUCATION - Quality Education Portal';
-    }
-    ?>
-    <title><?php echo htmlspecialchars($website_title); ?></title>
-    <meta name="title" content="<?php echo htmlspecialchars($meta_title); ?>">
-    <?php if (!empty($meta_description)): ?>
-    <meta name="description" content="<?php echo htmlspecialchars($meta_description); ?>">
-    <?php endif; ?>
-    <?php if (!empty($meta_keywords)): ?>
-    <meta name="keywords" content="<?php echo htmlspecialchars($meta_keywords); ?>">
-    <?php endif; ?>
-    <?php if (!empty($seo_schema)): ?>
-    <script type="application/ld+json">
-        <?php echo $seo_schema; ?>
-    </script>
-    <?php endif; ?>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>

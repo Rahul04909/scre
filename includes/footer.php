@@ -1,10 +1,3 @@
-<?php
-// Dynamically get the base URL (works for both root and subfolder installs)
-$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
-$domain = $_SERVER['HTTP_HOST'];
-$basePath = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
-$baseUrl = $protocol . $domain . ($basePath === '/' ? '' : $basePath);
-?>
 <!-- Footer Section -->
 <footer class="main-footer">
     <div class="footer-top">
