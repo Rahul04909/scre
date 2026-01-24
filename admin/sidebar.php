@@ -42,7 +42,7 @@
 
         <!-- Fees Collection Example with dropdown -->
         <a href="#feesSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action bg-transparent">
-            <i class="fas fa-dollar-sign menu-icon"></i>Courses<i class="fas fa-chevron-right menu-arrow ms-auto"></i>
+            <i class="fas fa-book menu-icon"></i>Courses<i class="fas fa-chevron-right menu-arrow ms-auto"></i>
         </a>
         <div class="collapse" id="feesSubmenu">
             <div class="sub-menu">
@@ -54,7 +54,7 @@
         </div>
         <!-- examinations -->
         <a href="#examinationsSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action bg-transparent">
-            <i class="fas fa-dollar-sign menu-icon"></i>Examinations<i class="fas fa-chevron-right menu-arrow ms-auto"></i>
+            <i class="fas fa-file-alt menu-icon"></i>Examinations<i class="fas fa-chevron-right menu-arrow ms-auto"></i>
         </a>
         <div class="collapse" id="examinationsSubmenu">
                 <a href="../../admin/examination/exam-schedule.php" class="list-group-item list-group-item-action bg-transparent">Exam Schedule</a>
@@ -65,7 +65,7 @@
         </div>
         <!-- sessions -->
         <a href="#sessionsSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action bg-transparent">
-            <i class="fas fa-dollar-sign menu-icon"></i>Sessions<i class="fas fa-chevron-right menu-arrow ms-auto"></i>
+            <i class="fas fa-calendar-alt menu-icon"></i>Sessions<i class="fas fa-chevron-right menu-arrow ms-auto"></i>
         </a>
         <div class="collapse" id="sessionsSubmenu">
             <div class="sub-menu">
@@ -75,7 +75,7 @@
         </div>
         <!-- locations -->
         <a href="#locationsSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action bg-transparent">
-            <i class="fas fa-dollar-sign menu-icon"></i>Locations<i class="fas fa-chevron-right menu-arrow ms-auto"></i>
+            <i class="fas fa-map-marker-alt menu-icon"></i>Locations<i class="fas fa-chevron-right menu-arrow ms-auto"></i>
         </a>
         <div class="collapse" id="locationsSubmenu">
             <div class="sub-menu">
