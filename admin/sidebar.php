@@ -52,17 +52,6 @@
                 <a href="../../admin/courses/add-course.php" class="list-group-item list-group-item-action bg-transparent">Add Course</a>
             </div>
         </div>
-        <!-- examinations -->
-        <a href="#examinationsSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action bg-transparent">
-            <i class="fas fa-file-alt menu-icon"></i>Examinations<i class="fas fa-chevron-right menu-arrow ms-auto"></i>
-        </a>
-        <div class="collapse" id="examinationsSubmenu">
-                <a href="../../admin/examination/exam-schedule.php" class="list-group-item list-group-item-action bg-transparent">Exam Schedule</a>
-                <a href="../../admin/examination/index.php" class="list-group-item list-group-item-action bg-transparent">Schedule List</a>
-                <a href="../../admin/examination/create-exam.php" class="list-group-item list-group-item-action bg-transparent">Question Paper</a>
-                <a href="../../admin/examination/manage-question-paper.php" class="list-group-item list-group-item-action bg-transparent">Manage Question Papers</a>
-            </div>
-        </div>
         <!-- sessions -->
         <a href="#sessionsSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action bg-transparent">
             <i class="fas fa-calendar-alt menu-icon"></i>Sessions<i class="fas fa-chevron-right menu-arrow ms-auto"></i>
@@ -71,6 +60,18 @@
             <div class="sub-menu">
                 <a href="../../admin/sessions/manage-sessions.php" class="list-group-item list-group-item-action bg-transparent">Manage Sessions</a>
                 <a href="../../admin/sessions/add-session.php" class="list-group-item list-group-item-action bg-transparent">Add Session</a>
+            </div>
+        </div>
+        <!-- examinations -->
+        <a href="#examinationsSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action bg-transparent">
+            <i class="fas fa-file-alt menu-icon"></i>Examinations<i class="fas fa-chevron-right menu-arrow ms-auto"></i>
+        </a>
+        <div class="collapse" id="examinationsSubmenu">
+            <div class="sub-menu">
+                <a href="../../admin/examination/exam-schedule.php" class="list-group-item list-group-item-action bg-transparent">Exam Schedule</a>
+                <a href="../../admin/examination/index.php" class="list-group-item list-group-item-action bg-transparent">Schedule List</a>
+                <a href="../../admin/examination/create-exam.php" class="list-group-item list-group-item-action bg-transparent">Question Paper</a>
+                <a href="../../admin/examination/manage-question-paper.php" class="list-group-item list-group-item-action bg-transparent">Manage Question Papers</a>
             </div>
         </div>
         <!-- locations -->
