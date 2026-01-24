@@ -17,27 +17,53 @@ body {
     min-height: 100vh;
     background-color: #f5f7fb;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+    /* Prevent horizontal scroll */
 }
 
 #wrapper {
     display: flex;
     width: 100%;
+    align-items: stretch;
 }
 
 #sidebar-wrapper {
-    height: 100vh;
-    width: var(--sidebar-width);
+    min-width: var(--sidebar-width);
+    max-width: var(--sidebar-width);
     background-color: var(--sidebar-bg);
     border-right: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
     position: fixed;
+    /* Fixed position */
     top: 0;
     left: 0;
+    height: 100vh;
     z-index: 1000;
-    transition: margin 0.25s ease-out;
+    transition: margin-left 0.3s ease-in-out;
     overflow-y: auto;
 }
+
+/* Page Content Wrapper to sit next to fixed sidebar */
+#page-content-wrapper {
+    width: 100%;
+    margin-left: var(--sidebar-width);
+    /* Push content to right */
+    transition: margin-left 0.3s ease-in-out;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Toggled State: Hide Sidebar */
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: calc(-1 * var(--sidebar-width));
+}
+
+#wrapper.toggled #page-content-wrapper {
+    margin-left: 0;
+}
+
 
 /* Scrollbar Styling */
 #sidebar-wrapper::-webkit-scrollbar {
@@ -57,23 +83,22 @@ body {
     background: #5b81a8;
 }
 
-/* Heading / Logo Area - kept minimal or hidden if profile is top */
+/* Heading / Logo Area */
 .sidebar-heading {
     padding: 1rem 1.5rem;
-    /* Reduced padding */
     font-size: 1.5rem;
     font-weight: bold;
     color: #fff;
-    display: none;
-    /* Hiding default logo if we want profile top, but keeping logic just in case user wants it back*/
+    display: flex;
+    /* Ensure it is visible if needed or change to none if strictly following profile-top design */
     align-items: center;
     justify-content: space-between;
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .sidebar-profile {
     padding: 30px 20px;
     background-color: var(--sidebar-bg);
-    /* Match sidebar bg */
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: flex-start;
@@ -82,6 +107,7 @@ body {
 
 .profile-img-container {
     position: relative;
+    flex-shrink: 0;
 }
 
 .profile-img {
@@ -90,7 +116,6 @@ body {
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid #ffc107;
-    /* Yellow border */
 }
 
 .status-indicator {
@@ -100,13 +125,14 @@ body {
     width: 14px;
     height: 14px;
     background-color: #28a745;
-    /* Green */
     border: 2px solid var(--sidebar-bg);
     border-radius: 50%;
 }
 
 .profile-info {
     flex-grow: 1;
+    overflow: hidden;
+    /* Prevent text spill */
 }
 
 .profile-info h6 {
@@ -114,6 +140,9 @@ body {
     font-weight: 700;
     font-size: 1.1rem;
     color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .profile-info .role-text {
@@ -157,7 +186,6 @@ body {
     text-decoration: none;
     transition: all 0.2s;
     margin-bottom: 0;
-    /* Removing margin for seamless look */
     border-left: 4px solid transparent;
 }
 
@@ -166,16 +194,12 @@ body {
     color: #fff;
     border-left-color: rgba(255, 255, 255, 0.5);
     padding-left: 30px;
-    /* Slide effect */
 }
 
-/* Fix for bootstrap focus overriding colors */
 .list-group-item:focus {
     background-color: transparent;
-    /* Or hover bg if preferred, but transparent avoids sticky hover look on click */
     color: var(--sidebar-text);
     box-shadow: none;
-    /* Remove blue outline */
 }
 
 .list-group-item:focus:hover {
@@ -185,7 +209,6 @@ body {
 
 .list-group-item:hover .menu-icon {
     transform: scale(1.2);
-    /* Icon pop effect */
     transition: transform 0.2s;
 }
 
@@ -205,12 +228,12 @@ body {
     text-align: center;
     margin-right: 12px;
     font-size: 1.1rem;
+    flex-shrink: 0;
 }
 
 /* Submenu */
 .sub-menu {
     background-color: rgba(0, 0, 0, 0.2);
-    /* Darker background for submenu */
 }
 
 .sub-menu .list-group-item {
@@ -223,10 +246,8 @@ body {
     color: #fff;
     background-color: rgba(255, 255, 255, 0.05);
     padding-left: 70px;
-    /* Slide effect */
 }
 
-/* Active state for expanded menu */
 /* Active state for expanded menu */
 .list-group-item[aria-expanded="true"],
 .list-group-item[aria-expanded="true"]:focus,
@@ -249,15 +270,39 @@ body {
 
 .list-group-item[aria-expanded="true"] .menu-arrow {
     transform: rotate(180deg);
-    /* Full flip */
 }
 
+/* Mobile Responsiveness */
 @media (max-width: 768px) {
     #sidebar-wrapper {
         margin-left: calc(-1 * var(--sidebar-width));
+        /* Hidden by default on mobile */
+    }
+
+    #page-content-wrapper {
+        margin-left: 0;
+        /* Full width content on mobile */
     }
 
     #wrapper.toggled #sidebar-wrapper {
         margin-left: 0;
+        /* Show sidebar when toggled */
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        margin-left: 0;
+        /* Content stays properly or can be pushed if preferred, but usually overlay or push on mobile */
+    }
+
+    /* Optional: Overlay effect for mobile when sidebar is open */
+    #wrapper.toggled::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
     }
 }
