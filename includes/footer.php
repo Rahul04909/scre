@@ -6,7 +6,7 @@
                 <!-- Column 1: About Us -->
                 <div class="footer-column about-column" data-aos="fade-up" data-aos-duration="1000">
                     <div class="footer-logo">
-                        <img src="<?php echo $baseUrl; ?>/logo/logo.png" alt="Sir Chhotu Ram Education Logo">
+                        <img src="<?php echo $baseUrl; ?>../assets/logo/frontpage-logo.webp" alt="Sir Chhotu Ram Education Logo">
                     </div>
                     <p class="footer-about-text">
                         Sir Chhotu Ram Education Private Limited is a premier educational institution dedicated to providing quality education. We are committed to excellence in teaching, research, and community service.
