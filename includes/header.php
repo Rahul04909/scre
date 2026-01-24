@@ -835,7 +835,7 @@ $baseUrl = $protocol . $domain . ($basePath === '/' ? '' : $basePath);
             <div class="inst-name header-center-animated"><strong>Goverment Of India</strong></div>
         </div> 
         <div class="header-badges">
-            <img src="<?php echo $baseUrl; ?>/sassets/logo/iso.webp" alt="ISO Certified" class="main-logo" />
+            <img src="<?php echo $baseUrl; ?>/assets/logo/iso.webp" alt="ISO Certified" class="main-logo" />
         </div>
     </div>
 
