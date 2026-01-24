@@ -50,6 +50,8 @@
                 <a href="../../admin/courses/add-category.php" class="list-group-item list-group-item-action bg-transparent">Add Category</a>
                 <a href="../../admin/courses/manage-courses.php" class="list-group-item list-group-item-action bg-transparent">Manage Courses</a>
                 <a href="../../admin/courses/add-course.php" class="list-group-item list-group-item-action bg-transparent">Add Course</a>
+                <a href="../../admin/courses/manage-subjects.php" class="list-group-item list-group-item-action bg-transparent">Manage Subjects</a>
+                <a href="../../admin/courses/add-subject.php" class="list-group-item list-group-item-action bg-transparent">Add Subject</a>
             </div>
         </div>
         <!-- sessions -->
