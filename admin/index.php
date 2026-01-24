@@ -15,18 +15,16 @@
 </head>
 <body>
 
-    <div id="wrapper">
+    <div class="d-flex" id="wrapper">
         <!-- Sidebar -->
         <?php include 'sidebar.php'; ?>
         
         <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm px-4 sticky-top">
+        <div id="page-content-wrapper" style="margin-left: 280px; transition: margin 0.25s ease-out;">
+            <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm px-4">
                 <div class="container-fluid p-0">
-                    <button class="btn btn-outline-secondary btn-sm me-3" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+                    <button class="btn btn-outline-secondary btn-sm" id="sidebarToggle"><i class="fas fa-bars"></i></button>
                     
-                    <h5 class="navbar-brand m-0 text-dark fw-bold">Admin Dashboard</h5>
-
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -229,21 +227,20 @@
     <!-- Custom Scripts -->
     <script src="assets/js/sidebar.js"></script>
     <script>
-        // Toggle for hamburger menu
-        document.getElementById("sidebarToggle").addEventListener("click", function(e){
-            e.preventDefault();
-            document.getElementById('wrapper').classList.toggle('toggled');
+        // Simple toggle for mobile testing/demo
+        document.getElementById("sidebarToggle").addEventListener("click", function(){
+            const wrapper = document.getElementById('wrapper');
+            const sidebar = document.getElementById('sidebar-wrapper');
+            const content = document.getElementById('page-content-wrapper');
+            
+            if (sidebar.style.marginLeft === '-280px') {
+                sidebar.style.marginLeft = '0px';
+                content.style.marginLeft = '280px';
+            } else {
+                sidebar.style.marginLeft = '-280px';
+                content.style.marginLeft = '0px';
+            }
         });
-
-        // Toggle for close button in sidebar (mobile)
-        const closeBtn = document.getElementById("toggle-sidebar");
-        if(closeBtn) {
-            closeBtn.addEventListener("click", function(e){
-                e.preventDefault();
-                document.getElementById('wrapper').classList.toggle('toggled');
-            });
-        }
     </script>
-
 </body>
 </html>

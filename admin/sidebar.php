@@ -3,7 +3,7 @@
     <div class="sidebar-heading">
         <div class="d-flex align-items-center">
             <!-- Replace with actual logo path if available -->
-            <img src="https://cdn-icons-png.flaticon.com/512/3413/3413535.png" alt="Logo" class="me-2" style="width: 32px;"> 
+            <img src="https://cdn-icons-png.flaticon.com/512/3413/3413535.png" alt="Logo"> 
             <span class="logo-text">EduDash</span>
         </div>
         <a href="#" id="toggle-sidebar" class="d-md-none"><i class="fas fa-times"></i></a>
