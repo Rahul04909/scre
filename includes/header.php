@@ -544,7 +544,7 @@
         }
         .main-logo {
             height: 88px;
-            width: 140px;
+            width: 88px;
             border-radius: 8px;
             background: #fff;
             box-shadow: 0 1px 4px #e5d4c0;
