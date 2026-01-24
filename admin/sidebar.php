@@ -22,7 +22,7 @@
     </div>
 
     <div class="list-group list-group-flush">
-        <a href="#" class="list-group-item list-group-item-action bg-transparent active">
+        <a href="../../admin/index.php" class="list-group-item list-group-item-action bg-transparent active">
             <i class="fas fa-tachometer-alt menu-icon"></i> Dashboard
         </a>
 
