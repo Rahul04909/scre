@@ -118,3 +118,19 @@
     vertical-align: middle;
     padding: 1rem 0.75rem;
 }
+
+/* Custom Header Styles */
+.bg-dark-theme {
+    background-color: #1e3a56 !important; /* Match sidebar */
+}
+
+.hover-white:hover {
+    color: #fff !important;
+    transition: color 0.2s;
+}
+
+/* Ensure sticky header stays on top but below sidebar z-index (1000) if needed, 
+   but sidebar is fixed left so sticky top works fine. */
+.sticky-top {
+    z-index: 900;
+}
