@@ -22,9 +22,9 @@ body {
 }
 
 #wrapper {
-    display: flex;
     width: 100%;
-    align-items: stretch;
+    position: relative;
+    /* Ensure context for absolute children if any */
 }
 
 #sidebar-wrapper {
