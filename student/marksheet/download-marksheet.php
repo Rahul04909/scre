@@ -222,10 +222,8 @@ try {
                 <td class="label">सत्र<br>Session:</td><td>'.$student['session_name'].'</td>
             </tr>
             <tr>
-                <td class="label">कोर्स का नाम<br>Course Name:</td><td colspan="3">'.htmlspecialchars($student['course_name']).'</td>
-            </tr>
-            <tr>
-                <td class="label">अवधि<br>Duration:</td><td colspan="3">'.$student['duration_value'] . ' ' . ucfirst($student['duration_type']).'</td>
+                <td class="label">कोर्स का नाम<br>Course Name:</td><td>'.htmlspecialchars($student['course_name']).'</td>
+                <td class="label">अवधि<br>Duration:</td><td>'.$student['duration_value'] . ' ' . ucfirst($student['duration_type']).'</td>
             </tr>
             <tr>
                 <td class="label">ASC नाम<br>ASC Name:</td><td>'.htmlspecialchars($student['center_name']).'</td>
