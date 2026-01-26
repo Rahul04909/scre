@@ -386,7 +386,7 @@ function renderIDCard($student, $conn) {
                     <div class="student-photo">
                         <?php 
                         // Default
-                        $photo = '../assets/uploads/students/images/default-user.png';
+                        $photo = '../assets/uploads/students/default-user.png';
                         
                         // Check if student_image is valid
                         if (!empty($student['student_image'])) {
