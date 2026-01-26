@@ -155,7 +155,7 @@ try {
         
         if ($imageData !== false && !empty($imageData)) {
              $base64 = 'data:image/png;base64,' . base64_encode($imageData);
-             $qrCodeHtml = '<img src="' . $base64 . '" alt="QR Code" style="width: 80px; height: 80px;">';
+             $qrCodeHtml = '<img src="' . $base64 . '" alt="QR Code" style="width: 100px; height: 100px; margin-top: 15px;">';
         } else {
              // If connection fails, show a simple text fallback instead of fatal error
              $qrCodeHtml = '<div style="font-size: 8px; border: 1px solid #ccc; padding: 2px;">QR Unavailable</div>';
@@ -207,7 +207,7 @@ try {
         
         .footer { position: absolute; bottom: 80px; left: 50px; right: 50px; }
         .qr-box { width: 100px; height: 100px; border: 1px solid #ddd; margin-top: 20px; }
-        .signature-box { text-align: center; width: 150px; float: right; margin-right: 30px; }
+        .signature-box { text-align: center; width: 150px; float: right; margin-right: 60px; }
         
         /* Specific adjustments to match sample */
         .blue-bar { background-color: #2c64b6; color: white; padding: 5px; text-align: center; font-weight: bold; margin: 10px 0; }
@@ -364,7 +364,7 @@ try {
                          <!-- Implementation of real QR requires a library or API. -->
                          <!-- Mpdf has basic QR support. -->
                          <br><br>
-                         <div style="text-align: center; white-space: nowrap;">
+                         <div class="signature-box" style="white-space: nowrap;">
                             <br>
                             <b>Authorize Signature</b>
                          </div>
