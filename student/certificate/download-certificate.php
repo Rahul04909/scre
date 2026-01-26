@@ -150,7 +150,7 @@ try {
             line-height: 2.0;          /* Increased line height for spacing */
             margin-top: 0px; 
             font-weight: bold;
-            text-align: justify;       /* Justify to spread text */
+            text-align: center;       /* Justify to spread text */
             text-align-last: center;   /* Center the last line/short lines if supported */
             width: 100%;
         }
@@ -178,27 +178,27 @@ try {
          '.($profile_img ? '<img src="'.$profile_img.'" class="header-photo">' : '<div class="header-photo"></div>').'
 
         <div class="content-text">
-            This is to Certify that Mr./Miss/Mrs. <span class="fill-blank" style="min-width: 300px;">'.$student_name.'</span> 
-            Son of/Daughter of Sh. <span class="fill-blank" style="min-width: 300px;">'.$father_name.'</span><br>
+            This is to Certify that Mr./Miss/Mrs. <span class="fill-blank" style="min-width: 350px;">'.$student_name.'</span> 
+            Son of/Daughter of Sh. <span class="fill-blank" style="min-width: 350px;">'.$father_name.'</span><br>
             
-            Registration No. <span class="fill-blank" style="min-width: 150px;">'.$enrollment.'</span> 
-            Session <span class="fill-blank" style="min-width: 150px;">'.$session_start.' to '.$session_end.'</span><br>
+            Registration No. <span class="fill-blank" style="min-width: 200px;">'.$enrollment.'</span> 
+            Session <span class="fill-blank" style="min-width: 200px;">'.$session_start.' to '.$session_end.'</span><br>
 
-            Date of Birth <span class="fill-blank" style="min-width: 120px;">'.$dob.'</span> 
-            In the course <span class="fill-blank" style="min-width: 400px; max-width: 500px;">'.$course_name.'</span><br>
+            Date of Birth <span class="fill-blank" style="min-width: 150px;">'.$dob.'</span> 
+            In the course <span class="fill-blank" style="min-width: 450px;">'.$course_name.'</span><br>
 
-            Appeared from our ASC* <span class="fill-blank" style="min-width: 500px;">'.$center_text.'</span><br>
+            Appeared from our ASC* <span class="fill-blank" style="min-width: 550px;">'.$center_text.'</span><br>
 
-            Duration of <span class="fill-blank" style="min-width: 100px;">'.$duration.'</span> 
-            has successfully used by his/her final Examination held in <span class="fill-blank" style="min-width: 150px;">'.$exam_date.'</span><br>
+            Duration of <span class="fill-blank" style="min-width: 150px;">'.$duration.'</span> 
+            has successfully used by his/her final Examination held in <span class="fill-blank" style="min-width: 200px;">'.$exam_date.'</span><br>
 
-            Obtained marks <span class="fill-blank" style="min-width: 60px;">'.(0 + $grand_total_obt).'</span> 
-            Out of <span class="fill-blank" style="min-width: 60px;">'.(0 + $grand_total_max).'</span> 
-            with Grade <span class="fill-blank" style="min-width: 40px;">'.$grade.'</span> 
+            Obtained marks <span class="fill-blank" style="min-width: 80px;">'.(0 + $grand_total_obt).'</span> 
+            Out of <span class="fill-blank" style="min-width: 80px;">'.(0 + $grand_total_max).'</span> 
+            with Grade <span class="fill-blank" style="min-width: 60px;">'.$grade.'</span> 
             and hereby awarded CERTIFICATE/DIPLOMA.
             <br><br>
             
-            Date of Issue : <span class="fill-blank" style="min-width: 150px;">'.$issue_date.'</span>
+            Date of Issue : <span class="fill-blank" style="min-width: 200px;">'.$issue_date.'</span>
         </div>
 
         <table class="footer-table">
