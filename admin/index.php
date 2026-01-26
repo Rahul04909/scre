@@ -92,7 +92,7 @@ try {
     <div id="wrapper">
         <?php include 'sidebar.php'; ?>
 
-        <div id="page-content-wrapper" style="margin-left: 280px;">
+        <div id="page-content-wrapper" style="margin-left: 380px;">
             <div class="container-fluid py-4 px-4" style="max-width: 100%;">
                 
                 <!-- Welcome Section -->
