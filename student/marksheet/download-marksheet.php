@@ -247,7 +247,7 @@ try {
                     <th rowspan="2" width="15%">TOTAL OBTAINED</th>
                     <th rowspan="2" width="10%">STATUS</th>
                 </tr>
-                <tr>
+                <tr style="font-size: 8px;">
                     <th>THEORY</th>
                     <th>PRACTICAL</th>
                     <th>THEORY</th>
