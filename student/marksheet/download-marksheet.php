@@ -320,11 +320,11 @@ try {
                 <tr>
                     <td>'.$sr_no++.'</td>
                     <td align="left" style="text-align:left; padding-left:10px;">'.htmlspecialchars($row['subject_name']).'</td>
-                    <td>'.$th_max.'</td>
-                    <td>'.$pr_max.'</td>
-                    <td>'.$th_obt.'</td>
-                    <td>'.$pr_obt.'</td>
-                    <td>'.$row_total.'</td>
+                    <td>'.(0 + $th_max).'</td>
+                    <td>'.(0 + $pr_max).'</td>
+                    <td>'.(0 + $th_obt).'</td>
+                    <td>'.(0 + $pr_obt).'</td>
+                    <td>'.(0 + $row_total).'</td>
                     <td>'.strtoupper($status).'</td>
                 </tr>';
             }
@@ -333,9 +333,9 @@ try {
             $html .= '
                 <tr style="background-color: #2c64b6; color: white;">
                     <td colspan="2" align="right" style="padding-right: 10px;">GRAND TOTAL MARKS:</td>
-                    <td colspan="2">'.$grand_total_max.'</td>
+                    <td colspan="2">'.(0 + $grand_total_max).'</td>
                     <td colspan="2">GRAND OBTAINED MARKS:</td>
-                    <td>'.$grand_total_obt.'</td>
+                    <td>'.(0 + $grand_total_obt).'</td>
                     <td>'.$overall_status.'</td>
                 </tr>
             </tbody>
@@ -351,7 +351,7 @@ try {
                             <tr><td>Exam Date</td><td>'.$issue_date.'</td></tr> <!-- Using Issue Date as placeholder -->
                             <tr><td>Result Date</td><td>'.$issue_date.'</td></tr>
                             <tr><td>Date of Issue</td><td>'.$issue_date.'</td></tr>
-                            <tr><td>Percentage:</td><td>'.number_format($percentage, 2).'%</td></tr>
+                            <tr><td>Percentage:</td><td>'.(0 + number_format($percentage, 2)).'%</td></tr>
                             <tr><td>Grade:</td><td>'.$final_grade.'</td></tr>
                             <tr><td>Overall Status:</td><td>'.$overall_status.'</td></tr>
                         </table>
