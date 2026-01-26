@@ -86,10 +86,6 @@ function generateQRCode($data) {
 
 // Handle download request setup
 $is_download = isset($_GET['download']) && $_GET['download'] == '1';
-if ($is_download && $student) {
-    // For actual PDF generation, meaningful headers would go here if using a library like mpdf
-    // But since this is likely client-side print/save, we just render clean HTML
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -125,7 +121,6 @@ if ($is_download && $student) {
             box-shadow: 0 15px 35px var(--shadow-color);
             overflow: hidden;
             border: 1px solid var(--border-color);
-            /* height: 785px; Removed fixed height to allow auto fit */
             padding-bottom: 40px;
         }
         
@@ -171,7 +166,7 @@ if ($is_download && $student) {
             content: "";
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('../watermark/watermark.png');
+            background-image: url('../assets/logo/logo.jpeg'); /* Corrected path */
             background-position: center;
             background-repeat: no-repeat;
             background-size: 115px;
@@ -282,7 +277,6 @@ if ($is_download && $student) {
 <body>
     <?php if ($is_download): ?>
         <div class="id-card-body">
-            <!-- ID Card Code Block Only for Print/Download view logic -->
              <?php renderIDCard($student, $conn); ?>
         </div>
         <script>window.print();</script>
@@ -335,7 +329,6 @@ if ($is_download && $student) {
 </html>
 
 <?php
-// Helper function to render the card HTML to avoid code duplication
 function renderIDCard($student, $conn) {
     // Fetch signatures logic
     $center_data = null;
@@ -359,13 +352,13 @@ function renderIDCard($student, $conn) {
         <div class="id-card-content">
             <!-- Header -->
             <div class="university-header">
-                <div class="university-logo"><img src="../logo/logo.png" alt="Logo"></div>
+                <div class="university-logo"><img src="../assets/logo/logo.jpeg" alt="Logo"></div> <!-- Corrected -->
                 <div class="university-text">
                      <div class="university-name-english">SIR CHHOTU RAM EDUCATION PVT. LTD.</div>
                      <div class="university-name-hindi" style="font-size: 5px; color: #0d47a1;">Regd. Under Ministry of Corporate Affairs, Govt of India</div>
                      <div class="university-address">AN ISO 9001-2015 CERTIFIED ORGANIZATION</div>
                 </div>
-                <div class="iso-logo"><img src="../logo/iso.png" alt="ISO"></div>
+                <div class="iso-logo"><img src="../assets/logo/iso.webp" alt="ISO"></div> <!-- Corrected -->
             </div>
             
             <div class="card-title">SCRE - Student Identity Card</div>
@@ -393,9 +386,9 @@ function renderIDCard($student, $conn) {
                     </div>
                     <div class="student-photo">
                         <?php 
-                        $photo = '../uploads/students/images/default-user.png';
-                        if (!empty($student['student_image']) && file_exists('../uploads/students/images/' . $student['student_image'])) {
-                            $photo = '../uploads/students/images/' . $student['student_image'];
+                        $photo = '../assets/uploads/students/images/default-user.png'; // Corrected
+                        if (!empty($student['student_image']) && file_exists('../assets/uploads/students/images/' . $student['student_image'])) { // Corrected
+                            $photo = '../assets/uploads/students/images/' . $student['student_image'];
                         } elseif (!empty($student['student_image']) && file_exists('../' . $student['student_image'])) {
                              $photo = '../' . $student['student_image'];
                         }
@@ -408,8 +401,8 @@ function renderIDCard($student, $conn) {
             
             <div class="signatures">
                 <div class="signature">
-                    <?php if (!empty($student['student_signature']) && file_exists('../uploads/students/signatures/'.$student['student_signature'])): ?>
-                        <img src="../uploads/students/signatures/<?php echo $student['student_signature']; ?>" style="height: 12px;">
+                    <?php if (!empty($student['student_signature']) && file_exists('../assets/uploads/students/signatures/'.$student['student_signature'])): ?> <!-- Corrected -->
+                        <img src="../assets/uploads/students/signatures/<?php echo $student['student_signature']; ?>" style="height: 12px;">
                     <?php endif; ?>
                     <div class="signature-line"></div>
                     <div class="signature-name">Student Signal</div>
@@ -422,8 +415,8 @@ function renderIDCard($student, $conn) {
                     <div class="signature-name">Center Director</div>
                 </div>
                 <div class="signature">
-                    <?php if (!empty($admin_data['signature']) && file_exists('../uploads/admin/'.$admin_data['signature'])): ?>
-                        <img src="../uploads/admin/<?php echo $admin_data['signature']; ?>" style="height: 12px;">
+                    <?php if (!empty($admin_data['signature']) && file_exists('../assets/uploads/admin/'.$admin_data['signature'])): ?> <!-- Corrected -->
+                        <img src="../assets/uploads/admin/<?php echo $admin_data['signature']; ?>" style="height: 12px;">
                     <?php endif; ?>
                     <div class="signature-line"></div>
                     <div class="signature-name">Controller Exam</div>
