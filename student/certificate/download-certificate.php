@@ -153,6 +153,7 @@ try {
             text-align: center;       /* Justify to spread text */
             text-align-last: center;   /* Center the last line/short lines if supported */
             width: 100%;
+            margin-top: -20px;
         }
         
         .fill-blank {
