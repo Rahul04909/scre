@@ -139,7 +139,7 @@ try {
         /* Photo on LEFT Layout - Overlay Position */
         .header-photo {
             position: absolute;
-            top: 250px;
+            top: 260px;
             left: 60px;
             width: 100px; height: 120px; border: 1px solid #000;
         }
