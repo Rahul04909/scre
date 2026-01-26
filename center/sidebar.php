@@ -77,7 +77,7 @@ $center_code = $_SESSION['center_code'] ?? 'CODE123';
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="../../center/students/manage-students.php" class="nav-link sub-link <?php echo isActive('manage-students.php') ? 'active-sub' : ''; ?>">
+                        <a href="../../center/students/index.php" class="nav-link sub-link <?php echo isActive('manage-students.php') ? 'active-sub' : ''; ?>">
                             <span>Manage Students</span>
                         </a>
                     </li>
