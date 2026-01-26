@@ -129,9 +129,11 @@ try {
     $qrData .= "Result: " . $overall_status;
 
     $qrCodeHtml = '';
-    try {
-        if (class_exists(\Endroid\QrCode\Builder\Builder::class)) {
-             // Build QR Code using Endroid
+    $qrError = '';
+
+    // Attempt 1: Endroid (User Requested)
+    if (class_exists(\Endroid\QrCode\Builder\Builder::class)) {
+        try {
             $result = \Endroid\QrCode\Builder\Builder::create()
                 ->writer(new \Endroid\QrCode\Writer\PngWriter())
                 ->writerOptions([])
@@ -144,10 +146,42 @@ try {
                 ->build();
                 
             $qrCodeHtml = '<img src="' . $result->getDataUri() . '" alt="QR Code" style="width: 80px; height: 80px;">';
+        } catch (\Throwable $e) {
+            $qrError = 'Endroid Error: ' . $e->getMessage();
         }
-    } catch (\Throwable $e) {
-        // Silently fail if library is missing or incompatible
-        $qrCodeHtml = ''; 
+    } else {
+        $qrError = 'Endroid Class Not Found';
+    }
+
+    // Attempt 2: Chillerlan (Fallback - Known to work in id-card.php)
+    if (empty($qrCodeHtml) && class_exists(\chillerlan\QRCode\QRCode::class)) {
+        try {
+            // Using FQCN for Chillerlan
+            $options = new \chillerlan\QRCode\QROptions([
+                'version'    => 5,
+                'outputType' => \chillerlan\QRCode\QRCode::OUTPUT_IMAGE_PNG,
+                'eccLevel'   => \chillerlan\QRCode\QRCode::ECC_L,
+                'scale'      => 3,
+                'imageBase64' => true,
+            ]);
+            $qrcode = new \chillerlan\QRCode\QRCode($options);
+            $qrCodeHtml = '<img src="' . $qrcode->render($qrData) . '" alt="QR Code" style="width: 80px; height: 80px;">';
+            // Clear error if fallback succeeded
+            $qrError = ''; 
+        } catch (\Throwable $e) {
+            $qrError .= ' | Chillerlan Error: ' . $e->getMessage();
+        }
+    }
+
+    // Attempt 3: API Fallback (Last Resort to ensure it shows SOMETHING)
+    if (empty($qrCodeHtml)) {
+         // Using a public API as last resort if local libs fail
+         $apiUrl = "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=" . urlencode($qrData);
+         // Note: mPDF might need allow_url_fopen enabled for this to work with <img> src directly if not base64
+         // But let's just try to show the error text if this also deemed risky, 
+         // actually showing the error is better for debugging than a broken image.
+         
+         $qrCodeHtml = '<div style="font-size: 8px; color: red; border: 1px solid red; padding: 2px;">QR Failed:<br>' . htmlspecialchars(substr($qrError, 0, 100)) . '</div>';
     }
 
     // Styles
