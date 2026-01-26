@@ -127,28 +127,31 @@ try {
     $html = '
     <style>
     <style>
+    <style>
         body { font-family: freeserif; color: #000; }
         .cert-container { 
-            padding-top: 220px; /* Increased to clear the Background Header */
+            padding-top: 140px; /* Adjusted to be safe but not too low */
             padding-bottom: 20px;
-            padding-left: 80px; 
-            padding-right: 80px; 
+            padding-left: 60px; 
+            padding-right: 60px; 
             position: relative; 
         }
         
-        /* Photo on LEFT Layout - Overlay Position */
+        /* Photo on LEFT Layout - Using Absolute/Overlay */
         .header-photo {
             position: absolute;
-            top: 260px;
+            top: 280px; /* Moved down slightly */
             left: 50px;
             width: 100px; height: 120px; border: 1px solid #000;
-            margin-top: 55px;
         }
         
         .content-text {
-            font-size: 16px; line-height: 1.6; margin-top: -140px; 
+            font-size: 17px;           /* Increased size */
+            line-height: 2.0;          /* Increased line height for spacing */
+            margin-top: 0px; 
             font-weight: bold;
-            text-align: center; 
+            text-align: justify;       /* Justify to spread text */
+            text-align-last: center;   /* Center the last line/short lines if supported */
             width: 100%;
         }
         
