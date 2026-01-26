@@ -210,7 +210,7 @@ try {
                      <!-- Student Image Here -->
                      '.($profile_img ? '<img src="'.$profile_img.'" style="width: 100px; height: 120px; border: 1px solid #000; padding: 2px;">' : '<div style="width: 100px; height: 120px; border: 1px solid #000; margin: 0 auto;"></div>').'
                 </td>
-                <td width="40%" style="margin-bottom: 40px;">
+                <td width="40%" style="padding-bottom: 20px;">
                     '.$qrCodeHtml.'
                 </td>
                 <td width="30%" align="center">
