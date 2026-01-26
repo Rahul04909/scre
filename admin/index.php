@@ -280,6 +280,49 @@ try {
                                     </table>
                                 </div>
                             </div>
+                            <!-- Pagination Controls -->
+                            <?php if ($total_pages > 1): ?>
+                                <div class="card-footer bg-white d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">Showing <?php echo $offset + 1; ?> to <?php echo min($offset + $limit, $total_logs); ?> of <?php echo $total_logs; ?> entries</small>
+                                    <nav>
+                                        <ul class="pagination pagination-sm mb-0">
+                                            <!-- Previous -->
+                                            <li class="page-item <?php echo ($log_page <= 1) ? 'disabled' : ''; ?>">
+                                                <a class="page-link" href="?log_page=<?php echo $log_page - 1; ?>">Previous</a>
+                                            </li>
+
+                                            <?php 
+                                            // Simple Pagination Range
+                                            $start_page = max(1, $log_page - 2);
+                                            $end_page = min($total_pages, $log_page + 2);
+                                            
+                                            if ($start_page > 1) {
+                                                echo '<li class="page-item"><a class="page-link" href="?log_page=1">1</a></li>';
+                                                if ($start_page > 2) echo '<li class="page-item disabled"><a class="page-link">...</a></li>';
+                                            }
+
+                                            for ($i = $start_page; $i <= $end_page; $i++): 
+                                            ?>
+                                                <li class="page-item <?php echo ($i == $log_page) ? 'active' : ''; ?>">
+                                                    <a class="page-link" href="?log_page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                                </li>
+                                            <?php endfor; ?>
+                                            
+                                            <?php
+                                            if ($end_page < $total_pages) {
+                                                if ($end_page < $total_pages - 1) echo '<li class="page-item disabled"><a class="page-link">...</a></li>';
+                                                echo '<li class="page-item"><a class="page-link" href="?log_page='.$total_pages.'">'.$total_pages.'</a></li>';
+                                            }
+                                            ?>
+
+                                            <!-- Next -->
+                                            <li class="page-item <?php echo ($log_page >= $total_pages) ? 'disabled' : ''; ?>">
+                                                <a class="page-link" href="?log_page=<?php echo $log_page + 1; ?>">Next</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
