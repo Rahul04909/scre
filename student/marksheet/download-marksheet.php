@@ -125,13 +125,13 @@ try {
     $html = '
     <style>
         body { font-family: freeserif; color: #000; }
-        .container { padding: 40px 60px; padding-top: 220px; } /* Reduced top padding */
+        .container { padding: 40px 80px; padding-top: 220px; } /* Increased sidebar padding to decrease width */
         
         .header-overlay {
             position: absolute;
             top: 78px;
-            left: 60px; 
-            right: 60px; 
+            left: 80px; 
+            right: 80px; 
             text-align: center;
             font-weight: bold;
             font-size: 14px;
@@ -141,14 +141,14 @@ try {
             background-color: #3b5998; color: white;
             padding: 5px; text-align: center;
             font-weight: bold; font-size: 14px;
-            margin-bottom: 8px; border-radius: 4px; /* Reduced margin */
+            margin-bottom: 8px; border-radius: 4px;
         }
         
-        .student-details-table { width: 80%; border-collapse: collapse; margin-bottom: 10px; font-size: 12px; } /* Reduced margin & font */
+        .student-details-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 12px; }
         .student-details-table td { padding: 4px; font-weight: bold; color: #333; }
         .label { color: #0d6efd; width: 140px; }
         
-        .marks-table { width: 80%; border-collapse: collapse; margin-top: 5px; font-size: 11px; }
+        .marks-table { width: 100%; border-collapse: collapse; margin-top: 5px; font-size: 11px; }
         .marks-table th { 
             background-color: #3b5998; color: white; 
             padding: 6px; border: 1px solid #999; 
@@ -240,7 +240,8 @@ try {
         <table class="marks-table">
             <thead>
                 <tr>
-                    <th rowspan="2" width="35%">SUBJECT NAME</th>
+                    <th rowspan="2" width="8%">Sr. No.</th>
+                    <th rowspan="2" width="30%">SUBJECT NAME</th>
                     <th colspan="2">TOTAL MARKS</th>
                     <th colspan="2">OBTAINED MARKS</th>
                     <th rowspan="2" width="15%">TOTAL OBTAINED</th>
@@ -255,6 +256,7 @@ try {
             </thead>
             <tbody>';
             
+            $sr_no = 1;
             foreach ($results as $row) {
                 // If practical marks not defined in DB, assume 0
                 $th_max = $row['theory_marks'];
@@ -275,6 +277,7 @@ try {
                 
                 $html .= '
                 <tr>
+                    <td>'.$sr_no++.'</td>
                     <td align="left" style="text-align:left; padding-left:10px;">'.htmlspecialchars($row['subject_name']).'</td>
                     <td>'.$th_max.'</td>
                     <td>'.$pr_max.'</td>
@@ -288,7 +291,7 @@ try {
             // Grand Total Row
             $html .= '
                 <tr style="background-color: #2c64b6; color: white;">
-                    <td align="right" style="padding-right: 10px;">GRAND TOTAL MARKS:</td>
+                    <td colspan="2" align="right" style="padding-right: 10px;">GRAND TOTAL MARKS:</td>
                     <td colspan="2">'.$grand_total_max.'</td>
                     <td colspan="2">GRAND OBTAINED MARKS:</td>
                     <td>'.$grand_total_obt.'</td>
