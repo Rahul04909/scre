@@ -31,7 +31,7 @@ try {
     $student_id = $_SESSION['student_id'];
     
     // Fetch complete student details
-    $sql = "SELECT s.*, c.name as country_name, st.name as state_name, ct.name as city_name, co.name as course_name, co.course_code,
+    $sql = "SELECT s.*, c.name as country_name, st.name as state_name, ct.name as city_name, co.course_name, co.course_code,
                    ce.center_name, ce.id as center_code, cat.name as category_name, acs.session_name,
                    s.course_start_date, s.course_end_date
             FROM students s 
