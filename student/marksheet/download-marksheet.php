@@ -144,11 +144,11 @@ try {
             margin-bottom: 8px; border-radius: 4px; /* Reduced margin */
         }
         
-        .student-details-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 12px; } /* Reduced margin & font */
+        .student-details-table { width: 80%; border-collapse: collapse; margin-bottom: 10px; font-size: 12px; } /* Reduced margin & font */
         .student-details-table td { padding: 4px; font-weight: bold; color: #333; }
         .label { color: #0d6efd; width: 140px; }
         
-        .marks-table { width: 100%; border-collapse: collapse; margin-top: 5px; font-size: 11px; }
+        .marks-table { width: 80%; border-collapse: collapse; margin-top: 5px; font-size: 11px; }
         .marks-table th { 
             background-color: #3b5998; color: white; 
             padding: 6px; border: 1px solid #999; 
