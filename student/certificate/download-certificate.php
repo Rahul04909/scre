@@ -136,8 +136,9 @@ try {
         }
         
         /* Photo on LEFT Layout as per sample image */
+        /* Photo on LEFT Layout as per sample image */
         .header-photo {
-            position: absolute; top: 355px; left: 85px; /* Aligned with new padding */
+            position: absolute; top: 360px !important; left: 85px !important; 
             width: 100px; height: 120px; border: 1px solid #000;
             padding: 3px; background: #fff;
         }
