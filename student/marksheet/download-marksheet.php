@@ -129,51 +129,39 @@ try {
     $qrData .= "Result: " . $overall_status;
 
     $qrCodeHtml = '';
-    $qrError = '';
-
-    // Attempt 1: Chillerlan (Primary - Known to work in ID Card)
-    if (class_exists(\chillerlan\QRCode\QRCode::class)) {
-        try {
-            $options = new \chillerlan\QRCode\QROptions([
-                'version'    => 5,
-                'outputType' => \chillerlan\QRCode\QRCode::OUTPUT_IMAGE_PNG,
-                'eccLevel'   => \chillerlan\QRCode\QRCode::ECC_L,
-                'scale'      => 3,
-                'imageBase64' => true,
-            ]);
-            $qrcode = new \chillerlan\QRCode\QRCode($options);
-            $qrCodeHtml = '<img src="' . $qrcode->render($qrData) . '" alt="QR Code" style="width: 80px; height: 80px;">';
-        } catch (\Throwable $e) {
-            $qrError = 'Chillerlan Error: ' . $e->getMessage();
+    
+    // Robust Strategy: Use Public API to avoid server dependency issues
+    // We fetch the image and convert to Base64 to ensure mPDF can render it without allow_url_fopen issues
+    
+    $apiUrl = "https://quickchart.io/qr?text=" . urlencode($qrData) . "&size=150&margin=0";
+    
+    try {
+        // Try to fetch image data
+        $imageData = false;
+        
+        if (ini_get('allow_url_fopen')) {
+            $imageData = @file_get_contents($apiUrl);
         }
-    } else {
-        $qrError = 'Chillerlan Class Not Found';
-    }
-
-    // Attempt 2: Endroid (Fallback)
-    if (empty($qrCodeHtml) && class_exists(\Endroid\QrCode\Builder\Builder::class)) {
-        try {
-            $result = \Endroid\QrCode\Builder\Builder::create()
-                ->writer(new \Endroid\QrCode\Writer\PngWriter())
-                ->writerOptions([])
-                ->data($qrData)
-                ->encoding(new \Endroid\QrCode\Encoding\Encoding('UTF-8'))
-                ->errorCorrectionLevel(\Endroid\QrCode\ErrorCorrectionLevel::High)
-                ->size(100)
-                ->margin(0)
-                ->roundBlockSizeMode(\Endroid\QrCode\RoundBlockSizeMode::Margin)
-                ->build();
-                
-            $qrCodeHtml = '<img src="' . $result->getDataUri() . '" alt="QR Code" style="width: 80px; height: 80px;">';
-            $qrError = ''; // Clear error
-        } catch (\Throwable $e) {
-            $qrError .= ' | Endroid Error: ' . $e->getMessage();
+        
+        // Fallback to cURL if file_get_contents fails or is disabled
+        if ($imageData === false && function_exists('curl_init')) {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $apiUrl);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Best effort
+            $imageData = curl_exec($ch);
+            curl_close($ch);
         }
-    }
-
-    // Attempt 3: API Fallback
-    if (empty($qrCodeHtml)) {
-         $qrCodeHtml = '<div style="font-size: 8px; color: red; border: 1px solid red; padding: 2px;">QR Failed:<br>' . htmlspecialchars(substr($qrError, 0, 100)) . '</div>';
+        
+        if ($imageData !== false && !empty($imageData)) {
+             $base64 = 'data:image/png;base64,' . base64_encode($imageData);
+             $qrCodeHtml = '<img src="' . $base64 . '" alt="QR Code" style="width: 80px; height: 80px;">';
+        } else {
+             // If connection fails, show a simple text fallback instead of fatal error
+             $qrCodeHtml = '<div style="font-size: 8px; border: 1px solid #ccc; padding: 2px;">QR Unavailable</div>';
+        }
+    } catch (\Throwable $e) {
+        $qrCodeHtml = '';
     }
 
     // Styles
