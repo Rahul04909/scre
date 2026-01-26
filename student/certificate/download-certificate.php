@@ -174,8 +174,9 @@ try {
     
     <div class="cert-container">
         
-        <!-- Profile Photo -->
-         '.($profile_img ? '<img src="'.$profile_img.'" class="header-photo">' : '<div class="header-photo"></div>').'
+    <div class="cert-container">
+        
+        <!-- Profile Photo REMOVED from Header -->
 
         <div class="content-text">
             This is to Certify that Mr./Miss/Mrs. <span class="fill-blank" style="min-width: 350px;">'.$student_name.'</span> 
@@ -203,13 +204,14 @@ try {
 
         <table class="footer-table">
             <tr>
-                <td width="30%">
-                    <div class="coordinator-sign">Co-Ordinator</div>
+                <td width="30%" align="center" valign="bottom">
+                     <!-- Student Image Here -->
+                     '.($profile_img ? '<img src="'.$profile_img.'" style="width: 100px; height: 120px; border: 1px solid #000; padding: 2px;">' : '<div style="width: 100px; height: 120px; border: 1px solid #000; margin: 0 auto;"></div>').'
                 </td>
                 <td width="40%">
                     '.$qrCodeHtml.'
                 </td>
-                <td width="30%">
+                <td width="30%" align="center">
                     <div class="director-sign">Director</div>
                 </td>
             </tr>
