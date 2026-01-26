@@ -35,14 +35,27 @@ try {
     $stmt = $pdo->query("SELECT * FROM centers ORDER BY created_at DESC LIMIT 5");
     $recentCenters = $stmt->fetchAll();
 
-    // Recent Transactions (Wallet)
-    $stmtTxn = $pdo->query("
+    // Recent Transactions (Wallet) - Pagination Logic
+    $limit = 10;
+    $log_page = isset($_GET['log_page']) ? (int)$_GET['log_page'] : 1;
+    $offset = ($log_page - 1) * $limit;
+
+    // Get Total Count
+    $stmtCount = $pdo->query("SELECT COUNT(*) FROM center_wallet_transactions");
+    $total_logs = $stmtCount->fetchColumn();
+    $total_pages = ceil($total_logs / $limit);
+
+    // Fetch Paginated Logs
+    $stmtTxn = $pdo->prepare("
         SELECT t.*, c.center_name, c.center_code 
         FROM center_wallet_transactions t 
         JOIN centers c ON t.center_id = c.id 
         ORDER BY t.created_at DESC 
-        LIMIT 10
+        LIMIT :limit OFFSET :offset
     ");
+    $stmtTxn->bindValue(':limit', $limit, PDO::PARAM_INT);
+    $stmtTxn->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $stmtTxn->execute();
     $recentTransactions = $stmtTxn->fetchAll();
 
 } catch (PDOException $e) {
