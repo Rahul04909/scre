@@ -22,6 +22,21 @@ body {
 #wrapper {
     display: flex;
     width: 100%;
+    overflow-x: hidden;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    margin-left: var(--sidebar-width);
+    transition: margin 0.25s ease-out;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: calc(-1 * var(--sidebar-width));
+}
+
+#wrapper.toggled #page-content-wrapper {
+    margin-left: 0;
 }
 
 #sidebar-wrapper {
@@ -258,6 +273,10 @@ body {
     }
 
     #wrapper.toggled #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    #page-content-wrapper {
         margin-left: 0;
     }
 }
