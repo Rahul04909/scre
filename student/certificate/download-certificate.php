@@ -127,20 +127,20 @@ try {
     $html = '
     <style>
         body { font-family: freeserif; color: #000; }
-        .cert-container { padding: 40px; padding-top: 130px; position: relative; height: 100%; }
+        .cert-container { padding: 40px; padding-top: 110px; position: relative; }
         
         /* Photo on LEFT Layout as per sample image */
         .header-photo {
-            position: absolute; top: 110px; left: 60px;
+            position: absolute; top: 100px; left: 60px;
             width: 100px; height: 120px; border: 1px solid #000;
             padding: 3px; background: #fff;
         }
         
         .content-text {
-            font-size: 16px; line-height: 1.8; margin-top: 30px; 
+            font-size: 16px; line-height: 1.6; margin-top: 10px; 
             margin-left: 20px; margin-right: 20px;
             font-weight: bold;
-            text-align: left; /* Sample seems left-aligned with indents/spacing */
+            text-align: left; 
         }
         
         .fill-blank {
@@ -152,12 +152,12 @@ try {
             padding: 0 5px;
         }
         
-        .footer-table { width: 100%; margin-top: 30px; }
+        .footer-table { width: 100%; margin-top: 20px; }
         .footer-table td { text-align: center; vertical-align: bottom; font-weight: bold; }
         
         .grade-legend { font-size: 10px; color: red; font-weight: bold; margin-top: 5px; }
-        .director-sign { font-size: 14px; border-top: 2px solid #000; display: inline-block; width: 150px; margin-top: 50px; }
-        .coordinator-sign { font-size: 14px; border-top: 2px solid #000; display: inline-block; width: 150px; margin-top: 50px; }
+        .director-sign { font-size: 14px; border-top: 2px solid #000; display: inline-block; width: 150px; margin-top: 30px; }
+        .coordinator-sign { font-size: 14px; border-top: 2px solid #000; display: inline-block; width: 150px; margin-top: 30px; }
     </style>
     
     <div class="cert-container">
