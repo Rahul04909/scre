@@ -33,7 +33,7 @@ try {
     // Fetch complete student details
     $sql = "SELECT s.*, c.name as country_name, st.name as state_name, ct.name as city_name, co.course_name, co.course_code,
                    ce.center_name, ce.id as center_code, cat.category_name as category_name, acs.session_name,
-                   s.course_start_date, s.course_end_date
+                   acs.end_month, acs.end_year, s.enrollment_date
             FROM students s 
             LEFT JOIN countries c ON s.country_id = c.id 
             LEFT JOIN states st ON s.state_id = st.id 
@@ -394,7 +394,15 @@ function renderIDCard($student, $conn) {
                         ?>
                         <img src="<?php echo $photo; ?>" alt="Photo">
                     </div>
-                    <div class="valid-date" style="font-size: 3px;">Valid Till: <?php echo $student['course_end_date'] ? date('d-m-Y', strtotime($student['course_end_date'])) : 'N/A'; ?></div>
+                    <div class="valid-date" style="font-size: 3px;">
+                        Valid Till: <?php 
+                            if (!empty($student['end_month']) && !empty($student['end_year'])) {
+                                echo date('t-m-Y', strtotime("1 " . $student['end_month'] . " " . $student['end_year']));
+                            } else {
+                                echo 'N/A';
+                            }
+                        ?>
+                    </div>
                 </div>
             </div>
             
