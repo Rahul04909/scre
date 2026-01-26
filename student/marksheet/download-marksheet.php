@@ -124,7 +124,7 @@ try {
     // Styles
     $html = '
     <style>
-        body { font-family: sans-serif; color: #000; }
+        body { font-family: freeserif; color: #000; }
         .container { padding: 40px 80px; padding-top: 260px; } /* Increased side padding to 80px */
         
         .header-overlay {
