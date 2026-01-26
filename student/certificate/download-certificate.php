@@ -201,7 +201,7 @@ try {
             and hereby awarded CERTIFICATE/DIPLOMA.
             <br><br>
             
-            Date of Issue : <span class="fill-blank" style="min-width: 200px; margin-top: -50px;">'.$issue_date.'</span>
+            Date of Issue : <span class="fill-blank" style="min-width: 200px; margin-top: -60px;">'.$issue_date.'</span>
         </div>
 
         <table class="footer-table">
@@ -210,7 +210,7 @@ try {
                      <!-- Student Image Here -->
                      '.($profile_img ? '<img src="'.$profile_img.'" style="width: 100px; height: 120px; border: 1px solid #000; padding: 2px;">' : '<div style="width: 100px; height: 120px; border: 1px solid #000; margin: 0 auto;"></div>').'
                 </td>
-                <td width="40%">
+                <td width="40%" style="margin-top: -60px;">
                     '.$qrCodeHtml.'
                 </td>
                 <td width="30%" align="center">
@@ -220,7 +220,7 @@ try {
         </table>
         
         <!-- Legend and Footer Text centered at bottom -->
-        <div style="text-align: center; margin-top: -25px;">
+        <div style="text-align: center; margin-top: -35px;">
              <div class="grade-legend">
                 Grade A 80% & Above, Grade B 60-79, Grade C 40-59, Grade Below 40%
             </div>
