@@ -38,6 +38,9 @@
         <a href="../../student/marksheet.php" class="list-group-item list-group-item-action <?php echo ($current_page == 'marksheet.php') ? 'active' : ''; ?>">
             <i class="fas fa-calendar-check me-2"></i>Marksheet
         </a>
+        <a href="../../student/certificate/index.php" class="list-group-item list-group-item-action <?php echo (strpos($current_page, 'certificate') !== false) ? 'active' : ''; ?>">
+            <i class="fas fa-certificate me-2"></i>Certificate
+        </a>
         <a href="../../student/logout.php" class="list-group-item list-group-item-action text-danger fw-bold mt-4">
             <i class="fas fa-power-off me-2"></i>Logout
         </a>
