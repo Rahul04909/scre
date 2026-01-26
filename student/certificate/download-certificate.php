@@ -133,6 +133,7 @@ try {
             padding-left: 80px; 
             padding-right: 80px; 
             position: relative; 
+            margin-top: 100px;
         }
         
         /* Photo on LEFT Layout as per sample image */
