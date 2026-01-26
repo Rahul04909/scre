@@ -146,7 +146,7 @@ try {
         }
         
         .content-text {
-            font-size: 16px; line-height: 1.6; margin-top: -160px; 
+            font-size: 16px; line-height: 1.6; margin-top: -140px; 
             font-weight: bold;
             text-align: center; 
             width: 100%;
