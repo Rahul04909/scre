@@ -54,7 +54,7 @@ $center_code = $_SESSION['center_code'] ?? 'CODE123';
         
         <!-- Dashboard (No Collapse) -->
         <li class="nav-item">
-            <a href="../index.php" class="nav-link <?php echo isActive('index.php') ? 'active' : ''; ?>">
+            <a href="../../center/index.php" class="nav-link <?php echo isActive('index.php') ? 'active' : ''; ?>">
                 <i class="fas fa-tachometer-alt"></i>
                 <span>Dashboard</span>
             </a>
@@ -72,17 +72,17 @@ $center_code = $_SESSION['center_code'] ?? 'CODE123';
             <div class="collapse <?php echo isExpanded(['students']) ? 'show' : ''; ?>" id="menuStudents" data-bs-parent="#sidebarMenu">
                 <ul class="nav flex-column ms-3 ps-2 border-start border-white-50">
                     <li class="nav-item">
-                        <a href="../../students/add-student.php" class="nav-link sub-link <?php echo isActive('add-student.php') ? 'active-sub' : ''; ?>">
+                        <a href="../../center/students/add-student.php" class="nav-link sub-link <?php echo isActive('add-student.php') ? 'active-sub' : ''; ?>">
                             <span>Add New Student</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="../../students/manage-students.php" class="nav-link sub-link <?php echo isActive('manage-students.php') ? 'active-sub' : ''; ?>">
+                        <a href="../../center/students/manage-students.php" class="nav-link sub-link <?php echo isActive('manage-students.php') ? 'active-sub' : ''; ?>">
                             <span>Manage Students</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="../../students/manage-fees.php" class="nav-link sub-link <?php echo isActive('fees.php') ? 'active-sub' : ''; ?>">
+                        <a href="../../center/students/manage-fees.php" class="nav-link sub-link <?php echo isActive('fees.php') ? 'active-sub' : ''; ?>">
                             <span>Student Fees</span>
                         </a>
                     </li>
@@ -127,7 +127,7 @@ $center_code = $_SESSION['center_code'] ?? 'CODE123';
             <div class="collapse <?php echo isExpanded(['courses']) ? 'show' : ''; ?>" id="menuCourses" data-bs-parent="#sidebarMenu">
                 <ul class="nav flex-column ms-3 ps-2 border-start border-white-50">
                     <li class="nav-item">
-                        <a href="../courses/index.php" class="nav-link sub-link <?php echo isActive('courses/index.php') ? 'active-sub' : ''; ?>">
+                        <a href="../../center/courses/index.php" class="nav-link sub-link <?php echo isActive('courses/index.php') ? 'active-sub' : ''; ?>">
                             <span>Allotted Courses</span>
                         </a>
                     </li>
@@ -147,13 +147,37 @@ $center_code = $_SESSION['center_code'] ?? 'CODE123';
             <div class="collapse <?php echo isExpanded(['wallet']) ? 'show' : ''; ?>" id="menuWallet" data-bs-parent="#sidebarMenu">
                 <ul class="nav flex-column ms-3 ps-2 border-start border-white-50">
                     <li class="nav-item">
-                        <a href="../wallet/wallet.php" class="nav-link sub-link <?php echo isActive('wallet.php') ? 'active-sub' : ''; ?>">
+                        <a href="../../center/wallet/wallet.php" class="nav-link sub-link <?php echo isActive('wallet.php') ? 'active-sub' : ''; ?>">
                             <span>My Balance</span>
                         </a>
                     </li>
+                </ul>
+            </div>
+        </li>
+         <!-- Practicals -->
+        <li class="nav-item">
+            <a href="#menuPracticals" data-bs-toggle="collapse" class="nav-link <?php echo isExpanded(['practicals']) ? 'active' : ''; ?> d-flex justify-content-between align-items-center">
+                 <div class="d-flex align-items-center">
+                    <i class="fas fa-flask"></i>
+                    <span>Practicals</span>
+                </div>
+                <i class="fas fa-chevron-right small-arrow transition-icon"></i>
+            </a>
+            <div class="collapse <?php echo isExpanded(['practicals']) ? 'show' : ''; ?>" id="menuPracticals" data-bs-parent="#sidebarMenu">
+                <ul class="nav flex-column ms-3 ps-2 border-start border-white-50">
                     <li class="nav-item">
-                        <a href="#" class="nav-link sub-link">
-                            <span>Transactions</span>
+                        <a href="../../center/practicals/index.php" class="nav-link sub-link <?php echo isActive('practicals.php') ? 'active-sub' : ''; ?>">
+                            <span>Practicals</span>
+                        </a>
+                    </li>
+                     <li class="nav-item">
+                        <a href="../../center/practicals/create-practical.php" class="nav-link sub-link <?php echo isActive('create-practical.php') ? 'active-sub' : ''; ?>">
+                            <span>Create Practical</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../../center/practicals/view-submissions.php" class="nav-link sub-link <?php echo isActive('view-submissions.php') ? 'active-sub' : ''; ?>">
+                            <span>View Submissions</span>
                         </a>
                     </li>
                 </ul>
