@@ -125,13 +125,13 @@ try {
     $html = '
     <style>
         body { font-family: freeserif; color: #000; }
-        .container { padding: 40px 80px; padding-top: 260px; } /* Increased side padding to 80px */
+        .container { padding: 40px 60px; padding-top: 220px; } /* Reduced top padding */
         
         .header-overlay {
             position: absolute;
             top: 78px;
-            left: 80px; /* Matched to container */
-            right: 80px; /* Matched to container */
+            left: 60px; 
+            right: 60px; 
             text-align: center;
             font-weight: bold;
             font-size: 14px;
@@ -141,28 +141,28 @@ try {
             background-color: #3b5998; color: white;
             padding: 5px; text-align: center;
             font-weight: bold; font-size: 14px;
-            margin-bottom: 10px; border-radius: 4px;
+            margin-bottom: 8px; border-radius: 4px; /* Reduced margin */
         }
         
-        .student-details-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 13px; }
-        .student-details-table td { padding: 5px; font-weight: bold; color: #333; }
+        .student-details-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 12px; } /* Reduced margin & font */
+        .student-details-table td { padding: 4px; font-weight: bold; color: #333; }
         .label { color: #0d6efd; width: 140px; }
         
-        .marks-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+        .marks-table { width: 100%; border-collapse: collapse; margin-top: 5px; font-size: 11px; }
         .marks-table th { 
             background-color: #3b5998; color: white; 
-            padding: 8px; border: 1px solid #999; 
+            padding: 6px; border: 1px solid #999; 
         }
         .marks-table td { 
-            padding: 8px; border: 1px solid #999; 
+            padding: 6px; border: 1px solid #999; 
             text-align: center; font-weight: bold; 
         }
         
-        .summary-table { width: 40%; border-collapse: collapse; font-size: 12px; margin-top: 20px; }
-        .summary-table td { border: 1px solid #999; padding: 5px; font-weight: bold; }
+        .summary-table { width: 40%; border-collapse: collapse; font-size: 11px; margin-top: 10px; }
+        .summary-table td { border: 1px solid #999; padding: 4px; font-weight: bold; }
         .summary-header { background-color: #3b5998; color: white; text-align: center; }
         
-        .footer { position: absolute; bottom: 100px; left: 50px; right: 50px; }
+        .footer { position: absolute; bottom: 80px; left: 50px; right: 50px; }
         .qr-box { width: 100px; height: 100px; border: 1px solid #ddd; }
         .signature-box { text-align: center; width: 150px; float: right; }
         
