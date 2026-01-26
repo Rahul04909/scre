@@ -136,17 +136,16 @@ try {
             position: relative; 
         }
         
-        /* Photo on LEFT Layout - Using Float Approach */
+        /* Photo on LEFT Layout - Overlay Position */
         .header-photo {
-            float: left;
-            margin-right: 20px; /* Space between photo and text */
-            margin-top: 15px;   /* Slight offset */
+            position: absolute;
+            top: 250px;
+            left: 60px;
             width: 100px; height: 120px; border: 1px solid #000;
-            /* Removed background: #fff to prevent white box artifact */
         }
         
         .content-text {
-            font-size: 16px; line-height: 1.6; margin-top: 60px; 
+            font-size: 16px; line-height: 1.6; margin-top: 20px; 
             font-weight: bold;
             text-align: center; 
             width: 100%;
