@@ -99,7 +99,8 @@ try {
         'margin_right' => 0,
         'margin_top' => 0,
         'margin_bottom' => 0,
-        'orientation' => 'P'
+        'orientation' => 'P',
+        'default_font' => 'freeserif'
     ]);
 
     // Background
@@ -193,16 +194,16 @@ try {
                     <!-- Details Left -->
                     <table class="student-details-table">
                         <tr>
-                            <td class="label">Student Name:</td><td>'.htmlspecialchars($student['first_name'] . ' ' . $student['last_name']).'</td>
-                            <td class="label">Father\'s Name:</td><td>'.htmlspecialchars($student['father_name']).'</td>
+                            <td class="label">विद्यार्थी का नाम<br>Student Name:</td><td>'.htmlspecialchars($student['first_name'] . ' ' . $student['last_name']).'</td>
+                            <td class="label">पिता का नाम<br>Father\'s Name:</td><td>'.htmlspecialchars($student['father_name']).'</td>
                         </tr>
                         <tr>
-                            <td class="label">Mother\'s Name:</td><td>'.htmlspecialchars($student['mother_name']).'</td>
-                            <td class="label">Date of Birth:</td><td>'.$dob.'</td>
+                            <td class="label">माँ का नाम<br>Mother\'s Name:</td><td>'.htmlspecialchars($student['mother_name']).'</td>
+                            <td class="label">जन्म तिथि<br>Date of Birth:</td><td>'.$dob.'</td>
                         </tr>
                         <tr>
-                            <td class="label">Pattern:</td><td>'.ucfirst($student['unit_type'] ?? 'Annual').'</td>
-                            <td class="label">Gender:</td><td>'.ucfirst($student['gender']).'</td>
+                            <td class="label">पैटर्न<br>Pattern:</td><td>'.ucfirst($student['unit_type'] ?? 'Annual').'</td>
+                            <td class="label">लिंग<br>Gender:</td><td>'.ucfirst($student['gender']).'</td>
                         </tr>
                     </table>
                 </td>
@@ -217,21 +218,21 @@ try {
         <div class="blue-bar">COURSE DETAILS</div>
         <table class="student-details-table">
             <tr>
-                <td class="label">Admission Mode:</td><td>Regular</td>
-                <td class="label">Session:</td><td>'.$student['session_name'].'</td>
+                <td class="label">प्रवेश मोड<br>Admission Mode:</td><td>Regular</td>
+                <td class="label">सत्र<br>Session:</td><td>'.$student['session_name'].'</td>
             </tr>
             <tr>
-                <td class="label">Course Name:</td><td colspan="3">'.htmlspecialchars($student['course_name']).'</td>
+                <td class="label">कोर्स का नाम<br>Course Name:</td><td colspan="3">'.htmlspecialchars($student['course_name']).'</td>
             </tr>
             <tr>
-                <td class="label">Duration:</td><td colspan="3">'.$student['duration_value'] . ' ' . ucfirst($student['duration_type']).'</td>
+                <td class="label">अवधि<br>Duration:</td><td colspan="3">'.$student['duration_value'] . ' ' . ucfirst($student['duration_type']).'</td>
             </tr>
             <tr>
-                <td class="label">ASC Name:</td><td>'.htmlspecialchars($student['center_name']).'</td>
-                <td class="label">ASC Code:</td><td>'.$student['center_code'].'</td>
+                <td class="label">ASC नाम<br>ASC Name:</td><td>'.htmlspecialchars($student['center_name']).'</td>
+                <td class="label">ASC कोड<br>ASC Code:</td><td>'.$student['center_code'].'</td>
             </tr>
             <tr>
-                <td class="label">Center Address:</td><td colspan="3">'.htmlspecialchars($student['center_address']).'</td>
+                <td class="label">ASC पता<br>ASC Address:</td><td colspan="3">'.htmlspecialchars($student['center_address']).'</td>
             </tr>
         </table>
         
