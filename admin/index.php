@@ -180,7 +180,8 @@ try {
                 <!-- Recent Activities / Tables -->
                 <div class="row">
                     <!-- Recent Centers -->
-                    <div class="col-lg-8">
+                    <!-- Recent Centers -->
+                    <div class="col-12">
                         <div class="card shadow-sm border-0 mb-4">
                             <div class="card-header card-header-custom d-flex justify-content-between align-items-center">
                                 <h6 class="m-0 fw-bold text-primary">Recent Centers</h6>
@@ -221,35 +222,49 @@ try {
                         </div>
                     </div>
 
-                    <!-- Transaction Logs -->
-                    <div class="col-lg-4">
-                        <div class="card shadow-sm border-0 mb-4" style="height: 100%;">
-                            <div class="card-header card-header-custom">
+                </div>
+
+                <!-- Transaction Logs Row -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card shadow-sm border-0 mb-4">
+                            <div class="card-header card-header-custom d-flex justify-content-between align-items-center">
                                 <h6 class="m-0 fw-bold text-primary">Transaction Logs</h6>
+                                <a href="centers/manage-center-wallet.php" class="btn btn-sm btn-outline-primary">View All</a>
                             </div>
                             <div class="card-body p-0">
-                                <div class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
-                                    <?php if (count($recentTransactions) > 0): ?>
-                                        <?php foreach ($recentTransactions as $txn): ?>
-                                            <div class="list-group-item">
-                                                <div class="d-flex w-100 justify-content-between">
-                                                    <h6 class="mb-1 text-truncate" style="max-width: 150px;" title="<?php echo htmlspecialchars($txn['center_name']); ?>">
-                                                        <?php echo htmlspecialchars($txn['center_name']); ?>
-                                                    </h6>
-                                                    <small class="text-success fw-bold">+₹<?php echo number_format($txn['amount_credit'], 2); ?></small>
-                                                </div>
-                                                <div class="d-flex w-100 justify-content-between align-items-center mt-1">
-                                                    <small class="text-muted"><?php echo date('d M, h:i A', strtotime($txn['created_at'])); ?></small>
-                                                    <span class="badge bg-light text-dark border"><?php echo $txn['center_code']; ?></span>
-                                                </div>
-                                            </div>
-                                        <?php endforeach; ?>
-                                    <?php else: ?>
-                                        <div class="p-3 text-center text-muted">No recent transactions.</div>
-                                    <?php endif; ?>
-                                </div>
-                                <div class="card-footer bg-white text-center">
-                                    <a href="centers/manage-center-wallet.php" class="small text-decoration-none">View All Transactions</a>
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0 align-middle">
+                                        <thead class="bg-light">
+                                            <tr>
+                                                <th class="ps-4">Date & Time</th>
+                                                <th>Center</th>
+                                                <th>Amount Credit</th>
+                                                <th class="text-end pe-4">Code</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php if (count($recentTransactions) > 0): ?>
+                                                <?php foreach ($recentTransactions as $txn): ?>
+                                                    <tr>
+                                                        <td class="ps-4">
+                                                            <span class="fw-bold d-block"><?php echo date('d M Y', strtotime($txn['created_at'])); ?></span>
+                                                            <small class="text-muted"><?php echo date('h:i A', strtotime($txn['created_at'])); ?></small>
+                                                        </td>
+                                                        <td><?php echo htmlspecialchars($txn['center_name']); ?></td>
+                                                        <td>
+                                                            <span class="text-success fw-bold">+₹<?php echo number_format($txn['amount_credit'], 2); ?></span>
+                                                        </td>
+                                                        <td class="text-end pe-4">
+                                                            <span class="badge bg-light text-dark border"><?php echo $txn['center_code']; ?></span>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            <?php else: ?>
+                                                <tr><td colspan="4" class="text-center py-3 text-muted">No recent transactions.</td></tr>
+                                            <?php endif; ?>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
