@@ -140,9 +140,9 @@ try {
         .header-photo {
             position: absolute;
             top: 260px;
-            left: 60px;
+            left: 50px;
             width: 100px; height: 120px; border: 1px solid #000;
-            margin-top: 15px;
+            margin-top: 55px;
         }
         
         .content-text {
@@ -157,7 +157,7 @@ try {
             display: inline-block;
             text-align: center;
             font-weight: bold;
-            color: #000;
+            color: blue;
             padding: 0 5px;
         }
         
