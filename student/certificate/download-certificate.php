@@ -126,9 +126,10 @@ try {
 
     $html = '
     <style>
+    <style>
         body { font-family: freeserif; color: #000; }
         .cert-container { 
-            padding-top: 115px; 
+            padding-top: 220px; /* Increased to clear the Background Header */
             padding-bottom: 20px;
             padding-left: 80px; 
             padding-right: 80px; 
@@ -138,14 +139,14 @@ try {
         /* Photo on LEFT Layout - Using Float Approach */
         .header-photo {
             float: left;
-            margin-top: 180px; /* Pushes image down */
-            margin-left: 10px;
+            margin-right: 20px; /* Space between photo and text */
+            margin-top: 5px;   /* Slight offset */
             width: 100px; height: 120px; border: 1px solid #000;
-            padding: 3px; background: #fff;
+            /* Removed background: #fff to prevent white box artifact */
         }
         
         .content-text {
-            font-size: 16px; line-height: 1.6; margin-top: 10px; 
+            font-size: 16px; line-height: 1.6; margin-top: 0px; 
             font-weight: bold;
             text-align: center; 
             width: 100%;
