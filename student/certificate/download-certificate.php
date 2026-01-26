@@ -208,7 +208,7 @@ try {
             <tr>
                 <td width="30%" align="center" valign="bottom">
                      <!-- Student Image Here -->
-                     '.($profile_img ? '<img src="'.$profile_img.'" style="width: 100px; height: 120px; border: 1px solid #000; padding: 2px;">' : '<div style="width: 100px; height: 120px; border: 1px solid #000; margin: 0 auto;"></div>').'
+                     '.($profile_img ? '<img src="'.$profile_img.'" style="width: 100px; height: 120px; border: 1px solid #000; padding: 2px;">' : '<div style="width: 100px; height: 120px; border: 1px solid #000; margin: 0 auto; margin-bottom: 40px;"></div>').'
                 </td>
                 <td width="40%" style="padding-bottom: 40px;">
                     '.$qrCodeHtml.'
