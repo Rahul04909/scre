@@ -154,7 +154,7 @@ try {
             text-align: center;       /* Justify to spread text */
             text-align-last: center;   /* Center the last line/short lines if supported */
             width: 100%;
-            margin-top: -20px;
+            margin-top: -40px;
         }
         
         .fill-blank {
@@ -201,7 +201,7 @@ try {
             and hereby awarded CERTIFICATE/DIPLOMA.
             <br><br>
             
-            Date of Issue : <span class="fill-blank" style="min-width: 200px; margin-top: -20px;">'.$issue_date.'</span>
+            Date of Issue : <span class="fill-blank" style="min-width: 200px; margin-top: -50px;">'.$issue_date.'</span>
         </div>
 
         <table class="footer-table">
@@ -220,7 +220,7 @@ try {
         </table>
         
         <!-- Legend and Footer Text centered at bottom -->
-        <div style="text-align: center; margin-top: 5px;">
+        <div style="text-align: center; margin-top: -25px;">
              <div class="grade-legend">
                 Grade A 80% & Above, Grade B 60-79, Grade C 40-59, Grade Below 40%
             </div>
