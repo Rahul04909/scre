@@ -17,25 +17,28 @@
         $current_page = basename($_SERVER['PHP_SELF']); 
         ?>
         
-        <a href="index.php" class="list-group-item list-group-item-action <?php echo ($current_page == 'index.php') ? 'active' : ''; ?>">
+        <a href="../../student/index.php" class="list-group-item list-group-item-action <?php echo ($current_page == 'index.php') ? 'active' : ''; ?>">
             <i class="fas fa-tachometer-alt me-2"></i>Dashboard
         </a>
-        <a href="profile.php" class="list-group-item list-group-item-action <?php echo ($current_page == 'profile.php') ? 'active' : ''; ?>">
+        <a href="../../student/profile.php" class="list-group-item list-group-item-action <?php echo ($current_page == 'profile.php') ? 'active' : ''; ?>">
             <i class="fas fa-user me-2"></i>My Profile
         </a>
-        <a href="fees.php" class="list-group-item list-group-item-action <?php echo ($current_page == 'fees.php') ? 'active' : ''; ?>">
+        <a href="../../student/fees.php" class="list-group-item list-group-item-action <?php echo ($current_page == 'fees.php') ? 'active' : ''; ?>">
             <i class="fas fa-wallet me-2"></i>My Fees
         </a>
-        <a href="card.php" class="list-group-item list-group-item-action <?php echo ($current_page == 'card.php') ? 'active' : ''; ?>">
+        <a href="../../student/id-card.php" class="list-group-item list-group-item-action <?php echo ($current_page == 'id-card.php') ? 'active' : ''; ?>">
             <i class="fas fa-id-card me-2"></i>ID Card
         </a>
-        <a href="results.php" class="list-group-item list-group-item-action <?php echo ($current_page == 'results.php') ? 'active' : ''; ?>">
+        <a href="../../student/results.php" class="list-group-item list-group-item-action <?php echo ($current_page == 'results.php') ? 'active' : ''; ?>">
             <i class="fas fa-poll me-2"></i>Results
         </a>
-        <a href="../hall-ticket/hall-ticket.php" class="list-group-item list-group-item-action <?php echo (strpos($current_page, 'hall-ticket') !== false) ? 'active' : ''; ?>">
+        <a href="../../student/hall-ticket/hall-ticket.php" class="list-group-item list-group-item-action <?php echo (strpos($current_page, 'hall-ticket') !== false) ? 'active' : ''; ?>">
             <i class="fas fa-id-card me-2"></i>Hall Ticket
         </a>
-        <a href="logout.php" class="list-group-item list-group-item-action text-danger fw-bold mt-4">
+        <a href="../../student/marksheet.php" class="list-group-item list-group-item-action <?php echo ($current_page == 'marksheet.php') ? 'active' : ''; ?>">
+            <i class="fas fa-calendar-check me-2"></i>Marksheet
+        </a>
+        <a href="../../student/logout.php" class="list-group-item list-group-item-action text-danger fw-bold mt-4">
             <i class="fas fa-power-off me-2"></i>Logout
         </a>
     </div>
