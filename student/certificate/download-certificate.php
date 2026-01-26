@@ -200,7 +200,7 @@ try {
             and hereby awarded CERTIFICATE/DIPLOMA.
             <br><br>
             
-            Date of Issue : <span class="fill-blank" style="min-width: 200px;">'.$issue_date.'</span>
+            Date of Issue : <span class="fill-blank" style="min-width: 200px; margin-top: -20px;">'.$issue_date.'</span>
         </div>
 
         <table class="footer-table">
@@ -224,7 +224,7 @@ try {
                 Grade A 80% & Above, Grade B 60-79, Grade C 40-59, Grade Below 40%
             </div>
             <div style="font-size: 10px; color: #333; margin-top: 5px;">
-                This Certificate/Diploma is issued by IAGCSM Education Pvt. Ltd.<br>
+                This Certificate/Diploma is issued by SIR CHHOTU RAM EDUCATION PVT. LTD.<br>
                 Result may be verified on www.screduc.com
             </div>
         </div>
