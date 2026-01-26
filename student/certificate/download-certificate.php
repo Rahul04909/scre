@@ -140,13 +140,13 @@ try {
         .header-photo {
             float: left;
             margin-right: 20px; /* Space between photo and text */
-            margin-top: 5px;   /* Slight offset */
+            margin-top: 15px;   /* Slight offset */
             width: 100px; height: 120px; border: 1px solid #000;
             /* Removed background: #fff to prevent white box artifact */
         }
         
         .content-text {
-            font-size: 16px; line-height: 1.6; margin-top: 30px; 
+            font-size: 16px; line-height: 1.6; margin-top: 60px; 
             font-weight: bold;
             text-align: center; 
             width: 100%;
