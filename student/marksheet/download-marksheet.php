@@ -240,18 +240,18 @@ try {
         <table class="marks-table">
             <thead>
                 <tr>
-                    <th rowspan="2" width="8%">Sr. No.</th>
-                    <th rowspan="2" width="30%">SUBJECT NAME</th>
+                    <th rowspan="2" width="6%">Sr. No.</th>
+                    <th rowspan="2" width="28%">SUBJECT NAME</th>
                     <th colspan="2">TOTAL MARKS</th>
                     <th colspan="2">OBTAINED MARKS</th>
-                    <th rowspan="2" width="15%">TOTAL OBTAINED</th>
+                    <th rowspan="2" width="12%">TOTAL OBTAINED</th>
                     <th rowspan="2" width="10%">STATUS</th>
                 </tr>
-                <tr style="font-size: 6px;">
-                    <th>THEORY</th>
-                    <th>PRACTICAL</th>
-                    <th>THEORY</th>
-                    <th>PRACTICAL</th>
+                <tr style="font-size: 7px;">
+                    <th style="white-space: nowrap;">THEORY</th>
+                    <th style="white-space: nowrap;">PRACTICAL</th>
+                    <th style="white-space: nowrap;">THEORY</th>
+                    <th style="white-space: nowrap;">PRACTICAL</th>
                 </tr>
             </thead>
             <tbody>';
