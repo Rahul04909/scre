@@ -143,6 +143,7 @@ try {
             top: 280px; /* Moved down slightly */
             left: 50px;
             width: 100px; height: 120px; border: 1px solid #000;
+            margin-top: -40px;
         }
         
         .content-text {
