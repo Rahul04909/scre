@@ -121,6 +121,32 @@ try {
         }
     }
 
+    // Generate QR Code
+    $qrData = "Student Name: " . $student['first_name'] . " " . $student['last_name'] . "\n";
+    $qrData .= "Enrollment No: " . $student['enrollment_no'] . "\n";
+    $qrData .= "Course: " . $student['course_name'] . "\n";
+    $qrData .= "Total Marks: " . $grand_total_obt . "/" . $grand_total_max . "\n";
+    $qrData .= "Result: " . $overall_status;
+
+    $qrCodeHtml = '';
+    try {
+        // Build QR Code using Endroid
+        $result = \Endroid\QrCode\Builder\Builder::create()
+            ->writer(new \Endroid\QrCode\Writer\PngWriter())
+            ->writerOptions([])
+            ->data($qrData)
+            ->encoding(new \Endroid\QrCode\Encoding\Encoding('UTF-8'))
+            ->errorCorrectionLevel(\Endroid\QrCode\ErrorCorrectionLevel::High)
+            ->size(100)
+            ->margin(0)
+            ->roundBlockSizeMode(\Endroid\QrCode\RoundBlockSizeMode::Margin)
+            ->build();
+            
+        $qrCodeHtml = '<img src="' . $result->getDataUri() . '" alt="QR Code" style="width: 80px; height: 80px;">';
+    } catch (Exception $e) {
+        $qrCodeHtml = ''; 
+    }
+
     // Styles
     $html = '
     <style>
@@ -313,7 +339,9 @@ try {
                             <tr><td>Overall Status:</td><td>'.$overall_status.'</td></tr>
                         </table>
                     </td>
-                    <td width="20%"></td>
+                    <td width="20%" align="center" valign="middle">
+                         '.$qrCodeHtml.'
+                    </td>
                     <td width="40%" valign="bottom" align="right">
                          <!-- QR Code Placeholder -->
                          <!-- Implementation of real QR requires a library or API. -->
