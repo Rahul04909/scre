@@ -15,7 +15,7 @@
 </head>
 <body>
 
-    <div class="d-flex" id="wrapper">
+    <div id="wrapper">
         <!-- Sidebar -->
         <?php include 'sidebar.php'; ?>
         

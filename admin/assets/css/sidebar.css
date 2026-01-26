@@ -26,7 +26,8 @@ body {
 }
 
 #page-content-wrapper {
-    width: 100%;
+    width: auto;
+    position: relative;
     margin-left: var(--sidebar-width);
     transition: margin 0.25s ease-out;
 }
