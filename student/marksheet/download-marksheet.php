@@ -131,8 +131,27 @@ try {
     $qrCodeHtml = '';
     $qrError = '';
 
-    // Attempt 1: Endroid (User Requested)
-    if (class_exists(\Endroid\QrCode\Builder\Builder::class)) {
+    // Attempt 1: Chillerlan (Primary - Known to work in ID Card)
+    if (class_exists(\chillerlan\QRCode\QRCode::class)) {
+        try {
+            $options = new \chillerlan\QRCode\QROptions([
+                'version'    => 5,
+                'outputType' => \chillerlan\QRCode\QRCode::OUTPUT_IMAGE_PNG,
+                'eccLevel'   => \chillerlan\QRCode\QRCode::ECC_L,
+                'scale'      => 3,
+                'imageBase64' => true,
+            ]);
+            $qrcode = new \chillerlan\QRCode\QRCode($options);
+            $qrCodeHtml = '<img src="' . $qrcode->render($qrData) . '" alt="QR Code" style="width: 80px; height: 80px;">';
+        } catch (\Throwable $e) {
+            $qrError = 'Chillerlan Error: ' . $e->getMessage();
+        }
+    } else {
+        $qrError = 'Chillerlan Class Not Found';
+    }
+
+    // Attempt 2: Endroid (Fallback)
+    if (empty($qrCodeHtml) && class_exists(\Endroid\QrCode\Builder\Builder::class)) {
         try {
             $result = \Endroid\QrCode\Builder\Builder::create()
                 ->writer(new \Endroid\QrCode\Writer\PngWriter())
@@ -146,41 +165,14 @@ try {
                 ->build();
                 
             $qrCodeHtml = '<img src="' . $result->getDataUri() . '" alt="QR Code" style="width: 80px; height: 80px;">';
+            $qrError = ''; // Clear error
         } catch (\Throwable $e) {
-            $qrError = 'Endroid Error: ' . $e->getMessage();
-        }
-    } else {
-        $qrError = 'Endroid Class Not Found';
-    }
-
-    // Attempt 2: Chillerlan (Fallback - Known to work in id-card.php)
-    if (empty($qrCodeHtml) && class_exists(\chillerlan\QRCode\QRCode::class)) {
-        try {
-            // Using FQCN for Chillerlan
-            $options = new \chillerlan\QRCode\QROptions([
-                'version'    => 5,
-                'outputType' => \chillerlan\QRCode\QRCode::OUTPUT_IMAGE_PNG,
-                'eccLevel'   => \chillerlan\QRCode\QRCode::ECC_L,
-                'scale'      => 3,
-                'imageBase64' => true,
-            ]);
-            $qrcode = new \chillerlan\QRCode\QRCode($options);
-            $qrCodeHtml = '<img src="' . $qrcode->render($qrData) . '" alt="QR Code" style="width: 80px; height: 80px;">';
-            // Clear error if fallback succeeded
-            $qrError = ''; 
-        } catch (\Throwable $e) {
-            $qrError .= ' | Chillerlan Error: ' . $e->getMessage();
+            $qrError .= ' | Endroid Error: ' . $e->getMessage();
         }
     }
 
-    // Attempt 3: API Fallback (Last Resort to ensure it shows SOMETHING)
+    // Attempt 3: API Fallback
     if (empty($qrCodeHtml)) {
-         // Using a public API as last resort if local libs fail
-         $apiUrl = "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=" . urlencode($qrData);
-         // Note: mPDF might need allow_url_fopen enabled for this to work with <img> src directly if not base64
-         // But let's just try to show the error text if this also deemed risky, 
-         // actually showing the error is better for debugging than a broken image.
-         
          $qrCodeHtml = '<div style="font-size: 8px; color: red; border: 1px solid red; padding: 2px;">QR Failed:<br>' . htmlspecialchars(substr($qrError, 0, 100)) . '</div>';
     }
 
