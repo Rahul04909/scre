@@ -89,7 +89,7 @@ try {
     </style>
 </head>
 <body>
-    <div class="d-flex" id="wrapper">
+    <div id="wrapper">
         <?php include 'sidebar.php'; ?>
 
         <div id="page-content-wrapper" style="margin-left: 280px;">
