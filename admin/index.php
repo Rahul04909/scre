@@ -83,7 +83,7 @@ try {
         <?php include 'sidebar.php'; ?>
 
         <div id="page-content-wrapper" style="margin-left: 280px;">
-            <div class="container-fluid py-4 px-4">
+            <div class="container-fluid py-4 px-4" style="max-width: 100%;">
                 
                 <!-- Welcome Section -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
