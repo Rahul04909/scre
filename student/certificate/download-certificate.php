@@ -127,20 +127,24 @@ try {
     $html = '
     <style>
         body { font-family: freeserif; color: #000; }
-        .cert-container { padding: 40px; padding-top: 140px; position: relative; height: 100%; }
+        .cert-container { padding: 50px; padding-top: 160px; position: relative; height: 100%; }
         
+        /* Photo on LEFT Layout as per sample image */
         .header-photo {
-            position: absolute; top: 40px; right: 60px;
+            position: absolute; top: 120px; left: 60px;
             width: 100px; height: 120px; border: 1px solid #000;
+            padding: 3px; background: #fff;
         }
         
         .content-text {
-            font-size: 16px; line-height: 1.8; margin-top: 40px; font-weight: bold;
-            text-align: justify;
+            font-size: 16px; line-height: 2.2; margin-top: 60px; 
+            margin-left: 20px; margin-right: 20px;
+            font-weight: bold;
+            text-align: left; /* Sample seems left-aligned with indents/spacing */
         }
         
         .fill-blank {
-            border-bottom: 2px dotted #000;
+            border-bottom: 1px dotted #000;
             display: inline-block;
             text-align: center;
             font-weight: bold;
@@ -148,12 +152,12 @@ try {
             padding: 0 5px;
         }
         
-        .footer-table { width: 100%; margin-top: 50px; }
+        .footer-table { width: 100%; margin-top: 60px; }
         .footer-table td { text-align: center; vertical-align: bottom; font-weight: bold; }
         
         .grade-legend { font-size: 10px; color: red; font-weight: bold; margin-top: 5px; }
-        .director-sign { font-size: 14px; border-top: 2px solid #000; display: inline-block; width: 150px; margin-top: 50px; }
-        .coordinator-sign { font-size: 14px; border-top: 2px solid #000; display: inline-block; width: 150px; margin-top: 50px; }
+        .director-sign { font-size: 14px; border-top: 2px solid #000; display: inline-block; width: 150px; margin-top: 90px; }
+        .coordinator-sign { font-size: 14px; border-top: 2px solid #000; display: inline-block; width: 150px; margin-top: 90px; }
     </style>
     
     <div class="cert-container">
@@ -162,27 +166,27 @@ try {
          '.($profile_img ? '<img src="'.$profile_img.'" class="header-photo">' : '<div class="header-photo"></div>').'
 
         <div class="content-text">
-            This is to Certify that Mr./Miss/Mrs. <span class="fill-blank" style="width: 250px;">'.$student_name.'</span> 
-            Son of/Daughter of Sh. <span class="fill-blank" style="width: 250px;">'.$father_name.'</span><br>
+            This is to Certify that Mr./Miss/Mrs. <span class="fill-blank" style="min-width: 300px;">'.$student_name.'</span> 
+            Son of/Daughter of Sh. <span class="fill-blank" style="min-width: 300px;">'.$father_name.'</span><br>
             
-            Registration No. <span class="fill-blank" style="width: 150px;">'.$enrollment.'</span> 
-            Session <span class="fill-blank" style="width: 120px;">'.$session_start.'</span> to <span class="fill-blank" style="width: 120px;">'.$session_end.'</span><br>
+            Registration No. <span class="fill-blank" style="min-width: 150px;">'.$enrollment.'</span> 
+            Session <span class="fill-blank" style="min-width: 150px;">'.$session_start.' to '.$session_end.'</span><br>
 
-            Date of Birth <span class="fill-blank" style="width: 150px;">'.$dob.'</span> 
-            In the course <span class="fill-blank" style="width: 400px;">'.$course_name.'</span><br>
+            Date of Birth <span class="fill-blank" style="min-width: 120px;">'.$dob.'</span> 
+            In the course <span class="fill-blank" style="min-width: 400px; max-width: 500px;">'.$course_name.'</span><br>
 
-            Appeared from our ASC* <span class="fill-blank" style="width: 500px;">'.$center_text.'</span><br>
+            Appeared from our ASC* <span class="fill-blank" style="min-width: 500px;">'.$center_text.'</span><br>
 
-            Duration of <span class="fill-blank" style="width: 150px;">'.$duration.'</span> 
-            has successfully used by his/her final Examination held in <span class="fill-blank" style="width: 150px;">'.$exam_date.'</span><br>
+            Duration of <span class="fill-blank" style="min-width: 100px;">'.$duration.'</span> 
+            has successfully used by his/her final Examination held in <span class="fill-blank" style="min-width: 150px;">'.$exam_date.'</span><br>
 
-            Obtained marks <span class="fill-blank" style="width: 80px;">'.(0 + $grand_total_obt).'</span> 
-            Out of <span class="fill-blank" style="width: 80px;">'.(0 + $grand_total_max).'</span> 
-            with Grade <span class="fill-blank" style="width: 50px;">'.$grade.'</span> 
+            Obtained marks <span class="fill-blank" style="min-width: 60px;">'.(0 + $grand_total_obt).'</span> 
+            Out of <span class="fill-blank" style="min-width: 60px;">'.(0 + $grand_total_max).'</span> 
+            with Grade <span class="fill-blank" style="min-width: 40px;">'.$grade.'</span> 
             and hereby awarded CERTIFICATE/DIPLOMA.
             <br><br>
             
-            Date of Issue : <span class="fill-blank" style="width: 150px;">'.$issue_date.'</span>
+            Date of Issue : <span class="fill-blank" style="min-width: 150px;">'.$issue_date.'</span>
         </div>
 
         <table class="footer-table">
@@ -192,9 +196,6 @@ try {
                 </td>
                 <td width="40%">
                     '.$qrCodeHtml.'
-                    <div class="grade-legend">
-                        Grade A 80% & Above, Grade B 60-79, Grade C 40-59, Grade Below 40%
-                    </div>
                 </td>
                 <td width="30%">
                     <div class="director-sign">Director</div>
@@ -202,9 +203,15 @@ try {
             </tr>
         </table>
         
-        <div style="position: absolute; bottom: 10px; width: 100%; text-align: center; font-size: 10px; color: #333;">
-            This Certificate/Diploma is issued by IAGCSM Education Pvt. Ltd.<br>
-            Result may be verified on www.arigcsm.org
+        <!-- Legend and Footer Text centered at bottom -->
+        <div style="text-align: center; margin-top: 5px;">
+             <div class="grade-legend">
+                Grade A 80% & Above, Grade B 60-79, Grade C 40-59, Grade Below 40%
+            </div>
+            <div style="font-size: 10px; color: #333; margin-top: 5px;">
+                This Certificate/Diploma is issued by IAGCSM Education Pvt. Ltd.<br>
+                Result may be verified on www.arigcsm.org
+            </div>
         </div>
 
     </div>
