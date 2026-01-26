@@ -142,6 +142,7 @@ try {
             top: 260px;
             left: 60px;
             width: 100px; height: 120px; border: 1px solid #000;
+            margin-top: 15px;
         }
         
         .content-text {
