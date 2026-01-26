@@ -35,6 +35,16 @@ try {
     $stmt = $pdo->query("SELECT * FROM centers ORDER BY created_at DESC LIMIT 5");
     $recentCenters = $stmt->fetchAll();
 
+    // Recent Transactions (Wallet)
+    $stmtTxn = $pdo->query("
+        SELECT t.*, c.center_name, c.center_code 
+        FROM center_wallet_transactions t 
+        JOIN centers c ON t.center_id = c.id 
+        ORDER BY t.created_at DESC 
+        LIMIT 10
+    ");
+    $recentTransactions = $stmtTxn->fetchAll();
+
 } catch (PDOException $e) {
     die("Database Error: " . $e->getMessage());
 }
@@ -211,18 +221,35 @@ try {
                         </div>
                     </div>
 
-                    <!-- Quick Actions -->
+                    <!-- Transaction Logs -->
                     <div class="col-lg-4">
-                        <div class="card shadow-sm border-0 mb-4">
+                        <div class="card shadow-sm border-0 mb-4" style="height: 100%;">
                             <div class="card-header card-header-custom">
-                                <h6 class="m-0 fw-bold text-primary">Quick Actions</h6>
+                                <h6 class="m-0 fw-bold text-primary">Transaction Logs</h6>
                             </div>
-                            <div class="card-body">
-                                <div class="d-grid gap-2">
-                                    <a href="courses/add-course.php" class="btn btn-light text-start shadow-sm"><i class="fas fa-plus-circle text-success me-2"></i> Add New Course</a>
-                                    <a href="centers/add-center.php" class="btn btn-light text-start shadow-sm"><i class="fas fa-store text-primary me-2"></i> Register Center</a>
-                                    <a href="examination/exam-schedule.php" class="btn btn-light text-start shadow-sm"><i class="fas fa-calendar-plus text-warning me-2"></i> Schedule Exam</a>
-                                    <a href="students/index.php" class="btn btn-light text-start shadow-sm"><i class="fas fa-user-plus text-info me-2"></i> Manage Students</a>
+                            <div class="card-body p-0">
+                                <div class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
+                                    <?php if (count($recentTransactions) > 0): ?>
+                                        <?php foreach ($recentTransactions as $txn): ?>
+                                            <div class="list-group-item">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h6 class="mb-1 text-truncate" style="max-width: 150px;" title="<?php echo htmlspecialchars($txn['center_name']); ?>">
+                                                        <?php echo htmlspecialchars($txn['center_name']); ?>
+                                                    </h6>
+                                                    <small class="text-success fw-bold">+₹<?php echo number_format($txn['amount_credit'], 2); ?></small>
+                                                </div>
+                                                <div class="d-flex w-100 justify-content-between align-items-center mt-1">
+                                                    <small class="text-muted"><?php echo date('d M, h:i A', strtotime($txn['created_at'])); ?></small>
+                                                    <span class="badge bg-light text-dark border"><?php echo $txn['center_code']; ?></span>
+                                                </div>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <div class="p-3 text-center text-muted">No recent transactions.</div>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="card-footer bg-white text-center">
+                                    <a href="centers/manage-center-wallet.php" class="small text-decoration-none">View All Transactions</a>
                                 </div>
                             </div>
                         </div>
