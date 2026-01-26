@@ -364,9 +364,9 @@ try {
                          <!-- Implementation of real QR requires a library or API. -->
                          <!-- Mpdf has basic QR support. -->
                          <br><br>
-                         <div style="text-align: center;">
+                         <div style="text-align: center; white-space: nowrap;">
                             <br>
-                            <b>Authorize<br>Signature</b>
+                            <b>Authorize Signature</b>
                          </div>
                     </td>
                 </tr>
