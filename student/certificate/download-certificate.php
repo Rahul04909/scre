@@ -164,6 +164,7 @@ try {
             font-weight: bold;
             color: blue;
             padding: 0 5px;
+            margin: 0 10px;
         }
         
         .footer-table { width: 100%; margin-top: 20px; }
