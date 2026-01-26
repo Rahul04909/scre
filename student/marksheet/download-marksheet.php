@@ -130,20 +130,23 @@ try {
 
     $qrCodeHtml = '';
     try {
-        // Build QR Code using Endroid
-        $result = \Endroid\QrCode\Builder\Builder::create()
-            ->writer(new \Endroid\QrCode\Writer\PngWriter())
-            ->writerOptions([])
-            ->data($qrData)
-            ->encoding(new \Endroid\QrCode\Encoding\Encoding('UTF-8'))
-            ->errorCorrectionLevel(\Endroid\QrCode\ErrorCorrectionLevel::High)
-            ->size(100)
-            ->margin(0)
-            ->roundBlockSizeMode(\Endroid\QrCode\RoundBlockSizeMode::Margin)
-            ->build();
-            
-        $qrCodeHtml = '<img src="' . $result->getDataUri() . '" alt="QR Code" style="width: 80px; height: 80px;">';
-    } catch (Exception $e) {
+        if (class_exists(\Endroid\QrCode\Builder\Builder::class)) {
+             // Build QR Code using Endroid
+            $result = \Endroid\QrCode\Builder\Builder::create()
+                ->writer(new \Endroid\QrCode\Writer\PngWriter())
+                ->writerOptions([])
+                ->data($qrData)
+                ->encoding(new \Endroid\QrCode\Encoding\Encoding('UTF-8'))
+                ->errorCorrectionLevel(\Endroid\QrCode\ErrorCorrectionLevel::High)
+                ->size(100)
+                ->margin(0)
+                ->roundBlockSizeMode(\Endroid\QrCode\RoundBlockSizeMode::Margin)
+                ->build();
+                
+            $qrCodeHtml = '<img src="' . $result->getDataUri() . '" alt="QR Code" style="width: 80px; height: 80px;">';
+        }
+    } catch (\Throwable $e) {
+        // Silently fail if library is missing or incompatible
         $qrCodeHtml = ''; 
     }
 
