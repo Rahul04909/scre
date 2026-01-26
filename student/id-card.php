@@ -385,11 +385,17 @@ function renderIDCard($student, $conn) {
                     </div>
                     <div class="student-photo">
                         <?php 
-                        $photo = '../assets/uploads/students/images/default-user.png'; // Corrected
-                        if (!empty($student['student_image']) && file_exists('../assets/uploads/students/images/' . $student['student_image'])) { // Corrected
-                            $photo = '../assets/uploads/students/images/' . $student['student_image'];
-                        } elseif (!empty($student['student_image']) && file_exists('../' . $student['student_image'])) {
-                             $photo = '../' . $student['student_image'];
+                        // Default
+                        $photo = '../assets/uploads/students/images/default-user.png';
+                        
+                        // Check if student_image is valid
+                        if (!empty($student['student_image'])) {
+                            // Logic: The DB stores "assets/uploads/students/FILENAME"
+                            // We are in "student/", so we need "../" + DB_PATH
+                            $checkPath = '../' . $student['student_image'];
+                            if (file_exists($checkPath)) {
+                                $photo = $checkPath;
+                            }
                         }
                         ?>
                         <img src="<?php echo $photo; ?>" alt="Photo">
@@ -408,23 +414,33 @@ function renderIDCard($student, $conn) {
             
             <div class="signatures">
                 <div class="signature">
-                    <?php if (!empty($student['student_signature']) && file_exists('../assets/uploads/students/signatures/'.$student['student_signature'])): ?> <!-- Corrected -->
-                        <img src="../assets/uploads/students/signatures/<?php echo $student['student_signature']; ?>" style="height: 12px;">
-                    <?php endif; ?>
+                    <?php 
+                    if (!empty($student['student_signature'])) {
+                        $signPath = '../' . $student['student_signature'];
+                        if (file_exists($signPath)) {
+                            echo '<img src="'.$signPath.'" style="height: 12px;">';
+                        }
+                    } 
+                    ?>
                     <div class="signature-line"></div>
                     <div class="signature-name">Student Signal</div>
                 </div>
                 <div class="signature">
-                     <?php if (!empty($center_data['signature']) && file_exists($center_data['signature'])): ?>
-                        <img src="<?php echo htmlspecialchars($center_data['signature']); ?>" style="height: 12px;">
+                     <?php if (!empty($center_data['signature']) && file_exists('../'.$center_data['signature'])): ?>
+                        <img src="../<?php echo htmlspecialchars($center_data['signature']); ?>" style="height: 12px;">
                     <?php endif; ?>
                     <div class="signature-line"></div>
                     <div class="signature-name">Center Director</div>
                 </div>
                 <div class="signature">
-                    <?php if (!empty($admin_data['signature']) && file_exists('../assets/uploads/admin/'.$admin_data['signature'])): ?> <!-- Corrected -->
-                        <img src="../assets/uploads/admin/<?php echo $admin_data['signature']; ?>" style="height: 12px;">
-                    <?php endif; ?>
+                    <?php 
+                    if (!empty($admin_data['signature'])) {
+                         $adminSignPath = '../assets/uploads/admin/' . $admin_data['signature'];
+                         if (file_exists($adminSignPath)) {
+                             echo '<img src="'.$adminSignPath.'" style="height: 12px;">';
+                         }
+                    }
+                    ?>
                     <div class="signature-line"></div>
                     <div class="signature-name">Controller Exam</div>
                 </div>
