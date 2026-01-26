@@ -206,8 +206,8 @@ try {
         .summary-header { background-color: #3b5998; color: white; text-align: center; }
         
         .footer { position: absolute; bottom: 80px; left: 50px; right: 50px; }
-        .qr-box { width: 100px; height: 100px; border: 1px solid #ddd; }
-        .signature-box { text-align: center; width: 150px; float: right; }
+        .qr-box { width: 100px; height: 100px; border: 1px solid #ddd; margin-top: 20px; }
+        .signature-box { text-align: center; width: 150px; float: right; margin-right: 30px; }
         
         /* Specific adjustments to match sample */
         .blue-bar { background-color: #2c64b6; color: white; padding: 5px; text-align: center; font-weight: bold; margin: 10px 0; }
