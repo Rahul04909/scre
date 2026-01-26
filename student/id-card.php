@@ -22,12 +22,11 @@ $student = [];
 $error = null;
 
 try {
-    $conn = getDbConnection(); // Assuming this function exists in config.php
-    if (!isset($conn)) {
-         // Fallback if getDbConnection is not defined but $pdo is
-         global $pdo;
-         $conn = $pdo;
+    // Check if $pdo is available from config.php
+    if (!isset($pdo)) {
+        throw new Exception("Database connection failed. Config not loaded properly.");
     }
+    $conn = $pdo;
     
     $student_id = $_SESSION['student_id'];
     
