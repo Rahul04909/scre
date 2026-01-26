@@ -127,20 +127,26 @@ try {
     $html = '
     <style>
         body { font-family: freeserif; color: #000; }
-        .cert-container { padding: 40px; padding-top: 110px; position: relative; }
+        .cert-container { 
+            padding-top: 115px; 
+            padding-bottom: 20px;
+            padding-left: 80px; 
+            padding-right: 80px; 
+            position: relative; 
+        }
         
         /* Photo on LEFT Layout as per sample image */
         .header-photo {
-            position: absolute; top: 100px; left: 60px;
+            position: absolute; top: 105px; left: 85px; /* Aligned with new padding */
             width: 100px; height: 120px; border: 1px solid #000;
             padding: 3px; background: #fff;
         }
         
         .content-text {
             font-size: 16px; line-height: 1.6; margin-top: 10px; 
-            margin-left: 20px; margin-right: 20px;
             font-weight: bold;
             text-align: left; 
+            width: 100%;
         }
         
         .fill-blank {
