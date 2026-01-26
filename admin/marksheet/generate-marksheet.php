@@ -1,8 +1,8 @@
 <?php
 session_start();
-if (!isset($_SESSION['admin_id'])) {
-    die("Access Denied");
-}
+// if (!isset($_SESSION['admin_id'])) {
+//     die("Access Denied");
+// }
 
 require_once '../../database/config.php';
 require_once '../../vendor/autoload.php';
