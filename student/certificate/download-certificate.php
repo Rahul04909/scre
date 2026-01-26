@@ -133,7 +133,6 @@ try {
             padding-left: 80px; 
             padding-right: 80px; 
             position: relative; 
-            margin-top: 100px;
         }
         
         /* Photo on LEFT Layout as per sample image */
@@ -141,6 +140,7 @@ try {
             position: absolute; top: 255px; left: 85px; /* Aligned with new padding */
             width: 100px; height: 120px; border: 1px solid #000;
             padding: 3px; background: #fff;
+            margin-top: 100px;
         }
         
         .content-text {
