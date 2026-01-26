@@ -135,10 +135,11 @@ try {
             position: relative; 
         }
         
-        /* Photo on LEFT Layout as per sample image */
-        /* Photo on LEFT Layout as per sample image */
+        /* Photo on LEFT Layout - Using Float Approach */
         .header-photo {
-            position: absolute; top: 10px !important; left: 85px !important; 
+            float: left;
+            margin-top: 180px; /* Pushes image down */
+            margin-left: 10px;
             width: 100px; height: 120px; border: 1px solid #000;
             padding: 3px; background: #fff;
         }
@@ -217,7 +218,7 @@ try {
             </div>
             <div style="font-size: 10px; color: #333; margin-top: 5px;">
                 This Certificate/Diploma is issued by IAGCSM Education Pvt. Ltd.<br>
-                Result may be verified on www.arigcsm.org
+                Result may be verified on www.screduc.com
             </div>
         </div>
 
