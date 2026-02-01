@@ -735,10 +735,19 @@
     </style>
 </head>
 <?php
-// Dynamically get the base URL (works for both root and subfolder installs)
+// Dynamically get the base URL (works for root and subfolders like pages, admin etc)
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
 $domain = $_SERVER['HTTP_HOST'];
-$basePath = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+$scriptDir = dirname($_SERVER['SCRIPT_NAME']);
+
+// Normalize slashes to forward slashes for consistency
+$scriptDir = str_replace('\\', '/', $scriptDir);
+
+// Strip known subdirectories to get the project root
+// Add more subdirectories here if needed
+$scriptDir = str_ireplace(['/pages', '/admin', '/center', '/student'], '', $scriptDir);
+
+$basePath = rtrim($scriptDir, '/');
 $baseUrl = $protocol . $domain . ($basePath === '/' ? '' : $basePath);
 ?>
 <body>
