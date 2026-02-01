@@ -29,7 +29,7 @@ if (isset($pdo)) {
 <style>
     .students-section-wrapper {
         padding: 60px 0;
-        background-color: #f8f9fa;
+        background-color: #fff;
         font-family: 'Poppins', sans-serif;
         position: relative;
     }
