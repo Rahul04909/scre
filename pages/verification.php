@@ -46,110 +46,187 @@ if (file_exists('../includes/header.php')) {
     echo "<!-- Header not found -->"; 
 }
 ?>
-
 <style>
+    :root {
+        --warm-brown: #6d4c41;
+        --deep-brown: #4e342e;
+        --charcoal-brown: #3e2723;
+        --soft-ivory: #fff9f3;
+        --muted-gold: #c5a059;
+        --border-beige: #e0d0b8;
+        --row-hover: #fcfbf9;
+        --pure-white: #ffffff;
+    }
+
     .verification-page-wrapper {
-        background-color: #f9fafb;
+        background-color: var(--pure-white);
         min-height: 80vh;
-        padding: 50px 0;
+        padding: 60px 0;
         font-family: 'Poppins', sans-serif;
     }
     
     .verification-container {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 0 15px;
+        padding: 0 20px;
     }
 
     .page-title {
-        font-size: 2rem;
+        font-size: 2.2rem;
         font-weight: 700;
-        color: #1f2937;
-        margin-bottom: 30px;
+        color: var(--deep-brown);
+        margin-bottom: 40px;
         text-align: center;
         text-transform: uppercase;
-        letter-spacing: 1px;
+        letter-spacing: 1.5px;
+        position: relative;
+        padding-bottom: 15px;
+    }
+
+    .page-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: var(--muted-gold);
+        border-radius: 2px;
     }
 
     .verification-table-card {
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        background: var(--pure-white);
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(109, 76, 65, 0.08); /* Warm shadow */
         overflow: hidden;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--border-beige);
     }
 
     .custom-table {
         width: 100%;
-        border-collapse: collapse;
+        border-collapse: separate;
+        border-spacing: 0;
         margin-bottom: 0;
     }
 
     .custom-table thead {
-        background-color: #111827; /* Dark header */
-        color: #ffffff;
+        background: linear-gradient(135deg, var(--deep-brown), var(--charcoal-brown));
+        color: var(--soft-ivory);
     }
 
-    .custom-table th, 
-    .custom-table td {
-        padding: 15px 20px;
+    .custom-table th {
+        padding: 18px 24px;
         text-align: left;
-        border-bottom: 1px solid #e5e7eb;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        letter-spacing: 0.8px;
+        border-bottom: 3px solid var(--muted-gold);
+        border-right: 1px solid rgba(255,255,255,0.1);
     }
 
-    /* Vertical borders for solid look */
-    .custom-table th,
-    .custom-table td {
-        border-right: 1px solid #e5e7eb;
+    .custom-table th:last-child {
+        border-right: none;
     }
-    
-    .custom-table th:last-child,
+
+    .custom-table td {
+        padding: 18px 24px;
+        text-align: left;
+        border-bottom: 1px solid var(--border-beige);
+        border-right: 1px solid #f0e7d9;
+        color: #5d4037;
+        font-size: 0.95rem;
+        transition: background-color 0.2s ease;
+    }
+
     .custom-table td:last-child {
         border-right: none;
     }
 
-    .custom-table th {
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 0.85rem;
-        letter-spacing: 0.5px;
-        border-right-color: #374151; /* Lighter border for dark header */
+    .custom-table tbody tr {
+        background-color: var(--pure-white);
+        transition: all 0.2s ease;
+    }
+
+    /* Zebra Rows */
+    .custom-table tbody tr:nth-child(even) {
+        background-color: #fffcf8; /* Very subtle warm tint */
     }
 
     .custom-table tbody tr:hover {
-        background-color: #f3f4f6;
+        background-color: var(--soft-ivory);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        position: relative;
+        z-index: 1;
     }
 
     .doc-date {
         font-size: 0.9rem;
-        color: #6b7280;
+        color: #8d6e63;
+        font-style: italic;
+    }
+
+    .student-name {
+        color: var(--deep-brown);
+        font-weight: 600;
+    }
+
+    .doc-title {
+        color: var(--warm-brown);
+    }
+    
+    .doc-title i {
+        color: var(--muted-gold);
+        margin-right: 8px;
     }
 
     .btn-download {
         display: inline-flex;
         align-items: center;
-        padding: 8px 16px;
-        background-color: #2563eb;
-        color: #fff;
+        justify-content: center;
+        padding: 8px 18px;
+        background: linear-gradient(to right, var(--warm-brown), #5d4037);
+        color: var(--pure-white);
         font-size: 0.85rem;
         font-weight: 500;
-        border-radius: 6px;
+        border-radius: 50px; /* Fully rounded */
         text-decoration: none;
-        transition: background-color 0.2s;
+        transition: all 0.3s ease;
         border: none;
         cursor: pointer;
+        box-shadow: 0 2px 5px rgba(109, 76, 65, 0.2);
     }
 
     .btn-download:hover {
-        background-color: #1d4ed8;
-        color: #fff;
+        background: linear-gradient(to right, #8d6e63, #6d4c41);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(109, 76, 65, 0.3);
+        color: var(--soft-ivory);
     }
     
     .btn-download i {
-        margin-right: 6px;
+        margin-right: 8px;
+        font-size: 0.9rem;
     }
     
-    @media (max-width: 768px) {
+    /* Sr. No. Styling */
+    .sr-no-badge {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        background-color: var(--soft-ivory);
+        color: var(--deep-brown);
+        border-radius: 50%;
+        font-weight: 600;
+        font-size: 0.85rem;
+        border: 1px solid var(--border-beige);
+    }
+
+    @media (max-width: 900px) {
         .custom-table thead {
             display: none;
         }
@@ -158,28 +235,41 @@ if (file_exists('../includes/header.php')) {
             width: 100%;
         }
         .custom-table tr {
-            margin-bottom: 15px;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            background: #fff;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-beige);
+            border-radius: 12px;
+            background: var(--pure-white);
             overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         .custom-table td {
             text-align: right;
             padding-left: 50%;
             position: relative;
             border-right: none;
+            border-bottom: 1px solid #f0e7d9;
+        }
+        .custom-table td:last-child {
+            border-bottom: none;
+            background-color: #faf7f2;
+            text-align: center;
+            padding: 15px;
         }
         .custom-table td::before {
             content: attr(data-label);
             position: absolute;
-            left: 15px;
+            left: 20px;
             width: 45%;
             padding-right: 10px;
             white-space: nowrap;
             text-align: left;
-            font-weight: 600;
-            color: #4b5563;
+            font-weight: 700;
+            color: var(--warm-brown);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+        .btn-download {
+            width: 100%;
         }
     }
 </style>
