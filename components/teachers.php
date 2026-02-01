@@ -1,5 +1,23 @@
 <?php
 // Teachers Component
+// Ensure DB connection
+if (!isset($pdo)) {
+    $configPath = __DIR__ . '/../database/config.php';
+    if (file_exists($configPath)) {
+        require_once $configPath;
+    }
+}
+
+// Fetch Teachers
+$teachers_list = [];
+if (isset($pdo)) {
+    try {
+        $stmt = $pdo->query("SELECT * FROM teachers ORDER BY display_order ASC, created_at DESC");
+        $teachers_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        // Silently fail or log error
+    }
+}
 ?>
 <!-- Bootstrap 5 CSS (Ensure this is loaded in your header or here) -->
 <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
@@ -159,29 +177,6 @@
         color: #ff9800; /* Highlight color */
     }
 
-    /* Scroll/Navigation Buttons */
-    .scroll-btn {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background-color: #1a2c3f;
-        color: #fff;
-        border: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50);
-        z-index: 10;
-        transition: all 0.3s ease;
-    }
-    
-    .scroll-btn:hover {
-        background-color: #ff9800;
-    }
-
     /* Responsive */
     @media (max-width: 768px) {
         .teachers-title {
@@ -213,7 +208,7 @@
         </div>
     </div>
 
-    <!-- Features (from image top part) -->
+    <!-- Features -->
     <div class="feature-row">
         <div class="feature-item">
             <div class="feature-icon"><i class="fas fa-graduation-cap"></i></div>
@@ -225,73 +220,44 @@
         </div>
         <div class="feature-item">
             <div class="feature-icon"><i class="fas fa-hourglass-half"></i></div>
-            <div class="feature-text">Teaching experience of over 4.5 crore hours to 10 lakh students.</div>
+            <div class="feature-text">Teaching experience of over 4.5 crore hours to students.</div>
         </div>
     </div>
 
     <!-- Teacher Cards Grid -->
     <div class="row g-4 justify-content-center">
         
-        <!-- Teacher 1 -->
-        <div class="col-xl-3 col-lg-4 col-md-6 col-10">
-            <div class="teacher-card">
-                <div class="teacher-image-wrapper">
-                    <!-- Placeholder for transparent PNG cutout -->
-                    <img src="https://png.pngtree.com/png-vector/20230928/ourmid/pngtree-young-indian-man-png-image_10149659.png" class="teacher-img" alt="Teacher">
+        <?php if (!empty($teachers_list)): ?>
+            <?php foreach ($teachers_list as $teacher): ?>
+                <div class="col-xl-3 col-lg-4 col-md-6 col-10">
+                    <div class="teacher-card">
+                        <div class="teacher-image-wrapper">
+                            <img src="<?php echo htmlspecialchars($teacher['image_path']); ?>" class="teacher-img" alt="<?php echo htmlspecialchars($teacher['name']); ?>">
+                        </div>
+                        <div class="teacher-info-card">
+                            <?php if (!empty($teacher['experience_years'])): ?>
+                                <span class="exp-badge"><?php echo htmlspecialchars($teacher['experience_years']); ?> years exp</span>
+                            <?php endif; ?>
+                            
+                            <h3 class="teacher-name"><?php echo htmlspecialchars($teacher['name']); ?></h3>
+                            
+                            <?php if (!empty($teacher['designation'])): ?>
+                                <p class="teacher-designation"><?php echo htmlspecialchars($teacher['designation']); ?></p>
+                            <?php endif; ?>
+                            
+                            <?php if (!empty($teacher['college'])): ?>
+                                <p class="teacher-college"><?php echo htmlspecialchars($teacher['college']); ?></p>
+                            <?php endif; ?>
+                        </div>
+                    </div>
                 </div>
-                <div class="teacher-info-card">
-                    <span class="exp-badge">10+ years exp</span>
-                    <h3 class="teacher-name">Rahul Sharma</h3>
-                    <p class="teacher-designation">Chemistry Master Teacher</p>
-                    <p class="teacher-college">IIT Bombay</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Teacher 2 -->
-        <div class="col-xl-3 col-lg-4 col-md-6 col-10">
-            <div class="teacher-card">
-                <div class="teacher-image-wrapper">
-                    <img src="https://png.pngtree.com/png-vector/20240321/ourmid/pngtree-young-man-expression-png-image_12015521.png" class="teacher-img" alt="Teacher">
-                </div>
-                <div class="teacher-info-card">
-                    <span class="exp-badge">9+ years exp</span>
-                    <h3 class="teacher-name">Harsh Priyam</h3>
-                    <p class="teacher-designation">Math Master Teacher</p>
-                    <p class="teacher-college">BIT Durg</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Teacher 3 -->
-        <div class="col-xl-3 col-lg-4 col-md-6 col-10">
-            <div class="teacher-card">
-                <div class="teacher-image-wrapper">
-                    <img src="https://png.pngtree.com/png-vector/20230906/ourmid/pngtree-man-in-blue-shirt-png-image_10006245.png" class="teacher-img" alt="Teacher">
-                </div>
-                <div class="teacher-info-card">
-                    <span class="exp-badge">12+ years exp</span>
-                    <h3 class="teacher-name">Shreyas</h3>
-                    <p class="teacher-designation">Physics Master Teacher</p>
-                    <p class="teacher-college">NIT Nagpur</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Teacher 4 -->
-        <div class="col-xl-3 col-lg-4 col-md-6 col-10">
-            <div class="teacher-card">
-                <div class="teacher-image-wrapper">
-                    <img src="https://png.pngtree.com/png-vector/20240205/ourmid/pngtree-indian-teacher-teaching-and-giving-lecture-png-image_11612043.png" class="teacher-img" alt="Teacher">
-                </div>
-                <div class="teacher-info-card">
-                    <span class="exp-badge">14+ years exp</span>
-                    <h3 class="teacher-name">Rama</h3>
-                    <p class="teacher-designation">Physics Master Teacher</p>
-                    <p class="teacher-college">M.Sc University</p>
-                </div>
-            </div>
-        </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+             <!-- Fallback if no teachers in DB yet, or simple message -->
+             <div class="col-12 text-center text-muted">
+                 <p>Our expert teachers will be listed here soon.</p>
+             </div>
+        <?php endif; ?>
 
     </div>
 
