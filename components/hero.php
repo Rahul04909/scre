@@ -9,6 +9,7 @@
         margin-top: 20px;
         margin-bottom: 40px;
         font-family: 'Poppins', sans-serif;
+        max-width: 95%; /* Increased width as requested */
     }
 
     .hero-container {
