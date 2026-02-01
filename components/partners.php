@@ -1,5 +1,23 @@
 <?php
 // Partners Component
+// Ensure DB connection
+if (!isset($pdo)) {
+    $configPath = __DIR__ . '/../database/config.php';
+    if (file_exists($configPath)) {
+        require_once $configPath;
+    }
+}
+
+// Fetch Partners
+$partners_list = [];
+if (isset($pdo)) {
+    try {
+        $stmt = $pdo->query("SELECT * FROM partners ORDER BY display_order ASC, created_at DESC");
+        $partners_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        $partners_list = [];
+    }
+}
 ?>
 <style>
     .partners-section-wrapper {
@@ -42,7 +60,7 @@
     /* Ticker Animation */
     @keyframes ticker {
         0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); } /* Move half the width (since we duplicate content) */
+        100% { transform: translateX(-50%); } /* Move half (since we duplicate content) */
     }
 
     .partners-ticker-wrapper {
@@ -75,17 +93,17 @@
 
     .partners-track {
         display: flex;
-        width: max-content; /* Allow track to be as wide as needed */
-        animation: ticker 30s linear infinite; /* Adjust speed here */
+        width: max-content;
+        animation: ticker 30s linear infinite;
     }
     
     .partners-track:hover {
-        animation-play-state: paused; /* Pause on hover */
+        animation-play-state: paused;
     }
 
     .partner-logo-item {
         flex: 0 0 auto;
-        width: 200px; /* Width of each logo slot */
+        width: 200px;
         padding: 0 30px;
         display: flex;
         align-items: center;
@@ -96,7 +114,6 @@
         max-width: 100%;
         max-height: 80px;
         object-fit: contain;
-        /* No grayscale filter as requested */
         transition: transform 0.3s ease;
     }
 
@@ -108,7 +125,7 @@
     @media (max-width: 768px) {
         .partners-title { font-size: 1.5rem; }
         .partner-logo-item { width: 150px; padding: 0 20px; }
-        .partners-track { animation-duration: 20s; } /* Faster on small screens visually */
+        .partners-track { animation-duration: 20s; }
     }
 </style>
 
@@ -117,30 +134,37 @@
         
         <h2 class="partners-title">Our Trusted <span>Partners</span></h2>
 
-        <div class="partners-ticker-wrapper">
-            <div class="partners-track">
-                <!-- Logos (Duplicated for infinite scroll effect) -->
-                <!-- Set 1 -->
-                <div class="partner-logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" class="partner-logo" alt="Google"></div>
-                <div class="partner-logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" class="partner-logo" alt="Microsoft"></div>
-                <div class="partner-logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" class="partner-logo" alt="IBM"></div>
-                <div class="partner-logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Cisco_logo_blue_2016.svg" class="partner-logo" alt="Cisco"></div>
-                <div class="partner-logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" class="partner-logo" alt="Netflix"></div>
-                <div class="partner-logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" class="partner-logo" alt="Amazon"></div>
-                <div class="partner-logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/3/30/Red_Hat_Logo.png" class="partner-logo" alt="RedHat"></div>
-                <div class="partner-logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Arduino_Logo.svg" class="partner-logo" alt="Arduino"></div>
+        <?php if (!empty($partners_list)): ?>
+            <div class="partners-ticker-wrapper">
+                <div class="partners-track">
+                    <!-- Original Set -->
+                    <?php foreach ($partners_list as $partner): ?>
+                        <div class="partner-logo-item">
+                            <img src="<?php echo htmlspecialchars($partner['logo_path']); ?>" class="partner-logo" alt="<?php echo htmlspecialchars($partner['name']); ?>">
+                        </div>
+                    <?php endforeach; ?>
 
-                <!-- Set 2 (Duplicate of Set 1) -->
-                <div class="partner-logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" class="partner-logo" alt="Google"></div>
-                <div class="partner-logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" class="partner-logo" alt="Microsoft"></div>
-                <div class="partner-logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" class="partner-logo" alt="IBM"></div>
-                <div class="partner-logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Cisco_logo_blue_2016.svg" class="partner-logo" alt="Cisco"></div>
-                <div class="partner-logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" class="partner-logo" alt="Netflix"></div>
-                <div class="partner-logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" class="partner-logo" alt="Amazon"></div>
-                <div class="partner-logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/3/30/Red_Hat_Logo.png" class="partner-logo" alt="RedHat"></div>
-                <div class="partner-logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Arduino_Logo.svg" class="partner-logo" alt="Arduino"></div>
+                    <!-- Duplicate Set for Layout Continuity (if < 10 items, maybe tripicate) -->
+                    <?php 
+                        // Ensure we have enough length for smooth scroll
+                        $repeat_count = count($partners_list) < 5 ? 4 : 1; 
+                        for ($i = 0; $i < $repeat_count; $i++):
+                            foreach ($partners_list as $partner): 
+                    ?>
+                            <div class="partner-logo-item">
+                                <img src="<?php echo htmlspecialchars($partner['logo_path']); ?>" class="partner-logo" alt="<?php echo htmlspecialchars($partner['name']); ?>">
+                            </div>
+                    <?php 
+                            endforeach;
+                        endfor; 
+                    ?>
+                </div>
             </div>
-        </div>
+        <?php else: ?>
+            <div class="text-center text-muted">
+                <p>We are partnering with top industry leaders. Logos coming soon.</p>
+            </div>
+        <?php endif; ?>
 
     </div>
 </div>
