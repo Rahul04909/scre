@@ -2,4 +2,5 @@
 <?php include 'components/hero.php'; ?>
 <?php include 'components/teachers.php'; ?>
 <?php include 'components/courses.php'; ?>
+<?php include 'components/partners.php'; ?>
 <?php include 'includes/footer.php'; ?>
