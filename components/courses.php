@@ -204,7 +204,7 @@ if (isset($pdo)) {
                                         <span class="fees-label">Course Fees</span>
                                         <span class="course-fees">₹<?php echo number_format($course['course_fees'], 2); ?></span>
                                     </div>
-                                    <a href="course-details.php?id=<?php echo $course['id']; ?>" class="btn-apply">Apply Now</a>
+                                    <a href="course-details.php?id=<?php echo $course['id']; ?>" class="btn-apply text-center w-100">View Details</a>
                                 </div>
                             </div>
                         </div>
