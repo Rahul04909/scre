@@ -4,4 +4,5 @@
 <?php include 'components/courses.php'; ?>
 <?php include 'components/students.php'; ?>
 <?php include 'components/partners.php'; ?>
+<?php include 'components/news-ticker.php'; ?>
 <?php include 'includes/footer.php'; ?>
