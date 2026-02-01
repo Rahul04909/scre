@@ -16,18 +16,17 @@ if (file_exists('../database/config.php')) {
 $documents = [];
 if (isset($pdo)) {
     try {
-        // Query to join students and qualifications
+        // Query to fetch from dedicated verification_documents table
         $sql = "SELECT 
-                    sq.id, 
-                    sq.doc_name, 
-                    sq.file_path, 
-                    sq.created_at, 
-                    s.first_name, 
-                    s.last_name, 
-                    s.father_name
-                FROM student_qualifications sq
-                JOIN students s ON sq.student_id = s.id
-                ORDER BY sq.created_at DESC";
+                    id, 
+                    student_name as first_name, 
+                    '' as last_name, 
+                    father_name, 
+                    document_title as doc_name, 
+                    file_path, 
+                    created_at 
+                FROM verification_documents
+                ORDER BY created_at DESC";
                 
         $stmt = $pdo->query($sql);
         $documents = $stmt->fetchAll(PDO::FETCH_ASSOC);
