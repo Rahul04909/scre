@@ -42,23 +42,44 @@ $total_fees = $course['course_fees'] + $course['admission_fees'] + ($course['exa
         font-family: 'Poppins', sans-serif;
     }
 
-    /* Hero Banner Section (Reused CD classes for consistency) */
     .cd-hero {
         position: relative;
         height: 350px;
-        background-color: #2c3e50;
-        background-image: url('<?php echo !empty($course['course_image']) ? $course['course_image'] : "assets/img/default-course-banner.jpg"; ?>');
-        background-size: cover;
-        background-position: center;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); /* Deep Professional Slate/Blue */
+        overflow: hidden;
+    }
+
+    /* Abstract background shapes */
+    .cd-hero::before {
+        content: '';
+        position: absolute;
+        top: -100px;
+        right: -100px;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 70%);
+        border-radius: 50%;
+    }
+
+    .cd-hero::after {
+        content: '';
+        position: absolute;
+        bottom: -50px;
+        left: -50px;
+        width: 300px;
+        height: 300px;
+        background: rgba(255,255,255,0.02);
+        border-radius: 50%;
     }
 
     .cd-hero-overlay {
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
-        background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%);
+        /* background: linear-gradient(...); Removed since we use a solid background */
         display: flex;
         align-items: flex-end;
         padding-bottom: 40px;
+        z-index: 10; /* Ensure content is above abstract shapes */
     }
 
     .cd-header-content {
