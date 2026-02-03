@@ -172,24 +172,35 @@
 
         .menu {
             display: inline-flex; /* Fit to content */
-            flex-wrap: wrap;
-            justify-content: center;
+            flex-wrap: nowrap; /* Prevent wrapping */
+            justify-content: flex-start; /* Start align to allow scrolling if needed, margin auto handles centering if fitting */
             flex-direction: row;
             list-style: none;
             align-items: center;
             gap: 0;
             width: auto; /* Allow menu to shrink */
+            max-width: 100%;
             min-height: 48px;
             max-height: none;
             height: auto;
             padding: 0 15px; /* Increased side padding for aesthetics */
             background: #fff9f3;
-            overflow: visible;
+            overflow: visible; /* Default, but overridden below for scroll */
+            overflow-x: auto; /* Allow horizontal scroll */
             border-radius: 10px;
             box-shadow: 0 1px 6px 0 #f8f1e4;
             transition: max-height 0.3s ease;
             white-space: nowrap; /* Added to prevent wrapping */
         }
+        
+        /* Ensure centering when content fits */
+        @media (min-width: 769px) {
+            .menu {
+                justify-content: center; /* Center if it fits */
+            }
+            /* If it overflows, justify-content center can be tricky, but inline-flex usually handles it well */
+        }
+
         @media (max-width: 768px) {
             .main-nav {
                 padding: 8px 0;
