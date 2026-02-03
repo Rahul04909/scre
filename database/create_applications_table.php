@@ -2,6 +2,9 @@
 require_once 'config.php';
 
 try {
+    // Drop if exists to ensure we start fresh (optional, but good for debugging)
+    // $pdo->exec("DROP TABLE IF EXISTS applications");
+
     $sql = "CREATE TABLE IF NOT EXISTS applications (
         id INT AUTO_INCREMENT PRIMARY KEY,
         course_id INT NOT NULL,
@@ -14,10 +17,8 @@ try {
         state_id INT,
         city_id INT,
         status ENUM('Pending', 'Approved', 'Rejected') DEFAULT 'Pending',
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
-        FOREIGN KEY (center_id) REFERENCES centers(id) ON DELETE SET NULL
-    )";
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
     
     $pdo->exec($sql);
     echo "Table 'applications' created successfully.";
