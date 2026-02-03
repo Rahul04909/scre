@@ -129,12 +129,12 @@
         .nav-container {
             display: flex;
             align-items: center;
-            max-width: 100%; /* Changed from 1400px */
+            max-width: 100%;
             width: 100%;
             margin: 0 auto;
             padding: 0 20px;
             box-sizing: border-box;
-            /* Removed overflow-x: clip; */
+            justify-content: center; /* Center the menu container */
         }
 
         .hamburger {
@@ -171,19 +171,18 @@
         }
 
         .menu {
-            display: flex;
+            display: inline-flex; /* Fit to content */
             flex-wrap: wrap;
             justify-content: center;
             flex-direction: row;
             list-style: none;
-            justify-content: center;
             align-items: center;
             gap: 0;
-            width: 100%;
+            width: auto; /* Allow menu to shrink */
             min-height: 48px;
             max-height: none;
             height: auto;
-            padding: 0 5px;
+            padding: 0 15px; /* Increased side padding for aesthetics */
             background: #fff9f3;
             overflow: visible;
             border-radius: 10px;
