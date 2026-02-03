@@ -173,23 +173,22 @@
         .menu {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
+            justify-content: flex-start; /* Changed from center to flex-start for left alignment */
             flex-direction: row;
             list-style: none;
-            justify-content: center;
             align-items: center;
             gap: 0;
             width: 100%;
             min-height: 48px;
             max-height: none;
             height: auto;
-            padding: 0 5px;
+            padding: 0; /* Reduced from 0 5px */
             background: #fff9f3;
             overflow: visible;
             border-radius: 10px;
             box-shadow: 0 1px 6px 0 #f8f1e4;
             transition: max-height 0.3s ease;
-            white-space: nowrap; /* Added to prevent wrapping */
+            white-space: nowrap;
         }
         @media (max-width: 768px) {
             .main-nav {
@@ -328,7 +327,7 @@
             text-decoration: none;
             color: var(--warm-brown);
             font-weight: 500;
-            padding: 7px 13px;
+            padding: 7px 10px; /* Reduced padding from 7px 13px */
             transition: background 0.2s, color 0.2s;
             position: relative;
             border-radius: 7px;
