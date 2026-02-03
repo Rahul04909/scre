@@ -174,22 +174,17 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            flex-direction: row;
-            list-style: none;
-            justify-content: center;
             align-items: center;
-            gap: 0;
+            gap: 10px; /* Added gap for spacing */
             width: 100%;
             min-height: 48px;
-            max-height: none;
             height: auto;
-            padding: 0 5px;
+            padding: 8px 15px; /* More padding */
             background: #fff9f3;
-            overflow: visible;
-            border-radius: 10px;
-            box-shadow: 0 1px 6px 0 #f8f1e4;
-            transition: max-height 0.3s ease;
-            white-space: nowrap; /* Added to prevent wrapping */
+            border-radius: 50px; /* Pill shape container */
+            box-shadow: 0 4px 20px rgba(109, 76, 65, 0.08); /* Softer shadow */
+            margin: 0 auto; /* Ensure centering */
+            max-width: fit-content; /* Shrink to fit content for perfect centering */
         }
         @media (max-width: 768px) {
             .main-nav {
@@ -313,12 +308,10 @@
             position: relative;
             display: flex;
             align-items: center;
-            background: none;
-            border-radius: 0;
             margin: 0;
             padding: 0;
-            height: 44px;
-            border-left: 1px solid #f0e7d9;
+            height: auto;
+            border: none; /* Removed borders */
         }
         .menu-item:first-child {
             border-left: none;
@@ -327,18 +320,17 @@
         .menu-link {
             text-decoration: none;
             color: var(--warm-brown);
-            font-weight: 500;
-            padding: 7px 13px;
-            transition: background 0.2s, color 0.2s;
+            font-weight: 600; /* Slightly bolder */
+            padding: 8px 18px; /* Larger click area */
+            transition: all 0.3s ease;
             position: relative;
-            border-radius: 7px;
-            background: none;
-            margin: 0;
+            border-radius: 25px; /* Rounded pill links */
+            background: transparent;
             display: flex;
             align-items: center;
-            gap: 7px;
+            gap: 8px;
             font-size: 15px;
-            height: 100%;
+            letter-spacing: 0.3px;
         }
         .menu-link i, .menu-link svg {
             color: var(--warm-brown);
@@ -348,29 +340,19 @@
         }
 
         .menu-link:after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: var(--pastel-orange);
-            transition: width 0.3s ease;
+            display: none; /* Removing the underline effect in favor of pill bg */
         }
 
-        .menu-link:hover, .menu-link:focus {
+        .menu-link:hover, .menu-link:focus, .menu-item:hover .menu-link {
             color: #fff;
-            background: linear-gradient(90deg, var(--pastel-orange), var(--warm-brown));
-            transition: background 0.2s, color 0.2s;
-            outline: none;
+            background: var(--warm-brown); /* Solid color on hover */
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(109, 76, 65, 0.2);
         }
         .menu-link:hover i, .menu-link:focus i,
-        .menu-link:hover svg, .menu-link:focus svg {
+        .menu-link:hover svg, .menu-link:focus svg,
+        .menu-item:hover .menu-link i {
             color: #fff;
-        }
-
-        .menu-link:hover:after {
-            width: 100%;
         }
 
         /* Dropdown Menu */
