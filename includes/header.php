@@ -780,6 +780,7 @@ $baseUrl = $protocol . $domain . ($basePath === '/' ? '' : $basePath);
                 <li class="menu-item"><a href="#" class="menu-link"><i class="fas fa-university"></i>Center Registration</a></li>
                 <li class="menu-item"><a href="<?php echo $baseUrl; ?>/gallery.php" class="menu-link"><i class="fas fa-images"></i>Gallery</a></li>
                 <li class="menu-item"><a href="<?php echo $baseUrl; ?>/our-partners.php" class="menu-link"><i class="fas fa-handshake"></i>Partners</a></li>
+                <li clas="menu-item"><a href="<?php echo $baseUrl; ?>/contact.php" class="menu-link"><i class="fas fa-user"></i>Login</a></li>
 
             </ul>
         </div>
