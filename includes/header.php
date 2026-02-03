@@ -173,22 +173,23 @@
         .menu {
             display: flex;
             flex-wrap: wrap;
-            justify-content: flex-start; /* Changed from center to flex-start for left alignment */
+            justify-content: center;
             flex-direction: row;
             list-style: none;
+            justify-content: center;
             align-items: center;
             gap: 0;
             width: 100%;
             min-height: 48px;
             max-height: none;
             height: auto;
-            padding: 0; /* Reduced from 0 5px */
+            padding: 0 5px;
             background: #fff9f3;
             overflow: visible;
             border-radius: 10px;
             box-shadow: 0 1px 6px 0 #f8f1e4;
             transition: max-height 0.3s ease;
-            white-space: nowrap;
+            white-space: nowrap; /* Added to prevent wrapping */
         }
         @media (max-width: 768px) {
             .main-nav {
@@ -262,36 +263,7 @@
                 border-radius: 0;
                 gap: 10px;
             }
-            .dropdown {
-                position: static;
-                width: 100%;
-                box-shadow: none;
-                border-radius: 0;
-                border: none;
-                background: #f8f1e4;
-                padding: 0;
-                margin: 0;
-                max-height: 0;
-                overflow: hidden;
-                transition: max-height 0.3s ease-in-out;
-                opacity: 1;
-                visibility: visible;
-                transform: none;
-            }
-            .menu-item.active .dropdown {
-                max-height: 300px;
-                padding: 5px 0;
-            }
-            .dropdown-item {
-                width: 100%;
-            }
-            .dropdown-link {
-                width: 100%;
-                padding: 10px 30px;
-                font-size: 0.95rem;
-                border-radius: 0;
-                text-align: left;
-            }
+
         }
         .menu::-webkit-scrollbar {
             height: 8px;
@@ -327,7 +299,7 @@
             text-decoration: none;
             color: var(--warm-brown);
             font-weight: 500;
-            padding: 7px 10px; /* Reduced padding from 7px 13px */
+            padding: 7px 13px;
             transition: background 0.2s, color 0.2s;
             position: relative;
             border-radius: 7px;
@@ -372,62 +344,7 @@
             width: 100%;
         }
 
-        /* Dropdown Menu */
-        .dropdown {
-            position: absolute;
-            top: calc(100% + 6px);
-            left: 50%;
-            transform: translateX(-50%) translateY(0);
-            background-color: #fff;
-            min-width: 200px;
-            width: max-content;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-            border-radius: 8px;
-            padding: 8px 0;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s, top 0.3s;
-            z-index: 9999;
-            border: 1px solid #f0f0f0;
-            overflow: visible;
-        }
-        .menu-item:last-child {
-            position: relative;
-        }
-        .menu-item:hover .dropdown,
-        .menu-item:focus-within .dropdown {
-            opacity: 1;
-            visibility: visible;
-            top: calc(100% + 6px);
-            pointer-events: auto;
-        }
 
-        .menu-item:hover .dropdown {
-            opacity: 1;
-            visibility: visible;
-            top: calc(100% + 8px);
-            pointer-events: auto;
-        }
-
-        .dropdown-item {
-            list-style: none;
-        }
-
-        .dropdown-link {
-            display: block;
-            padding: 10px 24px;
-            color: var(--dark-grey);
-            text-decoration: none;
-            transition: background 0.2s, color 0.2s;
-            font-size: 15px;
-            white-space: nowrap;
-        }
-
-        .dropdown-link:hover {
-            background-color: var(--cream-medium);
-            color: var(--warm-brown);
-            border-radius: 5px;
-        }
 
         /* Responsive Styles */
         @media (max-width: 992px) and (min-width: 769px) {
@@ -863,14 +780,7 @@ $baseUrl = $protocol . $domain . ($basePath === '/' ? '' : $basePath);
                 <li class="menu-item"><a href="#" class="menu-link"><i class="fas fa-university"></i>Center Registration</a></li>
                 <li class="menu-item"><a href="<?php echo $baseUrl; ?>/gallery.php" class="menu-link"><i class="fas fa-images"></i>Gallery</a></li>
                 <li class="menu-item"><a href="<?php echo $baseUrl; ?>/our-partners.php" class="menu-link"><i class="fas fa-handshake"></i>Partners</a></li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link"><i class="fas fa-sign-in-alt"></i>Login</a>
-                    <ul class="dropdown">
-                        <li class="dropdown-item"><a href="<?php echo $baseUrl; ?>/student/index.php" class="dropdown-link">Student Dashboard</a></li>
-                        <li class="dropdown-item"><a href="<?php echo $baseUrl; ?>/center/index.php" class="dropdown-link">Center Dashboard</a></li>
-                    </ul>
-                </li>
-                <li class="menu-item"><a href="<?php echo $baseUrl; ?>/contact.php" class="menu-link"><i class="fas fa-envelope"></i>Contact Us</a></li>
+
             </ul>
         </div>
     </nav>
@@ -885,49 +795,9 @@ $baseUrl = $protocol . $domain . ($basePath === '/' ? '' : $basePath);
             menu.classList.toggle('active');
         });
 
-        // Handle mobile menu dropdowns
-        function setupMobileMenu() {
-            const menuItems = document.querySelectorAll('.menu-item');
 
-            // Remove existing event listeners first
-            menuItems.forEach(item => {
-                const menuLink = item.querySelector('.menu-link');
-                if (menuLink) {
-                    const newMenuLink = menuLink.cloneNode(true);
-                    menuLink.parentNode.replaceChild(newMenuLink, menuLink);
-                }
-            });
 
-            // Add new event listeners based on window width
-            if (window.innerWidth <= 768) {
-                menuItems.forEach(item => {
-                    if (item.querySelector('.dropdown')) {
-                        const menuLink = item.querySelector('.menu-link');
-                        menuLink.addEventListener('click', function(e) {
-                            e.preventDefault();
-                            e.stopPropagation();
 
-                            // Close other open dropdowns
-                            menuItems.forEach(otherItem => {
-                                if (otherItem !== item && otherItem.classList.contains('active')) {
-                                    otherItem.classList.remove('active');
-                                }
-                            });
-
-                            item.classList.toggle('active');
-                        });
-                    }
-                });
-            }
-        }
-
-        // Setup mobile menu on page load
-        setupMobileMenu();
-
-        // Update mobile menu on window resize
-        window.addEventListener('resize', function() {
-            setupMobileMenu();
-        });
         // Header center staggered animation
         window.addEventListener('DOMContentLoaded', function() {
             const lines = document.querySelectorAll('.header-center-animated');
