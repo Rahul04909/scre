@@ -187,16 +187,25 @@
             background: #fff9f3;
             overflow: visible; /* Default, but overridden below for scroll */
             overflow-x: auto; /* Allow horizontal scroll */
+            /* Hide scrollbar */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge */
             border-radius: 10px;
             box-shadow: 0 1px 6px 0 #f8f1e4;
             transition: max-height 0.3s ease;
             white-space: nowrap; /* Added to prevent wrapping */
         }
         
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .menu::-webkit-scrollbar {
+            display: none;
+        }
+
         /* Ensure centering when content fits */
         @media (min-width: 769px) {
             .menu {
                 justify-content: center; /* Center if it fits */
+                margin: 0 auto; /* Explicitly center the block */
             }
             /* If it overflows, justify-content center can be tricky, but inline-flex usually handles it well */
         }
