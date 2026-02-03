@@ -129,12 +129,12 @@
         .nav-container {
             display: flex;
             align-items: center;
-            max-width: 100%;
+            max-width: 100%; /* Changed from 1400px */
             width: 100%;
             margin: 0 auto;
             padding: 0 20px;
             box-sizing: border-box;
-            justify-content: center; /* Center the menu container */
+            /* Removed overflow-x: clip; */
         }
 
         .hamburger {
@@ -171,45 +171,26 @@
         }
 
         .menu {
-            display: inline-flex; /* Fit to content */
-            flex-wrap: nowrap; /* Prevent wrapping */
-            justify-content: flex-start; /* Start align to allow scrolling if needed, margin auto handles centering if fitting */
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             flex-direction: row;
             list-style: none;
+            justify-content: center;
             align-items: center;
             gap: 0;
-            width: auto; /* Allow menu to shrink */
-            max-width: 100%;
+            width: 100%;
             min-height: 48px;
             max-height: none;
             height: auto;
-            padding: 0 15px; /* Increased side padding for aesthetics */
+            padding: 0 5px;
             background: #fff9f3;
-            overflow: visible; /* Default, but overridden below for scroll */
-            overflow-x: auto; /* Allow horizontal scroll */
-            /* Hide scrollbar */
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* IE/Edge */
+            overflow: visible;
             border-radius: 10px;
             box-shadow: 0 1px 6px 0 #f8f1e4;
             transition: max-height 0.3s ease;
             white-space: nowrap; /* Added to prevent wrapping */
         }
-        
-        /* Hide scrollbar for Chrome, Safari and Opera */
-        .menu::-webkit-scrollbar {
-            display: none;
-        }
-
-        /* Ensure centering when content fits */
-        @media (min-width: 769px) {
-            .menu {
-                justify-content: center; /* Center if it fits */
-                margin: 0 auto; /* Explicitly center the block */
-            }
-            /* If it overflows, justify-content center can be tricky, but inline-flex usually handles it well */
-        }
-
         @media (max-width: 768px) {
             .main-nav {
                 padding: 8px 0;
