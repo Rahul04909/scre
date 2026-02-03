@@ -459,16 +459,65 @@ $total_fees = $course['course_fees'] + $course['admission_fees'] + ($course['exa
                         
                         <!-- Extra Card: Why Join? -->
                         <div class="cd-contact-card mt-4">
+                            <div class="cd-contact-header">
+                                <i class="fas fa-thumbs-up me-2"></i> Why Join This Course?
+                            </div>
                             <div class="cd-contact-body">
-                                <h6 class="fw-bold mb-3">Why Join This Course?</h6>
                                 <ul class="list-unstyled mb-0">
-                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Expert Faculty</li>
-                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Practical Training</li>
-                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Job Assistance</li>
-                                    <li class="mb-0"><i class="fas fa-check text-success me-2"></i> Recognized Certificate</li>
+                                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Expert Faculty</li>
+                                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Practical Training</li>
+                                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Job Assistance</li>
+                                    <li class="mb-0"><i class="fas fa-check-circle text-success me-2"></i> Recognized Certificate</li>
                                 </ul>
                             </div>
                         </div>
+
+                        <!-- Available Centers Card -->
+                        <?php
+                            // Fetch centers offering this course
+                            try {
+                                $sqlCenters = "SELECT c.id, c.center_name, c.center_code, ci.name as city_name, s.name as state_name 
+                                               FROM centers c
+                                               JOIN center_course_allotment cca ON c.id = cca.center_id
+                                               LEFT JOIN cities ci ON c.city = ci.id
+                                               LEFT JOIN states s ON c.state = s.id
+                                               WHERE cca.course_id = :course_id
+                                               ORDER BY c.center_name ASC LIMIT 5";
+                                $stmtCenters = $pdo->prepare($sqlCenters);
+                                $stmtCenters->execute([':course_id' => $course_id]);
+                                $allocated_centers = $stmtCenters->fetchAll(PDO::FETCH_ASSOC);
+                            } catch (PDOException $e) {
+                                $allocated_centers = [];
+                            }
+                        ?>
+                        
+                        <?php if (!empty($allocated_centers)): ?>
+                        <div class="cd-contact-card mt-4">
+                            <div class="cd-contact-header">
+                                <i class="fas fa-map-marker-alt me-2"></i> Available at Centers
+                            </div>
+                            <div class="cd-contact-body p-0">
+                                <ul class="list-group list-group-flush">
+                                    <?php foreach ($allocated_centers as $ac): ?>
+                                    <li class="list-group-item px-4 py-3">
+                                        <div class="fw-bold text-dark mb-1"><?php echo htmlspecialchars($ac['center_name']); ?></div>
+                                        <div class="small text-muted">
+                                            <i class="fas fa-map-pin me-1 text-danger"></i> 
+                                            <?php echo htmlspecialchars($ac['city_name'] . ', ' . $ac['state_name']); ?>
+                                        </div>
+                                        <div class="small text-muted">
+                                            <i class="fas fa-hashtag me-1 text-secondary"></i> 
+                                            Code: <?php echo htmlspecialchars($ac['center_code']); ?>
+                                        </div>
+                                        <a href="center-details.php?id=<?php echo $ac['id']; ?>" class="btn btn-outline-primary btn-sm w-100 mt-2">
+                                            View Center <i class="fas fa-arrow-right ms-1"></i>
+                                        </a>
+                                    </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        </div>
+                        <?php endif; ?>
 
                     </div>
                 </div>
