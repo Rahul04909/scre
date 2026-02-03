@@ -101,54 +101,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_application']))
         font-weight: 600;
         font-size: 0.9rem;
         color: #495057;
+        margin-bottom: 8px;
     }
+    
+    /* Uniform Input Styles */
     .form-control, .form-select {
+        height: 50px;
         padding: 10px 15px;
-        border-color: #dee2e6;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        font-size: 0.95rem;
+        background-color: #fff;
+        transition: all 0.2s;
     }
+
     .form-control:focus, .form-select:focus {
         border-color: #1a2c3f;
-        box-shadow: 0 0 0 0.25rem rgba(26, 44, 63, 0.15);
+        box-shadow: 0 0 0 4px rgba(26, 44, 63, 0.05);
+        background-color: #fff;
     }
     
-    .section-divider {
-        height: 1px;
-        background: #eee;
-        margin: 30px 0;
-        position: relative;
-    }
-    .section-divider span {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: #fff;
-        padding: 0 15px;
-        color: #aaa;
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
+    /* Select2 Tweaks to Match Inputs */
+    .select2-container .select2-selection--single {
+        height: 50px !important;
+        border-radius: 8px !important;
+        border: 1px solid #e2e8f0 !important; /* Match input border */
+        display: flex !important;
+        align-items: center !important;
     }
     
-    .btn-submit {
-        background: #1a2c3f;
-        color: #fff;
-        padding: 12px 30px;
-        font-weight: 700;
-        border-radius: 8px;
-        font-size: 1.1rem;
-        transition: all 0.3s;
-        border: none;
+    /* Remove default Select2 focus outline and use custom shadow */
+    .select2-container--bootstrap-5 .select2-selection--single:focus-within,
+    .select2-container--bootstrap-5.select2-container--focus .select2-selection--single {
+        border-color: #1a2c3f !important;
+        box-shadow: 0 0 0 4px rgba(26, 44, 63, 0.05) !important;
     }
-    .btn-submit:hover {
-        background: #0f1c29;
-        transform: translateY(-2px);
+
+    .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered {
+        line-height: normal !important;
+        padding-left: 15px !important;
+        color: #333 !important;
+        font-size: 0.95rem;
     }
     
-    /* Select2 Tweaks */
-    .select2-container .select2-selection--single { height: 42px !important; }
-    .select2-container--bootstrap-5 .select2-selection { border-color: #dee2e6; }
-    .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered { line-height: 40px; padding-left: 15px; }
+    .select2-container--bootstrap-5 .select2-selection--single .select2-selection__arrow {
+        position: absolute !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        right: 15px !important;
+        width: auto !important;
+        height: auto !important;
+    }
 </style>
 
 <div class="apply-wrapper">
