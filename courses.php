@@ -15,7 +15,7 @@ $search = isset($_GET['q']) ? trim($_GET['q']) : '';
 $category_filter = isset($_GET['cat']) ? intval($_GET['cat']) : 0;
 
 // Build Query
-$where_clauses = ["status = 'Active'"];
+$where_clauses = ["1=1"];
 $params = [];
 
 if (!empty($search)) {
@@ -364,12 +364,12 @@ $categories = $pdo->query($cat_sql)->fetchAll(PDO::FETCH_ASSOC);
                         <li>
                             <a href="courses.php" class="<?php echo $category_filter == 0 ? 'active' : ''; ?>">
                                 <span>All Courses</span>
-                                <span class="cat-count"><?php echo $pdo->query("SELECT COUNT(*) FROM courses WHERE status='Active'")->fetchColumn(); ?></span>
+                                <span class="cat-count"><?php echo $pdo->query("SELECT COUNT(*) FROM courses")->fetchColumn(); ?></span>
                             </a>
                         </li>
                         <?php foreach($categories as $cat): 
                             // Get count for this category
-                            $stmtC = $pdo->prepare("SELECT COUNT(*) FROM courses WHERE category_id = ? AND status='Active'");
+                            $stmtC = $pdo->prepare("SELECT COUNT(*) FROM courses WHERE category_id = ?");
                             $stmtC->execute([$cat['id']]);
                             $cCount = $stmtC->fetchColumn();
                         ?>
