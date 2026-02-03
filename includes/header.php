@@ -871,6 +871,7 @@ $baseUrl = $protocol . $domain . ($basePath === '/' ? '' : $basePath);
                         <li class="dropdown-item"><a href="<?php echo $baseUrl; ?>/center/index.php" class="dropdown-link">Center Dashboard</a></li>
                     </ul>
                 </li>
+                <li class="menu-item"><a href="<?php echo $baseUrl; ?>/contact.php" class="menu-link"><i class="fas fa-envelope"></i>Contact Us</a></li>
             </ul>
         </div>
     </nav>
