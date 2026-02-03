@@ -50,17 +50,17 @@ if (isset($pdo)) {
         margin-bottom: 40px;
     }
 
-    /* Course Card Design */
+    /* Course Card Design - Updated */
     .course-card {
         border: 1px solid #e0e0e0;
         border-radius: 12px;
-        overflow: hidden;
-        transition: all 0.3s ease;
         background: #fff;
         height: 100%;
         display: flex;
         flex-direction: column;
         position: relative;
+        /* Removed overflow: hidden to prevent clipping, manage radius manually if needed */
+        transition: all 0.3s ease;
     }
 
     .course-card:hover {
@@ -73,8 +73,10 @@ if (isset($pdo)) {
         position: relative;
         overflow: hidden;
         aspect-ratio: 16/9;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
     }
-
+    
     .course-img {
         width: 100%;
         height: 100%;
@@ -83,30 +85,37 @@ if (isset($pdo)) {
     }
 
     .course-card:hover .course-img {
-        transform: scale(1.05);
+        transform: scale(1.05); /* Zoom effect */
     }
 
     .course-body {
         padding: 20px;
-        flex: 1;
+        flex: 1; /* Pushes footer down */
         display: flex;
         flex-direction: column;
     }
 
+    .course-footer {
+        padding: 15px 20px;
+        border-top: 1px solid #f0f0f0;
+        background-color: #fff;
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+    }
+
     .course-category {
-        font-size: 0.8rem;
-        font-weight: 600;
+        font-size: 12px;
+        font-weight: 700;
         text-transform: uppercase;
-        color: #a435f0; /* Purple accent */
-        margin-bottom: 8px;
-        letter-spacing: 0.5px;
+        color: #a435f0;
+        margin-bottom: 5px;
     }
 
     .course-title {
-        font-size: 1.1rem;
+        font-size: 16px;
         font-weight: 700;
         color: #1a1a1a;
-        margin-bottom: 10px;
+        margin-bottom: 0;
         line-height: 1.4;
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -114,101 +123,69 @@ if (isset($pdo)) {
         overflow: hidden;
     }
 
-    .course-meta {
-        margin-top: auto;
-        padding-top: 15px;
-        border-top: 1px solid #f0f0f0;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+    .fees-wrapper {
+        margin-bottom: 12px;
     }
-
-    .course-fees-wrapper {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .fees-label {
-        font-size: 0.75rem;
-        color: #6a6f73;
-    }
-
-    .course-fees {
-        font-size: 1.25rem;
+    
+    .fees-amount {
+        font-size: 18px;
         font-weight: 800;
         color: #2d2f31;
     }
-
-    .btn-apply {
-        background-color: #1a2c3f;
-        color: #fff;
-        padding: 8px 20px;
-        border-radius: 6px;
-        font-weight: 600;
-        font-size: 0.9rem;
-        text-decoration: none;
-        transition: background-color 0.2s;
-    }
-
-    .btn-apply:hover {
-        background-color: #0f1c29;
-        color: #fff;
-    }
-
-    /* New Meta & Button Styles */
-    .course-meta-new {
-        margin-top: auto;
-        padding-top: 15px;
-        border-top: 1px solid #f0f0f0;
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .fees-row {
-        display: flex;
-        flex-direction: column;
-    }
     
-    .action-buttons {
-        display: flex;
+    .fees-label {
+        font-size: 12px;
+        color: #6a6f73;
+        display: block;
+    }
+
+    .btn-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
         gap: 10px;
-        flex-wrap: nowrap; /* Prevent wrapping */
-        width: 100%;
     }
     
     .c-btn {
-        display: block; /* Ensure visibility */
-        flex: 1;
-        padding: 8px 5px; /* Reduce side padding to prevent overflow */
-        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 0;
+        font-size: 13px;
         font-weight: 600;
-        border-radius: 6px;
-        text-align: center;
+        border-radius: 5px;
         text-decoration: none;
         transition: all 0.2s;
         border: 1px solid transparent;
+        white-space: nowrap;
     }
     
-    .c-btn-view {
-        background: #fff;
-        border-color: #333;
-        color: #333;
+    .c-btn-details {
+        background-color: #fff;
+        border-color: #1a2c3f;
+        color: #1a2c3f;
     }
-    
-    .c-btn-view:hover {
-        background: #333;
-        color: #fff;
+    .c-btn-details:hover {
+        background-color: #f0f2f5;
     }
     
     .c-btn-apply {
-        background: #1a2c3f;
+        background-color: #1a2c3f;
         color: #fff;
     }
-    
     .c-btn-apply:hover {
-        background: #0f1c29;
-        transform: translateY(-2px);
+        background-color: #0f1c29;
+    }
+    
+    .badge-new {
+        position: absolute;
+        top: 10px; left: 10px;
+        background: #ffc107;
+        color: #000;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 4px 8px;
+        border-radius: 4px;
+        z-index: 2;
     }
 </style>
 
@@ -240,16 +217,15 @@ if (isset($pdo)) {
                             <div class="course-body">
                                 <div class="course-category"><?php echo htmlspecialchars($course['category_name'] ?? 'General'); ?></div>
                                 <h3 class="course-title"><?php echo htmlspecialchars($course['course_name']); ?></h3>
-                                
-                                <div class="course-meta-new">
-                                    <div class="fees-row">
-                                        <span class="fees-label">Course Fees</span>
-                                        <span class="course-fees">₹<?php echo number_format($course['course_fees'], 2); ?></span>
-                                    </div>
-                                    <div class="action-buttons">
-                                        <a href="course-details.php?id=<?php echo $course['id']; ?>" class="c-btn c-btn-view">View Details</a>
-                                        <a href="course-details.php?id=<?php echo $course['id']; ?>" class="c-btn c-btn-apply">Apply Now</a>
-                                    </div>
+                            </div>
+                            <div class="course-footer">
+                                <div class="fees-wrapper">
+                                    <span class="fees-label">Course Fees</span>
+                                    <span class="fees-amount">₹<?php echo number_format($course['course_fees'], 2); ?></span>
+                                </div>
+                                <div class="btn-row">
+                                    <a href="course-details.php?id=<?php echo $course['id']; ?>" class="c-btn c-btn-details">View Details</a>
+                                    <a href="course-details.php?id=<?php echo $course['id']; ?>" class="c-btn c-btn-apply">Apply Now</a>
                                 </div>
                             </div>
                         </div>
