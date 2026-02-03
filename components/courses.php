@@ -155,18 +155,57 @@ if (isset($pdo)) {
         color: #fff;
     }
 
-    /* Badge */
-    .badge-new {
-        position: absolute;
-        top: 15px;
-        left: 15px;
-        background-color: #ffc107;
-        color: #000;
-        font-size: 0.75rem;
-        font-weight: 700;
-        padding: 4px 10px;
-        border-radius: 4px;
-        z-index: 2;
+    /* New Meta & Button Styles */
+    .course-meta-new {
+        margin-top: auto;
+        padding-top: 15px;
+        border-top: 1px solid #f0f0f0;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .fees-row {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+    }
+    
+    .c-btn {
+        flex: 1;
+        padding: 8px 10px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        border-radius: 6px;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.2s;
+        border: 1px solid transparent;
+    }
+    
+    .c-btn-view {
+        background: #fff;
+        border-color: #333;
+        color: #333;
+    }
+    
+    .c-btn-view:hover {
+        background: #333;
+        color: #fff;
+    }
+    
+    .c-btn-apply {
+        background: #1a2c3f;
+        color: #fff;
+    }
+    
+    .c-btn-apply:hover {
+        background: #0f1c29;
+        transform: translateY(-2px);
     }
 </style>
 
@@ -199,16 +238,14 @@ if (isset($pdo)) {
                                 <div class="course-category"><?php echo htmlspecialchars($course['category_name'] ?? 'General'); ?></div>
                                 <h3 class="course-title"><?php echo htmlspecialchars($course['course_name']); ?></h3>
                                 
-                                <div class="course-meta flex-column align-items-stretch">
-                                    <div class="d-flex justify-content-between align-items-end mb-3">
-                                        <div class="course-fees-wrapper">
-                                            <span class="fees-label">Course Fees</span>
-                                            <span class="course-fees">₹<?php echo number_format($course['course_fees'], 2); ?></span>
-                                        </div>
+                                <div class="course-meta-new">
+                                    <div class="fees-row">
+                                        <span class="fees-label">Course Fees</span>
+                                        <span class="course-fees">₹<?php echo number_format($course['course_fees'], 2); ?></span>
                                     </div>
-                                    <div class="d-flex gap-2">
-                                        <a href="course-details.php?id=<?php echo $course['id']; ?>" class="btn btn-outline-dark btn-sm flex-grow-1 fw-bold">View Details</a>
-                                        <a href="apply.php?course_id=<?php echo $course['id']; ?>" class="btn btn-primary btn-sm flex-grow-1 fw-bold">Apply Now</a>
+                                    <div class="action-buttons">
+                                        <a href="course-details.php?id=<?php echo $course['id']; ?>" class="c-btn c-btn-view">View Details</a>
+                                        <a href="course-details.php?id=<?php echo $course['id']; ?>" class="c-btn c-btn-apply">Apply Now</a>
                                     </div>
                                 </div>
                             </div>
