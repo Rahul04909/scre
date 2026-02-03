@@ -208,7 +208,6 @@ if (isset($pdo)) {
                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
                         <div class="course-card">
                             <div class="course-img-wrapper">
-                                <span class="badge-new">NEW</span>
                                 <?php 
                                     $imgSrc = !empty($course['course_image']) ? $course['course_image'] : 'https://via.placeholder.com/400x225?text=Course+Image';
                                 ?>
