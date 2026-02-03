@@ -173,11 +173,14 @@ if (isset($pdo)) {
     .action-buttons {
         display: flex;
         gap: 10px;
+        flex-wrap: nowrap; /* Prevent wrapping */
+        width: 100%;
     }
     
     .c-btn {
+        display: block; /* Ensure visibility */
         flex: 1;
-        padding: 8px 10px;
+        padding: 8px 5px; /* Reduce side padding to prevent overflow */
         font-size: 0.85rem;
         font-weight: 600;
         border-radius: 6px;
