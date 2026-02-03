@@ -171,42 +171,25 @@
         }
 
         .menu {
-            display: inline-flex; /* Changed from flex to inline-flex to shrink to content */
-            flex-wrap: nowrap; /* Prevent wrapping */
-            justify-content: flex-start; /* items align start to allow scroll */
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             flex-direction: row;
             list-style: none;
+            justify-content: center;
             align-items: center;
             gap: 0;
-            width: auto; /* Allow menu to shrink */
-            max-width: 100%;
+            width: 100%;
             min-height: 48px;
             max-height: none;
             height: auto;
-            padding: 0 15px;
+            padding: 0 5px;
             background: #fff9f3;
             overflow: visible;
-            overflow-x: auto; /* Enable horizontal scrolling */
             border-radius: 10px;
             box-shadow: 0 1px 6px 0 #f8f1e4;
             transition: max-height 0.3s ease;
-            white-space: nowrap;
-            
-            /* Hide scrollbar */
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-        
-        /* Hide scrollbar for Chrome/Safari/Opera */
-        .menu::-webkit-scrollbar {
-            display: none;
-        }
-
-        /* Centering logic */
-        @media (min-width: 769px) {
-            .nav-container {
-                justify-content: center; /* Center the nav-container content (the menu) */
-            }
+            white-space: nowrap; /* Added to prevent wrapping */
         }
         @media (max-width: 768px) {
             .main-nav {
