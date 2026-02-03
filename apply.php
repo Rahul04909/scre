@@ -67,40 +67,66 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_application']))
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 
 <style>
-    body {
-        background-color: #f8f9fa;
+    :root {
+        --warm-brown: #6d4c41;
+        --deep-brown: #4e342e;
+        --charcoal-brown: #3e2723;
+        --soft-ivory: #fff9f3;
+        --muted-gold: #c5a059;
+        --border-beige: #e0d0b8;
+        --row-hover: #fcfbf9;
+        --pure-white: #ffffff;
     }
+
+    body {
+        background-color: var(--soft-ivory); /* Soft ivory background matching verification */
+        font-family: 'Poppins', sans-serif;
+    }
+    
     .apply-wrapper {
         padding: 60px 0;
     }
+    
     .apply-card {
-        background: #fff;
+        background: var(--pure-white);
         border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        box-shadow: 0 10px 30px rgba(109, 76, 65, 0.08); /* Warm shadow */
         overflow: hidden;
-        border: none;
+        border: 1px solid var(--border-beige);
     }
+    
     .apply-header {
-        background: linear-gradient(135deg, #1a2c3f 0%, #2c3e50 100%);
+        background: linear-gradient(135deg, var(--deep-brown), var(--charcoal-brown));
         padding: 40px;
         text-align: center;
-        color: #fff;
+        color: var(--soft-ivory);
+        border-bottom: 3px solid var(--muted-gold);
+        position: relative;
     }
+    
     .apply-title {
         font-weight: 700;
         margin-bottom: 10px;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
+    
     .apply-subtitle {
-        opacity: 0.8;
+        opacity: 0.9;
         font-size: 0.95rem;
+        color: #e0d0b8;
     }
+    
     .apply-body {
         padding: 40px;
     }
+    
+    /* Typography */
     .form-label {
         font-weight: 600;
         font-size: 0.9rem;
-        color: #495057;
+        color: var(--deep-brown);
         margin-bottom: 8px;
     }
     
@@ -109,38 +135,79 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_application']))
         height: 50px;
         padding: 10px 15px;
         border-radius: 8px;
-        border: 1px solid #e2e8f0;
+        border: 1px solid var(--border-beige);
         font-size: 0.95rem;
         background-color: #fff;
         transition: all 0.2s;
+        color: var(--deep-brown);
     }
 
     .form-control:focus, .form-select:focus {
-        border-color: #1a2c3f;
-        box-shadow: 0 0 0 4px rgba(26, 44, 63, 0.05);
+        border-color: var(--muted-gold);
+        box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.1); /* Gold glow */
         background-color: #fff;
+    }
+    
+    /* Section Divider */
+    .section-divider {
+        height: 1px;
+        background: var(--border-beige);
+        margin: 30px 0;
+        position: relative;
+    }
+    .section-divider span {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--pure-white);
+        padding: 0 15px;
+        color: var(--warm-brown);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+    }
+    
+    /* Submit Button */
+    .btn-submit {
+        background: linear-gradient(to right, var(--warm-brown), #5d4037);
+        color: var(--pure-white);
+        padding: 14px 30px;
+        font-weight: 600;
+        border-radius: 8px; /* Slightly more rounded */
+        font-size: 1.1rem;
+        transition: all 0.3s;
+        border: none;
+        box-shadow: 0 4px 10px rgba(109, 76, 65, 0.2);
+    }
+    .btn-submit:hover {
+        background: linear-gradient(to right, #8d6e63, #6d4c41);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(109, 76, 65, 0.3);
+        color: #fff;
     }
     
     /* Select2 Tweaks to Match Inputs */
     .select2-container .select2-selection--single {
         height: 50px !important;
         border-radius: 8px !important;
-        border: 1px solid #e2e8f0 !important; /* Match input border */
+        border: 1px solid var(--border-beige) !important; 
         display: flex !important;
         align-items: center !important;
     }
     
-    /* Remove default Select2 focus outline and use custom shadow */
+    /* Focus state for Select2 */
     .select2-container--bootstrap-5 .select2-selection--single:focus-within,
     .select2-container--bootstrap-5.select2-container--focus .select2-selection--single {
-        border-color: #1a2c3f !important;
-        box-shadow: 0 0 0 4px rgba(26, 44, 63, 0.05) !important;
+        border-color: var(--muted-gold) !important;
+        box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.1) !important;
     }
 
     .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered {
         line-height: normal !important;
         padding-left: 15px !important;
-        color: #333 !important;
+        color: var(--deep-brown) !important;
         font-size: 0.95rem;
     }
     
@@ -151,6 +218,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_application']))
         right: 15px !important;
         width: auto !important;
         height: auto !important;
+        color: var(--muted-gold); /* Gold arrow */
+    }
+    
+    /* Dropdown Options */
+    .select2-results__option--highlighted[aria-selected] {
+        background-color: var(--warm-brown) !important;
+        color: white !important;
     }
 </style>
 
