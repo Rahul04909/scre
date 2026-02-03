@@ -199,12 +199,17 @@ if (isset($pdo)) {
                                 <div class="course-category"><?php echo htmlspecialchars($course['category_name'] ?? 'General'); ?></div>
                                 <h3 class="course-title"><?php echo htmlspecialchars($course['course_name']); ?></h3>
                                 
-                                <div class="course-meta">
-                                    <div class="course-fees-wrapper">
-                                        <span class="fees-label">Course Fees</span>
-                                        <span class="course-fees">₹<?php echo number_format($course['course_fees'], 2); ?></span>
+                                <div class="course-meta flex-column align-items-stretch">
+                                    <div class="d-flex justify-content-between align-items-end mb-3">
+                                        <div class="course-fees-wrapper">
+                                            <span class="fees-label">Course Fees</span>
+                                            <span class="course-fees">₹<?php echo number_format($course['course_fees'], 2); ?></span>
+                                        </div>
                                     </div>
-                                    <a href="course-details.php?id=<?php echo $course['id']; ?>" class="btn-apply text-center w-100">View Details</a>
+                                    <div class="d-flex gap-2">
+                                        <a href="course-details.php?id=<?php echo $course['id']; ?>" class="btn btn-outline-dark btn-sm flex-grow-1 fw-bold">View Details</a>
+                                        <a href="apply.php?course_id=<?php echo $course['id']; ?>" class="btn btn-primary btn-sm flex-grow-1 fw-bold">Apply Now</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
