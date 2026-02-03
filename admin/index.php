@@ -72,40 +72,13 @@ try {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="assets/css/sidebar.css" rel="stylesheet">
-    <style>
-        .stats-card {
-            border: none;
-            border-radius: 15px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            overflow: hidden;
-        }
-        .stats-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .stats-icon {
-            font-size: 2.5rem;
-            opacity: 0.8;
-        }
-        .bg-gradient-primary-custom { background: linear-gradient(45deg, #4e73df, #224abe); color: white; }
-        .bg-gradient-success-custom { background: linear-gradient(45deg, #1cc88a, #13855c); color: white; }
-        .bg-gradient-info-custom { background: linear-gradient(45deg, #36b9cc, #258391); color: white; }
-        .bg-gradient-warning-custom { background: linear-gradient(45deg, #f6c23e, #dda20a); color: white; }
-        
-        .card-header-custom {
-            background: white;
-            border-bottom: 1px solid #e3e6f0;
-            padding: 1rem 1.25rem;
-            font-weight: 700;
-            color: #4e73df;
-        }
-    </style>
+    <!-- Custom styles handled in sidebar.css for WP Theme -->
 </head>
 <body>
     <div id="wrapper">
         <?php include 'sidebar.php'; ?>
 
-        <div id="page-content-wrapper" style="margin-left: 380px;">
+        <div id="page-content-wrapper">
             <div class="container-fluid py-4 px-4" style="max-width: 100%;">
                 
                 <!-- Welcome Section -->

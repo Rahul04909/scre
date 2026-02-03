@@ -1,283 +1,293 @@
-/* Sidebar CSS */
+/* WordPress Style Admin CSS */
 :root {
-    --sidebar-bg: #1e3a56;
-    /* Dark Blue */
-    --sidebar-width: 280px;
-    --sidebar-text: #ffffff;
-    --sidebar-active-bg: #ffc107;
-    /* Yellow */
-    --sidebar-active-text: #1e3a56;
-    /* Dark Blue Text on Yellow */
-    --hover-bg: #2c4d6e;
-    /* Slightly lighter blue for hover */
-    --border-color: #1e3a56;
+    /* WP Admin Color Palette */
+    --wp-admin-dark: #1d2327;       /* Sidebar Bg */
+    --wp-admin-dark-hover: #2c3338; /* Sidebar Hover */
+    --wp-body-bg: #f0f0f1;          /* Main Bg */
+    --wp-blue: #2271b1;             /* Primary Action/Link */
+    --wp-blue-hover: #135e96;
+    --wp-border: #c3c4c7;           /* Card/Table Borders */
+    --wp-text: #3c434a;             /* Main Text */
+    --wp-white: #ffffff;
+    --wp-red: #d63638;
+    --wp-green: #00a32a;
+    
+    --sidebar-width: 260px;         /* Standard WP-ish width */
 }
 
 body {
-    min-height: 100vh;
-    background-color: #f5f7fb;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--wp-body-bg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    color: var(--wp-text);
+    font-size: 13px;
+    line-height: 1.4;
+    margin: 0;
+    padding: 0;
 }
 
+/* --- Layout Structure (Preserving logic for toggle) --- */
 #wrapper {
-    display: block;
+    display: flex;
     width: 100%;
     overflow-x: hidden;
 }
 
-#page-content-wrapper {
-    width: auto;
-    position: relative;
-    margin-left: var(--sidebar-width);
-    transition: margin 0.25s ease-out;
-}
-
-#wrapper.toggled #sidebar-wrapper {
-    margin-left: calc(-1 * var(--sidebar-width));
-}
-
-#wrapper.toggled #page-content-wrapper {
-    margin-left: 0;
-}
-
 #sidebar-wrapper {
-    height: 100vh;
+    min-height: 100vh;
     width: var(--sidebar-width);
-    background-color: var(--sidebar-bg);
-    border-right: 1px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
+    background-color: var(--wp-admin-dark);
+    color: #fff;
     position: fixed;
     top: 0;
     left: 0;
     z-index: 1000;
     transition: margin 0.25s ease-out;
-    overflow-y: auto;
-}
-
-/* Scrollbar Styling */
-#sidebar-wrapper::-webkit-scrollbar {
-    width: 6px;
-}
-
-#sidebar-wrapper::-webkit-scrollbar-track {
-    background: #152b41;
-}
-
-#sidebar-wrapper::-webkit-scrollbar-thumb {
-    background: #4a6b8c;
-    border-radius: 3px;
-}
-
-#sidebar-wrapper::-webkit-scrollbar-thumb:hover {
-    background: #5b81a8;
-}
-
-/* Heading / Logo Area - kept minimal or hidden if profile is top */
-.sidebar-heading {
-    padding: 1rem 1.5rem;
-    /* Reduced padding */
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #fff;
-    display: none;
-    /* Hiding default logo if we want profile top, but keeping logic just in case user wants it back*/
-    align-items: center;
-    justify-content: space-between;
-}
-
-.sidebar-profile {
-    padding: 30px 20px;
-    background-color: var(--sidebar-bg);
-    /* Match sidebar bg */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
-    align-items: flex-start;
-    gap: 15px;
+    flex-direction: column;
 }
 
-.profile-img-container {
-    position: relative;
+#page-content-wrapper {
+    flex: 1;
+    min-width: 0;
+    margin-left: var(--sidebar-width);
+    transition: margin 0.25s ease-out;
+    background-color: var(--wp-body-bg);
+    min-height: 100vh;
 }
 
-.profile-img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #ffc107;
-    /* Yellow border */
+/* Toggled State logic (Mobile/Collapse) */
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: calc(-1 * var(--sidebar-width));
 }
-
-.status-indicator {
-    position: absolute;
-    bottom: 2px;
-    right: 2px;
-    width: 14px;
-    height: 14px;
-    background-color: #28a745;
-    /* Green */
-    border: 2px solid var(--sidebar-bg);
-    border-radius: 50%;
-}
-
-.profile-info {
-    flex-grow: 1;
-}
-
-.profile-info h6 {
-    margin: 0 0 2px 0;
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: #fff;
-}
-
-.profile-info .role-text {
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.7);
-    display: block;
-    margin-bottom: 10px;
-}
-
-.btn-edit-profile {
-    font-size: 0.8rem;
-    padding: 4px 12px;
-    border: 1px solid #fff;
-    color: #fff;
-    background: transparent;
-    border-radius: 4px;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    transition: all 0.2s;
-}
-
-.btn-edit-profile:hover {
-    background: #fff;
-    color: var(--sidebar-bg);
-}
-
-.btn-edit-profile i {
-    margin-right: 5px;
-}
-
-.list-group-item {
-    border: none;
-    padding: 14px 25px;
-    font-weight: 500;
-    color: var(--sidebar-text);
-    background-color: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    text-decoration: none;
-    transition: all 0.2s;
-    margin-bottom: 0;
-    /* Removing margin for seamless look */
-    border-left: 4px solid transparent;
-}
-
-.list-group-item:hover {
-    background-color: var(--hover-bg);
-    color: #fff;
-    border-left-color: rgba(255, 255, 255, 0.5);
-    padding-left: 30px;
-    /* Slide effect */
-}
-
-/* Fix for bootstrap focus overriding colors */
-.list-group-item:focus {
-    background-color: transparent;
-    /* Or hover bg if preferred, but transparent avoids sticky hover look on click */
-    color: var(--sidebar-text);
-    box-shadow: none;
-    /* Remove blue outline */
-}
-
-.list-group-item:focus:hover {
-    background-color: var(--hover-bg);
-    color: #fff;
-}
-
-.list-group-item:hover .menu-icon {
-    transform: scale(1.2);
-    /* Icon pop effect */
-    transition: transform 0.2s;
-}
-
-.list-group-item.active,
-.list-group-item.active:focus,
-.list-group-item.active:hover {
-    background-color: var(--sidebar-active-bg) !important;
-    color: var(--sidebar-active-text) !important;
-    border-radius: 0;
-    margin: 0;
-    width: 100%;
-    border-left-color: transparent !important;
-}
-
-.menu-icon {
-    width: 24px;
-    text-align: center;
-    margin-right: 12px;
-    font-size: 1.1rem;
-}
-
-/* Submenu */
-.sub-menu {
-    background-color: rgba(0, 0, 0, 0.2);
-    /* Darker background for submenu */
-}
-
-.sub-menu .list-group-item {
-    padding-left: 65px;
-    font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.sub-menu .list-group-item:hover {
-    color: #fff;
-    background-color: rgba(255, 255, 255, 0.05);
-    padding-left: 70px;
-    /* Slide effect */
-}
-
-/* Active state for expanded menu */
-/* Active state for expanded menu */
-.list-group-item[aria-expanded="true"],
-.list-group-item[aria-expanded="true"]:focus,
-.list-group-item[aria-expanded="true"]:hover {
-    background-color: var(--sidebar-active-bg) !important;
-    color: var(--sidebar-active-text) !important;
-    border-left-color: transparent !important;
-}
-
-.list-group-item[aria-expanded="true"] .menu-icon,
-.list-group-item.active .menu-icon {
-    color: var(--sidebar-active-text) !important;
-}
-
-/* Arrow rotation */
-.menu-arrow {
-    font-size: 0.8rem;
-    transition: transform 0.2s;
-}
-
-.list-group-item[aria-expanded="true"] .menu-arrow {
-    transform: rotate(180deg);
-    /* Full flip */
+#wrapper.toggled #page-content-wrapper {
+    margin-left: 0;
 }
 
 @media (max-width: 768px) {
-    #sidebar-wrapper {
-        margin-left: calc(-1 * var(--sidebar-width));
-    }
-
-    #wrapper.toggled #sidebar-wrapper {
-        margin-left: 0;
-    }
-
-    #page-content-wrapper {
-        margin-left: 0;
-    }
+    #sidebar-wrapper { margin-left: calc(-1 * var(--sidebar-width)); }
+    #page-content-wrapper { margin-left: 0; }
+    #wrapper.toggled #sidebar-wrapper { margin-left: 0; }
 }
+
+/* --- Sidebar Styling (WP Look) --- */
+#sidebar-wrapper .sidebar-heading {
+    padding: 20px 15px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+#sidebar-wrapper .sidebar-heading img { width: 24px; height: auto; }
+
+/* Profile Section in Sidebar */
+.sidebar-profile {
+    padding: 15px;
+    margin-bottom: 10px;
+    border-bottom: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.sidebar-profile .profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--wp-admin-dark-hover);
+}
+.sidebar-profile h6 { color: #fff; font-size: 14px; margin: 0; font-weight: 600; }
+.sidebar-profile .role-text { color: #a7aaad; font-size: 12px; }
+.btn-edit-profile { display: none; } /* Hide edit button to clean up sidebar like WP */
+
+/* Menu Items */
+.list-group-item {
+    background-color: transparent;
+    color: #f0f0f1;
+    border: none;
+    padding: 10px 12px 10px 15px; /* Comfortable click area */
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    transition: all 0.15s ease-in-out;
+    margin: 0;
+}
+
+/* Hover State */
+.list-group-item:hover,
+.list-group-item:focus {
+    background-color: var(--wp-admin-dark-hover);
+    color: var(--wp-blue); /* WP text blue on hover */
+}
+/* Active State */
+.list-group-item.active {
+    background-color: var(--wp-blue) !important;
+    color: #fff !important;
+}
+
+/* Icons */
+.menu-icon {
+    width: 20px;
+    text-align: center;
+    margin-right: 10px;
+    font-size: 16px; /* Slightly reduced standard icon size */
+    opacity: 0.8;
+}
+.list-group-item:hover .menu-icon { opacity: 1; color: var(--wp-blue); }
+.list-group-item.active .menu-icon { opacity: 1; color: #fff; }
+
+/* Submenu */
+.sub-menu {
+    background-color: #101517; /* Darker shade for submenu */
+    padding: 5px 0;
+}
+.sub-menu .list-group-item {
+    padding-left: 45px;
+    font-size: 13px;
+    color: rgba(240, 246, 252, 0.7);
+}
+.sub-menu .list-group-item:hover {
+    color: var(--wp-blue);
+    background-color: transparent;
+}
+
+/* --- Main Content Styling --- */
+h2, h3, h4, h5, h6 {
+    color: #1d2327;
+    font-weight: 600;
+}
+h2 {
+    font-size: 23px;
+    padding: 9px 0 4px 0;
+    line-height: 1.3;
+}
+
+/* Cards = WP "Postbox" style */
+.card, .stats-card, .verification-table-card, .apply-card {
+    background: #fff;
+    border: 1px solid var(--wp-border);
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    border-radius: 0; /* WP is square-ish */
+    margin-bottom: 20px;
+}
+
+/* Custom Card Header */
+.card-header, .card-header-custom, .apply-header, .cd-contact-header {
+    background: #fff;
+    border-bottom: 1px solid var(--wp-border);
+    padding: 12px 15px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+/* Remove gradient backgrounds from stats cards if they exist */
+.bg-gradient-primary-custom, 
+.bg-gradient-success-custom, 
+.bg-gradient-info-custom, 
+.bg-gradient-warning-custom {
+    background: #fff !important;
+    color: #1d2327 !important;
+    border-left: 4px solid var(--wp-blue) !important; /* Accent border instead */
+}
+.bg-gradient-success-custom { border-left-color: var(--wp-green) !important; }
+.bg-gradient-warning-custom { border-left-color: #f0b849 !important; }
+
+/* Stats text updates for new white look */
+.stats-card .h3 { color: #1d2327; font-size: 20px; }
+.stats-card .text-uppercase { color: #646970; font-weight: normal !important; text-transform: none !important; font-size: 13px; }
+.stats-icon { color: #dcdcde; }
+
+/* --- Tables --- */
+.table {
+    border: 1px solid var(--wp-border);
+    background: #fff;
+    margin-bottom: 0;
+}
+.table thead th {
+    background-color: #f6f7f7; /* WP Header gray */
+    color: #1d2327;
+    font-weight: 600;
+    border-bottom: 1px solid var(--wp-border);
+    padding: 10px;
+    font-size: 14px;
+}
+.table tbody td {
+    padding: 10px;
+    font-size: 13px;
+    color: #3c434a;
+    border-bottom: 1px solid #f0f0f1;
+}
+.table-hover tbody tr:hover {
+    background-color: #f6f7f7;
+}
+
+/* --- Buttons --- */
+.btn {
+    border-radius: 3px;
+    font-size: 13px;
+    line-height: 2;
+    padding: 0 10px;
+    font-weight: 500;
+    transition: 0.1s;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+/* Primary Button (Use .btn-primary) */
+.btn-primary, .btn-submit, .btn-download {
+    background-color: var(--wp-blue);
+    border: 1px solid var(--wp-blue);
+    color: #fff;
+    box-shadow: none;
+}
+.btn-primary:hover, .btn-submit:hover, .btn-download:hover {
+    background-color: var(--wp-blue-hover);
+    border-color: var(--wp-blue-hover);
+    color: #fff;
+}
+
+/* Outline/Secondary Button */
+.btn-outline-primary, .btn-secondary {
+    background-color: #f6f7f7;
+    color: var(--wp-blue);
+    border: 1px solid var(--wp-blue);
+}
+.btn-outline-primary:hover {
+    background-color: #f0f0f1;
+    color: var(--wp-blue-hover);
+    border-color: var(--wp-blue-hover);
+}
+
+/* Badges */
+.badge {
+    border-radius: 3px;
+    font-weight: 600;
+    padding: 4px 8px;
+    font-size: 11px;
+}
+.bg-success { background-color: var(--wp-green) !important; color: #fff; }
+.bg-secondary { background-color: #646970 !important; color: #fff; }
+
+/* --- Form Fields --- */
+.form-control, .form-select, .select2-container .select2-selection--single {
+    border: 1px solid #8c8f94 !important;
+    border-radius: 4px !important;
+    height: 38px !important; /* WP Standard height */
+    padding: 0 12px !important;
+    box-shadow: none !important;
+    font-size: 14px;
+    color: #2c3338;
+}
+.form-control:focus, .form-select:focus,
+.select2-container--bootstrap-5.select2-container--focus .select2-selection--single {
+    border-color: var(--wp-blue) !important;
+    box-shadow: 0 0 0 1px var(--wp-blue) !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f0f0f1; }
+::-webkit-scrollbar-thumb { background: #c3c4c7; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #a7aaad; }
