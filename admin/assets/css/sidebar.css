@@ -411,3 +411,47 @@ h2 {
 ::-webkit-scrollbar-thumb:hover {
     background: #a7aaad;
 }
+
+/* --- Professional Form Enhancements --- */
+
+/* Textarea Enhancements */
+textarea.form-control {
+    min-height: 120px;
+    /* Give textareas breathing room */
+    padding: 12px !important;
+    /* Comfortable padding */
+    line-height: 1.6;
+    resize: vertical;
+    /* Only allow vertical resize */
+}
+
+/* File Input Enhancements */
+input[type="file"].form-control {
+    padding: 6px 10px !important;
+    /* Padding around the internal button */
+    height: auto !important;
+    /* Allow height to adjust */
+    background-color: #fff;
+    display: flex;
+    /* Helps align the internal button */
+    align-items: center;
+}
+
+input[type="file"]::file-selector-button {
+    border: 1px solid #dcdcde;
+    background: #f6f7f7;
+    color: #2c3338;
+    padding: 6px 15px;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-right: 15px;
+    font-weight: 500;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background: #f0f0f1;
+    border-color: var(--wp-blue);
+    color: var(--wp-blue);
+}
