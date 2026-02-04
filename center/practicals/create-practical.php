@@ -73,7 +73,7 @@ if (isset($_POST['save_practical'])) {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="../../assets/css/sidebar.css" rel="stylesheet">
     <style>
-        #page-content-wrapper { margin-left: 280px; transition: margin 0.3s; }
+
         @media (max-width: 768px) { #page-content-wrapper { margin-left: 0; } }
     </style>
 </head>

@@ -36,7 +36,7 @@ $transactions = $txnStmt->fetchAll();
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+
         
         /* Balance Card */
         .balance-card {
@@ -62,7 +62,7 @@ $transactions = $txnStmt->fetchAll();
         .txn-table th { font-weight: 600; color: #4b5563; background-color: #f9fafb; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
         .txn-table td { font-size: 0.95rem; vertical-align: middle; }
         
-        #page-content-wrapper { margin-left: 280px; transition: margin 0.3s; }
+
         @media (max-width: 768px) { #page-content-wrapper { margin-left: 0; } }
     </style>
 </head>

@@ -71,7 +71,7 @@ $submissions = $stmtSub->fetchAll();
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="../../assets/css/sidebar.css" rel="stylesheet">
     <style>
-        #page-content-wrapper { margin-left: 280px; transition: margin 0.3s; width: 100%; }
+
         @media (max-width: 768px) { #page-content-wrapper { margin-left: 0; } }
         .bg-light-success { background-color: #f0fdf4 !important; }
     </style>

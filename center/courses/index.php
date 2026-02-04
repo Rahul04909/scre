@@ -33,7 +33,7 @@ $courses = $stmt->fetchAll();
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f3f4f6; }
+
         
         .card { border: none; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
         .card-header { background: white; border-bottom: 1px solid #f0f0f0; border-radius: 12px 12px 0 0 !important; padding: 1.25rem 1.5rem; }
@@ -62,7 +62,7 @@ $courses = $stmt->fetchAll();
         .badge-soft-success { background-color: #dcfce7; color: #166534; }
         .badge-soft-info { background-color: #cffafe; color: #155e75; }
         
-        #page-content-wrapper { margin-left: 280px; transition: margin 0.3s; }
+
         @media (max-width: 768px) { #page-content-wrapper { margin-left: 0; } }
     </style>
 </head>
