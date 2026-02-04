@@ -455,3 +455,47 @@ input[type="file"]::file-selector-button:hover {
     border-color: var(--wp-blue);
     color: var(--wp-blue);
 }
+
+/* Dropdown & Select2 Professional Styling */
+.form-select {
+    background-color: #fff;
+    border: 1px solid #8c8f94;
+    /* WP default border color */
+    border-radius: 4px;
+    padding: 6px 12px;
+    height: 40px;
+    /* Consistent height */
+    font-size: 14px;
+    color: #2c3338;
+    cursor: pointer;
+    box-shadow: none !important;
+    /* Remove default bootstrap shadow */
+}
+
+.form-select:focus {
+    border-color: var(--wp-blue);
+    box-shadow: 0 0 0 1px var(--wp-blue) !important;
+}
+
+/* Fix Select2 alignment to match standard inputs */
+.select2-container .select2-selection--single {
+    height: 40px !important;
+    border: 1px solid #8c8f94 !important;
+    border-radius: 4px !important;
+    display: flex !important;
+    align-items: center !important;
+    background-color: #fff !important;
+}
+
+.select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered {
+    padding-left: 12px !important;
+    font-size: 14px !important;
+    color: #2c3338 !important;
+    line-height: normal !important;
+}
+
+.select2-container--bootstrap-5 .select2-selection--single .select2-selection__arrow {
+    height: 38px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+}
