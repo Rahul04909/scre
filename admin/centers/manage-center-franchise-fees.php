@@ -88,10 +88,26 @@ if ($selected_center_id > 0) {
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
     <style>
-        .stat-card { border-radius: 10px; padding: 20px; color: white; }
-        .bg-total { background: linear-gradient(45deg, #4f46e5, #4338ca); }
-        .bg-paid { background: linear-gradient(45deg, #10b981, #059669); }
-        .bg-pending { background: linear-gradient(45deg, #ef4444, #dc2626); }
+        .stat-card {
+            background: #fff;
+            border-left: 4px solid;
+            box-shadow: 0 1px 1px rgba(0,0,0,.04);
+            padding: 20px;
+            border-radius: 2px;
+            height: 100%;
+            transition: transform 0.2s;
+        }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .stat-title { color: #555; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
+        .stat-value { font-size: 24px; font-weight: 400; color: #1e1e1e; }
+        
+        .border-blue { border-color: #2271b1; } /* WP Admin Blue */
+        .border-green { border-color: #46b450; } /* WP Green */
+        .border-red { border-color: #dc3232; } /* WP Red */
+        
+        .text-blue { color: #2271b1; }
+        .text-green { color: #46b450; }
+        .text-red { color: #dc3232; }
     </style>
 </head>
 <body>
@@ -102,7 +118,7 @@ if ($selected_center_id > 0) {
             
             <div class="container-fluid py-5 px-lg-5">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                     <h2 class="fw-bold" style="color: #115E59;">Manage Franchise Fees</h2>
+                     <h2 class="fw-bold" style="color: #2271b1;">Manage Franchise Fees</h2>
                 </div>
 
                 <?php if ($message): ?>
@@ -113,11 +129,11 @@ if ($selected_center_id > 0) {
                 <?php endif; ?>
 
                 <!-- Select Center -->
-                <div class="card shadow-sm border-0 mb-4">
+                <div class="card shadow-sm border-0 mb-5">
                     <div class="card-body">
                         <form method="GET" class="row align-items-end">
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Select Center</label>
+                                <label class="form-label fw-bold opacity-75">Select Center</label>
                                 <select name="center_id" class="form-select select2" required onchange="this.form.submit()">
                                     <option value="">-- Search by Name or Code --</option>
                                     <?php foreach ($centers as $c): ?>
@@ -135,30 +151,36 @@ if ($selected_center_id > 0) {
                     <!-- Financial Stats -->
                     <div class="row g-3 mb-4">
                         <div class="col-md-4">
-                            <div class="stat-card bg-total shadow">
-                                <h6 class="text-uppercase small ls-1 opacity-75">Total Franchise Fee</h6>
-                                <h2 class="fw-bold mb-0">₹<?php echo number_format($center_details['franchise_fee'], 2); ?></h2>
+                            <div class="stat-card border-blue">
+                                <div class="stat-title">Total Franchise Fee</div>
+                                <div class="stat-value text-blue">₹<?php echo number_format($center_details['franchise_fee'], 2); ?></div>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="stat-card bg-paid shadow">
-                                <h6 class="text-uppercase small ls-1 opacity-75">Total Paid</h6>
-                                <h2 class="fw-bold mb-0">₹<?php echo number_format($total_paid, 2); ?></h2>
+                            <div class="stat-card border-green">
+                                <div class="stat-title">Total Paid</div>
+                                <div class="stat-value text-green">₹<?php echo number_format($total_paid, 2); ?></div>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="stat-card bg-pending shadow">
-                                <h6 class="text-uppercase small ls-1 opacity-75">Pending Balance</h6>
-                                <h2 class="fw-bold mb-0">₹<?php echo number_format($pending_amount, 2); ?></h2>
+                            <div class="stat-card border-red">
+                                <div class="stat-title">Pending Balance</div>
+                                <div class="stat-value text-red">₹<?php echo number_format($pending_amount, 2); ?></div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Actions Bar -->
                     <div class="d-flex justify-content-end mb-3">
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                            <i class="fas fa-plus-circle me-2"></i> Receive Payment
-                        </button>
+                        <?php if ($pending_amount > 0): ?>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                                <i class="fas fa-plus-circle me-2"></i> Receive Payment
+                            </button>
+                        <?php else: ?>
+                            <button class="btn btn-success disabled" disabled>
+                                <i class="fas fa-check-circle me-2"></i> Payment Completed
+                            </button>
+                        <?php endif; ?>
                     </div>
 
                     <!-- Payment History -->
