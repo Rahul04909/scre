@@ -9,9 +9,13 @@ if ($txn_id <= 0) {
 
 try {
     // Fetch Transaction & Center Details
-    $sql = "SELECT p.*, c.center_name, c.center_code, c.address, c.city, c.state, c.mobile, c.email
+    $sql = "SELECT p.*, c.center_name, c.center_code, c.address, 
+                   cities.name as city_name, states.name as state_name, 
+                   c.mobile, c.email
             FROM center_franchise_payments p
             JOIN centers c ON p.center_id = c.id
+            LEFT JOIN cities ON c.city = cities.id
+            LEFT JOIN states ON c.state = states.id
             WHERE p.id = ?";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$txn_id]);
@@ -65,7 +69,8 @@ try {
                 <h6 class="text-uppercase text-secondary small fw-bold mb-3">Received From:</h6>
                 <h5 class="fw-bold mb-1"><?php echo htmlspecialchars($txn['center_name']); ?></h5>
                 <p class="mb-0 text-muted">Did: <?php echo htmlspecialchars($txn['center_code']); ?></p>
-                <p class="mb-0 text-muted"><?php echo htmlspecialchars($txn['city'] . ', ' . $txn['state']); ?></p>
+                <p class="mb-0 text-muted"><?php echo htmlspecialchars($txn['city_name'] . ', ' . $txn['state_name']); ?></p>
+                <p class="text-muted"><?php echo htmlspecialchars($txn['address']); ?></p>
                 <p class="text-muted"><?php echo htmlspecialchars($txn['mobile']); ?></p>
             </div>
             <div class="col-6 text-end">
