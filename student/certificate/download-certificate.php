@@ -130,68 +130,103 @@ try {
      
     $html = '
     <style>
-        body { font-family: arial; color: #000; font-weight: bold; font-size: 16px; }
+        body { font-family: arial; color: #1a1a1a; font-weight: bold; font-size: 18px; }
         .data-overlay { position: absolute; }
         
-        /* ADJUST THESE TOP/LEFT VALUES BASED ON THE BACKGROUND IMAGE LAYOUT */
-        /* These are guesstimates for a standard landscape certificate */
+        /* Adjusted coordinates based on background lines */
+        /* Distance between lines approx 40px - 45px */
         
-        .enrollment { top: 120px; left: 850px; } /* Top Right */
+        /* Line 1: Certify that Mr./Miss/Mrs... */
+        .student-name { top: 305px; left: 380px; font-size: 22px; color: #000; text-transform: uppercase; }
         
-        .student-name { top: 280px; left: 400px; font-size: 24px; color: #2c3e50; }
+        /* Line 2: Son of/Daughter of... */
+        .father-name { top: 348px; left: 380px; text-transform: uppercase; }
         
-        .father-name { top: 330px; left: 400px; }
+        /* Line 3: Registration No... */
+        .enrollment { top: 390px; left: 380px; }
         
-        .dob { top: 330px; left: 800px; }
+        /* Line 4: Session... to... */
+        .session { top: 432px; left: 280px; }
+        .session-start { top: 432px; left: 260px; } 
+        .session-end { top: 432px; left: 700px; } 
+
+        /* Line 5: Date of Birth... */
+        .dob { top: 475px; left: 380px; }
+
+        /* Line 6: In the course... (Subject/Course) */
+        .course-name { top: 518px; left: 380px; }
         
-        .course-name { top: 380px; left: 400px; }
+        /* Line 7: Appeared from our ASC... */
+        .center-name { top: 560px; left: 450px; width: 600px; }
         
-        .duration { top: 380px; left: 850px; }
+        /* Line 8: Duration of... */
+        .duration { top: 602px; left: 380px; }
+
+        /* Line 9: final Examination held in... */
+        .exam-month { top: 635px; left: 580px; }
         
-        .center-name { top: 430px; left: 400px; width: 600px; }
+        /* Line 10: Obtained marks... Out of... */
+        .marks-obt { top: 670px; left: 420px; }
+        .marks-max { top: 670px; left: 750px; }
         
-        .session { top: 480px; left: 400px; }
+        /* Line 11: with Grade... */
+        .grade { top: 705px; left: 380px; }
         
-        .grade { top: 530px; left: 400px; font-size: 18px; }
-        
-        .exam-month { top: 530px; left: 600px; }
-        
-        .issue-date { top: 650px; left: 200px; } /* Bottom Left */
+        /* Line 12: Date of Issue... */
+        .issue-date { top: 760px; left: 280px; }
+
+        /* Scanned QR or extra reg no if needed */
+        .top-serial { top: 150px; left: 850px; font-size: 14px; color: #666; }
         
     </style>
     
-    <!-- Enrollment No -->
-    <div class="data-overlay enrollment">'.$enrollment_no.'</div>
+    <!-- Top Serial/Ref -->
+    <div class="data-overlay top-serial">Reg: ' . $enrollment_no . '</div>
 
-    <!-- Name -->
-    <div class="data-overlay student-name">'.$name.'</div>
+    <!-- Line 1 -->
+    <div class="data-overlay student-name">' . $name . '</div>
 
-    <!-- Father Name -->
-    <div class="data-overlay father-name">'.$father_name.'</div>
+    <!-- Line 2 -->
+    <div class="data-overlay father-name">' . $father_name . '</div>
     
-    <!-- DOB -->
-    <div class="data-overlay dob">'.$dob.'</div>
+    <!-- Line 3 -->
+    <div class="data-overlay enrollment">' . $enrollment_no . '</div>
 
-    <!-- Course -->
-    <div class="data-overlay course-name">'.$course_name.'</div>
+    <!-- Line 4 - Session split logic -->';
     
-    <!-- Duration -->
-    <div class="data-overlay duration">'.$duration.'</div>
-
-    <!-- Center -->
-    <div class="data-overlay center-name">'.$center_name.'</div>
-
-    <!-- Session -->
-    <div class="data-overlay session">'.$session.'</div>
+    if (!empty($student['start_month']) && !empty($student['end_month'])) {
+        $html .= '
+        <div class="data-overlay session-start">' . $student['start_month'] . ' ' . $student['start_year'] . '</div>
+        <div class="data-overlay session-end">' . $student['end_month'] . ' ' . $student['end_year'] . '</div>';
+    } else {
+        $html .= '<div class="data-overlay session">' . $session . '</div>';
+    }
     
-    <!-- Grade -->
-    <div class="data-overlay grade">'.$grade.'</div>
-    
-    <!-- Exam Month -->
-    <div class="data-overlay exam-month">'.$exam_month.'</div>
+    $html .= '
+    <!-- Line 5 -->
+    <div class="data-overlay dob">' . $dob . '</div>
 
-    <!-- Date of Issue -->
-    <div class="data-overlay issue-date">'.$issue_date.'</div>
+    <!-- Line 6 -->
+    <div class="data-overlay course-name">' . $course_name . '</div>
+    
+     <!-- Line 7 -->
+    <div class="data-overlay center-name">' . $center_name . '</div>
+
+    <!-- Line 8 -->
+    <div class="data-overlay duration">' . $duration . '</div>
+
+    <!-- Line 9 -->
+    <div class="data-overlay exam-month">' . $exam_month . '</div>
+    
+    <!-- Line 10 -->
+    <div class="data-overlay marks-obt">' . $grand_total_obt . '</div>
+    <div class="data-overlay marks-max">' . $grand_total_max . '</div>
+
+    <!-- Line 11 -->
+    <div class="data-overlay grade">' . $grade . '</div>
+    
+    <!-- Line 12 -->
+    <div class="data-overlay issue-date">' . $issue_date . '</div>
     ';
 
     $mpdf->WriteHTML($html);
