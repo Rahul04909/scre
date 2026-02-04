@@ -132,20 +132,21 @@ if ($selected_center_id > 0) {
                 <div class="card shadow-sm border-0 mb-5 bg-white">
                     <div class="card-body p-4">
                         <form method="GET">
-                            <label class="form-label fw-bold text-uppercase text-secondary small mb-2">
-                                <i class="fas fa-search me-2"></i>Search Center
-                            </label>
-                            <div class="input-group input-group-lg">
-                                <span class="input-group-text bg-light border-end-0"><i class="fas fa-building text-muted"></i></span>
-                                <select name="center_id" class="form-select select2" required onchange="this.form.submit()">
-                                    <option value="">Select a Center...</option>
-                                    <?php foreach ($centers as $c): ?>
-                                        <option value="<?php echo $c['id']; ?>" <?php echo ($selected_center_id == $c['id']) ? 'selected' : ''; ?>>
-                                            <?php echo clean($c['center_name'] . ' (' . $c['center_code'] . ')'); ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                                <button class="btn btn-primary px-4" type="submit">View Details</button>
+                            <h5 class="fw-bold brand-color mb-3"><i class="fas fa-building me-2"></i>Select Center for Fee Management</h5>
+                            <div class="d-flex gap-3">
+                                <div class="flex-grow-1">
+                                    <select name="center_id" class="form-select select2" required onchange="this.form.submit()">
+                                        <option value="">Search for a center...</option>
+                                        <?php foreach ($centers as $c): ?>
+                                            <option value="<?php echo $c['id']; ?>" <?php echo ($selected_center_id == $c['id']) ? 'selected' : ''; ?>>
+                                                <?php echo clean($c['center_name'] . ' (' . $c['center_code'] . ')'); ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <button class="btn btn-primary px-4" type="submit">
+                                    Go <i class="fas fa-arrow-right ms-2"></i>
+                                </button>
                             </div>
                         </form>
                     </div>
