@@ -115,7 +115,7 @@ try {
     // Background Image
     // Using the specifically requested massive file.
     // WARNING: 70MB file might be slow.
-    $bg_path = __DIR__ . '/background/background.png'; 
+    $bg_path = __DIR__ . '/background/background-img.png'; 
     
     if (file_exists($bg_path)) {
         $mpdf->SetDefaultBodyCSS('background', "url('{$bg_path}')");
