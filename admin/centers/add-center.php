@@ -286,81 +286,63 @@ if (isset($_POST['add_center'])) {
     <!-- Select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
-    <style>
-        .nav-tabs .nav-link.active { background-color: #0d6efd; color: white; border-color: #0d6efd; }
-        .nav-tabs .nav-link { color: #495057; font-weight: 500; }
-        /* Fix Select2 Height */
-        .select2-container .select2-selection--single { height: 38px !important; }
-        .select2-container--bootstrap-5 .select2-selection { border: 1px solid #dee2e6; }
-    </style>
 </head>
 <body>
     <div class="d-flex" id="wrapper">
         <?php include '../sidebar.php'; ?>
-        <div id="page-content-wrapper" style="margin-left: 280px;">
-            <div class="container-fluid py-5 px-lg-5">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="mb-0">Add New Center</h2>
-                    <a href="manage-centers.php" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i> Back to List</a>
-                </div>
-
-                <?php if ($message): ?>
-                    <div class="alert alert-<?php echo $messageType; ?> alert-dismissible fade show"><?php echo $message; ?><button class="btn-close" data-bs-dismiss="alert"></button></div>
-                <?php endif; ?>
-
+        <div id="page-content-wrapper">
+            <div class="container-fluid py-4 px-4">
                 <form method="POST" enctype="multipart/form-data">
-                    <div class="card shadow-sm border-0">
-                        <div class="card-header bg-white pt-3 pb-0 border-bottom-0">
-                            <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
-                                <li class="nav-item"><button class="nav-link active" id="basic-tab" data-bs-toggle="tab" data-bs-target="#basic" type="button">Basic Info</button></li>
-                                <li class="nav-item"><button class="nav-link" id="location-tab" data-bs-toggle="tab" data-bs-target="#location" type="button">Location</button></li>
-                                <li class="nav-item"><button class="nav-link" id="infra-tab" data-bs-toggle="tab" data-bs-target="#infra" type="button">Infrastructure</button></li>
-                                <li class="nav-item"><button class="nav-link" id="legal-tab" data-bs-toggle="tab" data-bs-target="#legal" type="button">Legal & Docs</button></li>
-                                <li class="nav-item"><button class="nav-link" id="config-tab" data-bs-toggle="tab" data-bs-target="#config" type="button">Config & Fees</button></li>
-                                <li class="nav-item"><button class="nav-link" id="media-tab" data-bs-toggle="tab" data-bs-target="#media" type="button">Media</button></li>
-                            </ul>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="mb-0 text-dark fw-bold">Add New Center</h2>
+                        <div>
+                            <a href="manage-centers.php" class="btn btn-secondary me-2">Back</a>
+                            <button type="submit" name="add_center" class="btn btn-primary"><i class="fas fa-save me-1"></i> Register Center</button>
                         </div>
-                        <div class="card-body">
-                            <div class="tab-content" id="myTabContent">
-                                
-                                <!-- 1. Basic Info -->
-                                <div class="tab-pane fade show active" id="basic">
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Center Name <span class="text-danger">*</span></label>
-                                            <input type="text" name="center_name" class="form-control" required>
+                    </div>
+
+                    <?php if ($message): ?>
+                        <div class="alert alert-<?php echo $messageType; ?> alert-dismissible fade show" role="alert">
+                            <?php echo $message; ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="row">
+                        <!-- Main Content (Left Column) -->
+                        <div class="col-lg-9">
+                            
+                            <!-- 1. Basic Information -->
+                            <div class="card mb-4">
+                                <div class="card-header">Basic Information</div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold">Center Name <span class="text-danger">*</span></label>
+                                            <input type="text" name="center_name" class="form-control" required placeholder="Enter center full name">
                                         </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Owner Name <span class="text-danger">*</span></label>
-                                            <input type="text" name="owner_name" class="form-control" required>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold">Owner Name <span class="text-danger">*</span></label>
+                                            <input type="text" name="owner_name" class="form-control" required placeholder="Center owner name">
                                         </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Email Address <span class="text-danger">*</span></label>
-                                            <input type="email" name="email" class="form-control" required placeholder="Will be username">
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold">Email Address <span class="text-danger">*</span></label>
+                                            <input type="email" name="email" class="form-control" required placeholder="Will be used as username">
                                         </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Mobile Number <span class="text-danger">*</span></label>
-                                            <input type="text" name="mobile" class="form-control" required>
-                                        </div>
-                                        <div class="col-md-4 mb-3">
-                                            <label class="form-label">Owner Image</label>
-                                            <input type="file" name="owner_image" class="form-control" accept="image/*">
-                                        </div>
-                                        <div class="col-md-4 mb-3">
-                                            <label class="form-label">Owner Sign</label>
-                                            <input type="file" name="owner_sign" class="form-control" accept="image/*">
-                                        </div>
-                                        <div class="col-md-4 mb-3">
-                                            <label class="form-label">Center Stamp</label>
-                                            <input type="file" name="center_stamp" class="form-control" accept="image/*">
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold">Mobile Number <span class="text-danger">*</span></label>
+                                            <input type="text" name="mobile" class="form-control" required placeholder="10-digit mobile number">
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- 2. Location -->
-                                <div class="tab-pane fade" id="location">
-                                    <div class="row">
-                                        <div class="col-md-3 mb-3">
+                            <!-- 2. Location -->
+                            <div class="card mb-4">
+                                <div class="card-header">Location Details</div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
                                             <label class="form-label">Country</label>
                                             <select name="country" id="country" class="form-select select2" required>
                                                 <option value="">-- Select Country --</option>
@@ -369,83 +351,140 @@ if (isset($_POST['add_center'])) {
                                                 <?php endforeach; ?>
                                             </select>
                                         </div>
-                                        <div class="col-md-3 mb-3">
+                                        <div class="col-md-4">
                                             <label class="form-label">State</label>
                                             <select name="state" id="state" class="form-select select2" required>
                                                 <option value="">-- Select Country First --</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-3 mb-3">
+                                        <div class="col-md-4">
                                             <label class="form-label">City/District</label>
                                             <select name="city" id="city" class="form-select select2" required>
                                                 <option value="">-- Select State First --</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-3 mb-3">
-                                            <label class="form-label">Pincode <span class="text-danger">*</span></label>
-                                            <input type="text" name="pincode" id="pincode" class="form-control" required maxlength="6" placeholder="Enter Pincode">
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold">Address</label>
+                                            <textarea name="address" class="form-control" rows="3" placeholder="Street address, landmark..."></textarea>
                                         </div>
-                                        <div class="col-12 mb-3">
-                                            <label class="form-label">Full Address</label>
-                                            <textarea name="address" class="form-control" rows="2"></textarea>
-                                        </div>
-                                        <div class="col-12 mb-3">
+                                        <div class="col-md-6">
                                             <label class="form-label">Google Maps Embed URL</label>
-                                            <textarea name="map_url" class="form-control" rows="2" placeholder='<iframe src="..." ...></iframe>'></textarea>
+                                            <textarea name="map_url" class="form-control" rows="3" placeholder='<iframe src="..." ...></iframe>'></textarea>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label fw-bold">Pincode <span class="text-danger">*</span></label>
+                                            <input type="text" name="pincode" class="form-control" required maxlength="6" placeholder="Area pincode">
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- 3. Infrastructure -->
-                                <div class="tab-pane fade" id="infra">
-                                    <div class="row">
-                                        <div class="col-md-4 mb-3">
+                            <!-- 3. Infrastructure & Facilities -->
+                            <div class="card mb-4">
+                                <div class="card-header">Infrastructure & Facilities</div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-md-3">
                                             <label class="form-label">No. of Computers</label>
                                             <input type="number" name="num_computers" class="form-control" value="0">
                                         </div>
-                                        <div class="col-md-4 mb-3">
+                                        <div class="col-md-3">
                                             <label class="form-label">No. of Classrooms</label>
                                             <input type="number" name="num_classrooms" class="form-control" value="0">
                                         </div>
-                                        <div class="col-md-4 mb-3">
+                                        <div class="col-md-3">
                                             <label class="form-label">No. of Staff</label>
                                             <input type="number" name="num_staff" class="form-control" value="0">
                                         </div>
-                                        <div class="col-md-4 mb-3">
-                                            <label class="form-label">Internet Availability</label>
-                                            <select name="internet_avail" class="form-select">
-                                                <option value="Yes">Yes</option>
-                                                <option value="No">No</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-4 mb-3">
-                                            <label class="form-label">Power Backup</label>
-                                            <select name="power_backup" class="form-select">
-                                                <option value="Yes">Yes</option>
-                                                <option value="No">No</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-4 mb-3">
+                                        <div class="col-md-3">
                                             <label class="form-label">Lab Type</label>
                                             <input type="text" name="lab_type" class="form-control" placeholder="e.g. Modern">
                                         </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Internet Availability</label>
+                                            <div class="d-flex gap-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="internet_avail" id="internet_yes" value="Yes" checked>
+                                                    <label class="form-check-label" for="internet_yes">Yes</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="internet_avail" id="internet_no" value="No">
+                                                    <label class="form-check-label" for="internet_no">No</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Power Backup</label>
+                                            <div class="d-flex gap-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="power_backup" id="power_yes" value="Yes" checked>
+                                                    <label class="form-check-label" for="power_yes">Yes</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="power_backup" id="power_no" value="No">
+                                                    <label class="form-check-label" for="power_no">No</label>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- 4. Legal & Docs -->
-                                <div class="tab-pane fade" id="legal">
-                                    <h6 class="text-primary mb-3">Authorization</h6>
-                                    <div class="mb-3">
-                                        <label class="form-label">Upload Authorization Letter (PDF) <span class="text-danger">*</span></label>
-                                        <input type="file" name="auth_letter" class="form-control" accept="application/pdf" required>
-                                        <small class="text-muted">This will be emailed to the center.</small>
+                            <!-- 4. Course Allotment -->
+                            <div class="card mb-4">
+                                <div class="card-header">Course Allotment</div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <?php foreach ($courses as $c): ?>
+                                            <div class="col-md-4 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="courses[]" value="<?php echo $c['id']; ?>" id="c_<?php echo $c['id']; ?>">
+                                                    <label class="form-check-label" for="c_<?php echo $c['id']; ?>">
+                                                        <?php echo htmlspecialchars($c['course_name']); ?>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        <?php endforeach; ?>
                                     </div>
-                                    <hr>
-                                    
-                                    <h6 class="text-primary mb-3">Center Documents</h6>
+                                </div>
+                            </div>
+
+                            <!-- 5. Bank Details -->
+                            <div class="card mb-4">
+                                <div class="card-header">Bank Details</div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Bank Name</label>
+                                            <input type="text" name="bank_name" class="form-control">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Account Number</label>
+                                            <input type="text" name="account_no" class="form-control">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">IFSC Code</label>
+                                            <input type="text" name="ifsc_code" class="form-control">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Account Holder</label>
+                                            <input type="text" name="account_holder" class="form-control">
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label">Branch Address</label>
+                                            <input type="text" name="branch_address" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 6. Legal & Documents (Table) -->
+                            <div class="card mb-4">
+                                <div class="card-header">Center Documents</div>
+                                <div class="card-body p-0">
                                     <div class="table-responsive">
-                                        <table class="table table-bordered align-middle" id="docTable">
-                                            <thead class="bg-light">
+                                        <table class="table table-bordered align-middle mb-0" id="docTable">
+                                            <thead class="table-light">
                                                 <tr>
                                                     <th>Document Name</th>
                                                     <th>Document Number</th>
@@ -464,133 +503,118 @@ if (isset($_POST['add_center'])) {
                                         </table>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- 5. Config, Fees, Courses, Working, Bank -->
-                                <div class="tab-pane fade" id="config">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <h6 class="text-success fw-bold">Financials</h6>
-                                            <div class="mb-3">
-                                                <label class="form-label">Franchise Fee</label>
-                                                <input type="number" step="0.01" name="franchise_fee" class="form-control">
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Royalty Percentage (%)</label>
-                                                <input type="number" step="0.01" name="royalty_percentage" class="form-control" value="0">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <h6 class="text-success fw-bold">Working Hours</h6>
-                                            <div class="row">
-                                                <div class="col-12 mb-3">
-                                                    <label class="form-label d-block">Working Days</label>
-                                                    <?php 
-                                                    $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-                                                    foreach($days as $day) {
-                                                        echo '<div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="checkbox" name="working_days[]" value="'.$day.'" id="wd_'.$day.'">
-                                                                <label class="form-check-label" for="wd_'.$day.'">'.$day.'</label>
-                                                              </div>';
-                                                    }
-                                                    ?>
-                                                </div>
-                                                <div class="col-12 mb-3">
-                                                    <label class="form-label d-block">Weekend Off</label>
-                                                    <?php 
-                                                    foreach($days as $day) {
-                                                        echo '<div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="checkbox" name="weekend_off_days[]" value="'.$day.'" id="we_'.$day.'">
-                                                                <label class="form-check-label" for="we_'.$day.'">'.$day.'</label>
-                                                              </div>';
-                                                    }
-                                                    ?>
-                                                </div>
-                                                <div class="col-6">
-                                                    <label class="form-label">Opening</label>
-                                                    <input type="time" name="opening_time" class="form-control">
-                                                </div>
-                                                <div class="col-6">
-                                                    <label class="form-label">Closing</label>
-                                                    <input type="time" name="closing_time" class="form-control">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <h6 class="text-success fw-bold">Course Allotment</h6>
-                                    <div class="mb-3 p-3 bg-light rounded" style="max-height: 200px; overflow-y: auto;">
-                                        <?php foreach ($courses as $c): ?>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" name="courses[]" value="<?php echo $c['id']; ?>" id="c_<?php echo $c['id']; ?>">
-                                                <label class="form-check-label" for="c_<?php echo $c['id']; ?>"><?php echo htmlspecialchars($c['course_name']); ?></label>
-                                            </div>
-                                        <?php endforeach; ?>
-                                    </div>
-                                    <hr>
-                                    <h6 class="text-success fw-bold">Bank Details</h6>
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Bank Name</label>
-                                            <input type="text" name="bank_name" class="form-control">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Account No</label>
-                                            <input type="text" name="account_no" class="form-control">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">IFSC Code</label>
-                                            <input type="text" name="ifsc_code" class="form-control">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Holder Name</label>
-                                            <input type="text" name="account_holder" class="form-control">
-                                        </div>
-                                        <div class="col-12">
-                                            <label class="form-label">Branch Address</label>
-                                            <input type="text" name="branch_address" class="form-control">
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <h6 class="text-success fw-bold">API & Payment</h6>
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Razorpay Key</label>
-                                            <input type="text" name="razorpay_key" class="form-control">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Razorpay Secret</label>
-                                            <input type="text" name="razorpay_secret" class="form-control">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">QR Code 1</label>
-                                            <input type="file" name="qr_code_1" class="form-control" accept="image/*">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">QR Code 2</label>
-                                            <input type="file" name="qr_code_2" class="form-control" accept="image/*">
-                                        </div>
-                                    </div>
-                                </div>
+                        </div>
 
-                                <!-- 6. Media -->
-                                <div class="tab-pane fade" id="media">
+                        <!-- Sidebar (Right Column) -->
+                        <div class="col-lg-3">
+                            <!-- Financials & Validity -->
+                             <div class="card mb-4">
+                                <div class="card-header">Config & Validity</div>
+                                <div class="card-body">
                                     <div class="mb-3">
-                                        <label class="form-label">Background Banner</label>
-                                        <input type="file" name="banner_image" class="form-control" accept="image/*">
+                                        <label class="form-label fw-bold">Validity Date</label>
+                                        <!-- Validity Date Field -->
+                                        <input type="date" name="validity_date" class="form-control" value="<?php echo date('Y-m-d', strtotime('+3 years')); ?>"> 
+                                        <div class="form-text">Default: 3 Years from today</div>
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">Logo</label>
-                                        <input type="file" name="logo_image" class="form-control" accept="image/*">
+                                        <label class="form-label">Franchise Fee</label>
+                                        <input type="number" step="0.01" name="franchise_fee" class="form-control" placeholder="0.00">
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">Gallery Images (Multiple)</label>
-                                        <input type="file" name="gallery_images[]" class="form-control" multiple accept="image/*">
+                                        <label class="form-label">Royalty (%)</label>
+                                        <input type="number" step="0.01" name="royalty_percentage" class="form-control" value="0">
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="card-footer bg-white border-top-0 pb-4">
-                            <button type="submit" name="add_center" class="btn btn-primary w-100 btn-lg"><i class="fas fa-save me-2"></i> Register Center & Send Email</button>
+
+                            <!-- key Uploads -->
+                            <div class="card mb-4">
+                                <div class="card-header">Key Documents</div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Auth Letter (PDF) <span class="text-danger">*</span></label>
+                                        <input type="file" name="auth_letter" class="form-control" accept="application/pdf" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Owner Photo</label>
+                                        <input type="file" name="owner_image" class="form-control" accept="image/*">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Owner Signature</label>
+                                        <input type="file" name="owner_sign" class="form-control" accept="image/*">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Center Stamp</label>
+                                        <input type="file" name="center_stamp" class="form-control" accept="image/*">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Media -->
+                            <div class="card mb-4">
+                                <div class="card-header">Branding & Media</div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">Center Logo</label>
+                                        <input type="file" name="logo_image" class="form-control" accept="image/*">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Banner Image</label>
+                                        <input type="file" name="banner_image" class="form-control" accept="image/*">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Gallery (Multiple)</label>
+                                        <input type="file" name="gallery_images[]" class="form-control" multiple accept="image/*">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">QR Code 1</label>
+                                        <input type="file" name="qr_code_1" class="form-control" accept="image/*">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">QR Code 2</label>
+                                        <input type="file" name="qr_code_2" class="form-control" accept="image/*">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Working Hours -->
+                            <div class="card mb-4">
+                                <div class="card-header">Working Hours</div>
+                                <div class="card-body">
+                                    <div class="mb-2">
+                                        <label class="form-label">Opening Time</label>
+                                        <input type="time" name="opening_time" class="form-control">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Closing Time</label>
+                                        <input type="time" name="closing_time" class="form-control">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold d-block">Working Days</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="working_days[]" value="Monday" checked> <label class="form-check-label">Mon</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="working_days[]" value="Tuesday" checked> <label class="form-check-label">Tue</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="working_days[]" value="Wednesday" checked> <label class="form-check-label">Wed</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="working_days[]" value="Thursday" checked> <label class="form-check-label">Thu</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="working_days[]" value="Friday" checked> <label class="form-check-label">Fri</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="working_days[]" value="Saturday" checked> <label class="form-check-label">Sat</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -615,8 +639,6 @@ if (isset($_POST['add_center'])) {
             // Cascading Dropdowns: Country -> State
             $('#country').on('change', function() {
                 var countryId = $(this).val();
-                
-                // Reset State & City
                 $('#state').empty().append('<option value="">Loading...</option>');
                 $('#city').empty().append('<option value="">-- Select State First --</option>');
 
@@ -628,10 +650,6 @@ if (isset($_POST['add_center'])) {
                             data.forEach(item => {
                                 $('#state').append(`<option value="${item.id}">${item.name}</option>`);
                             });
-                        })
-                        .catch(err => {
-                            console.error('Error:', err);
-                            $('#state').html('<option value="">Error loading states</option>');
                         });
                 } else {
                     $('#state').html('<option value="">-- Select Country First --</option>');
@@ -641,8 +659,6 @@ if (isset($_POST['add_center'])) {
             // Cascading Dropdowns: State -> City
             $('#state').on('change', function() {
                 var stateId = $(this).val();
-                
-                // Reset City
                 $('#city').empty().append('<option value="">Loading...</option>');
 
                 if(stateId) {
@@ -653,10 +669,6 @@ if (isset($_POST['add_center'])) {
                             data.forEach(item => {
                                 $('#city').append(`<option value="${item.id}">${item.name}</option>`);
                             });
-                        })
-                        .catch(err => {
-                            console.error('Error:', err);
-                            $('#city').html('<option value="">Error loading cities</option>');
                         });
                 } else {
                     $('#city').html('<option value="">-- Select State First --</option>');
@@ -669,7 +681,7 @@ if (isset($_POST['add_center'])) {
                                 <td><input type="text" name="doc_name[]" class="form-control" placeholder="e.g. PAN Card"></td>
                                 <td><input type="text" name="doc_number[]" class="form-control" placeholder="Optional"></td>
                                 <td><input type="file" name="doc_file[]" class="form-control"></td>
-                                <td><button type="button" class="btn btn-sm btn-danger remove-row"><i class="fas fa-trash"></i></button></td>
+                                <td><button type="button" class="btn btn-sm btn-outline-danger remove-row"><i class="fas fa-trash"></i></button></td>
                             </tr>`;
                 $('#docTable tbody').append(html);
             });
