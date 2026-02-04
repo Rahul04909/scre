@@ -9,6 +9,7 @@ $offset = ($page - 1) * $limit;
 // Filters
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 $course_id = isset($_GET['course_id']) ? intval($_GET['course_id']) : '';
+$center_id = isset($_GET['center_id']) ? intval($_GET['center_id']) : '';
 
 // Base Query
 $sql = "SELECT s.id, s.enrollment_no, s.first_name, s.last_name, s.father_name, s.mobile, s.student_image, 
@@ -34,6 +35,11 @@ if (!empty($course_id)) {
     $params[] = $course_id;
 }
 
+if (!empty($center_id)) {
+    $sql .= " AND s.center_id = ?";
+    $params[] = $center_id;
+}
+
 // Count Total for Pagination
 $countSql = str_replace("SELECT s.id, s.enrollment_no, s.first_name, s.last_name, s.father_name, s.mobile, s.student_image, 
                s.enrollment_date,
@@ -53,6 +59,8 @@ $students = $stmt->fetchAll();
 
 // Fetch Courses for Filter
 $courses = $pdo->query("SELECT id, course_name FROM courses ORDER BY course_name ASC")->fetchAll();
+// Fetch Centers for Filter
+$centers = $pdo->query("SELECT id, center_name, center_code FROM centers ORDER BY center_name ASC")->fetchAll();
 
 ?>
 
@@ -79,7 +87,7 @@ $courses = $pdo->query("SELECT id, course_name FROM courses ORDER BY course_name
         <?php include '../sidebar.php'; ?>
         
         <div id="page-content-wrapper" style="width: 100%; margin-left: 280px;">
-
+            <?php include '../header.php'; ?>
             
             <div class="container-fluid px-4 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -92,7 +100,7 @@ $courses = $pdo->query("SELECT id, course_name FROM courses ORDER BY course_name
                 <div class="card shadow-sm border-0 mb-4">
                     <div class="card-body">
                         <form method="GET" class="row g-3">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <input type="text" name="search" class="form-control" placeholder="Search by Name, Roll No, Mobile..." value="<?php echo htmlspecialchars($search); ?>">
                             </div>
                             <div class="col-md-3">
@@ -101,6 +109,16 @@ $courses = $pdo->query("SELECT id, course_name FROM courses ORDER BY course_name
                                     <?php foreach ($courses as $c): ?>
                                         <option value="<?php echo $c['id']; ?>" <?php echo $course_id == $c['id'] ? 'selected' : ''; ?>>
                                             <?php echo htmlspecialchars($c['course_name']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select name="center_id" class="form-select">
+                                    <option value="">All Centers</option>
+                                    <?php foreach ($centers as $ctr): ?>
+                                        <option value="<?php echo $ctr['id']; ?>" <?php echo $center_id == $ctr['id'] ? 'selected' : ''; ?>>
+                                            <?php echo htmlspecialchars($ctr['center_name'] . ' (' . $ctr['center_code'] . ')'); ?>
                                         </option>
                                     <?php endforeach; ?>
                                 </select>
@@ -127,7 +145,6 @@ $courses = $pdo->query("SELECT id, course_name FROM courses ORDER BY course_name
                                         <th>Course & Center</th>
                                         <th>Fees Status</th>
                                         <th>Registration Date</th>
-                                        <th class="text-end pe-4">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -178,25 +195,11 @@ $courses = $pdo->query("SELECT id, course_name FROM courses ORDER BY course_name
                                                 <td>
                                                     <div class="small text-muted"><?php echo date('d M, Y', strtotime($s['enrollment_date'])); ?></div>
                                                 </td>
-                                                <td class="text-end pe-4">
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-sm btn-light border dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                                            Actions
-                                                        </button>
-                                                        <ul class="dropdown-menu dropdown-menu-end">
-                                                            <li><a class="dropdown-item" href="view-student.php?id=<?php echo $s['id']; ?>"><i class="fas fa-eye me-2 text-info"></i> View Details</a></li>
-                                                            <li><a class="dropdown-item" href="edit-student.php?id=<?php echo $s['id']; ?>"><i class="fas fa-edit me-2 text-primary"></i> Edit</a></li>
-                                                            <li><hr class="dropdown-divider"></li>
-                                                            <!-- Admin might want to see fee history even if not collecting -->
-                                                            <li><a class="dropdown-item" href="fee-history.php?student_id=<?php echo $s['id']; ?>"><i class="fas fa-history me-2 text-warning"></i> Fee History</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php else: ?>
                                         <tr>
-                                            <td colspan="6" class="text-center py-5 text-muted">
+                                            <td colspan="5" class="text-center py-5 text-muted">
                                                 <i class="fas fa-user-graduate fa-3x mb-3 opacity-50"></i>
                                                 <p>No students found matching your criteria.</p>
                                             </td>
