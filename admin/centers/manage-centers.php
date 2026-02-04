@@ -58,7 +58,7 @@ try {
                                         <th class="py-3 ps-4">Code</th>
                                         <th class="py-3">Center Name</th>
                                         <th class="py-3">Owner</th>
-                                        <th class="py-3">Location</th>
+                                        <th class="py-3">Registration Date</th>
                                         <th class="py-3">Contact</th>
                                         <th class="py-3">Status</th>
                                         <th class="py-3 text-end pe-4">Actions</th>
@@ -74,7 +74,7 @@ try {
                                                     <?php if($c['owner_image']): ?><img src="../../<?php echo $c['owner_image']; ?>" class="rounded-circle me-1" width="25" height="25"><?php endif; ?>
                                                     <?php echo htmlspecialchars($c['owner_name']); ?>
                                                 </td>
-                                                <td><small><?php echo htmlspecialchars($c['city'].', '.$c['state']); ?></small></td>
+                                                <td><small><?php echo date('d-m-Y', strtotime($c['created_at'])); ?></small></td>
                                                 <td><small><?php echo htmlspecialchars($c['mobile']); ?></small></td>
                                                 <td>
                                                     <span class="badge bg-<?php echo $c['is_active'] ? 'success' : 'secondary'; ?>">
