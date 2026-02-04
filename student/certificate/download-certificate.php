@@ -1,19 +1,19 @@
 <?php
 session_start();
+require_once '../../database/config.php';
+require_once '../../vendor/autoload.php';
+
 if (!isset($_SESSION['student_id'])) {
     die("Access Denied");
 }
 
-require_once '../../database/config.php';
-require_once '../../vendor/autoload.php';
-
 $student_id = $_SESSION['student_id'];
 
-// 1. Fetch Data
-$sql = "
+// 1. Fetch Student, Course, Center Info
+$sqlStudent = "
     SELECT s.*, 
-           c.course_name, c.duration_value, c.duration_type,
-           cen.center_name, cen.center_code,
+           c.course_name, c.course_code, c.duration_value, c.duration_type,
+           cen.center_name, cen.center_code, cen.address as center_address, 
            ac.session_name, ac.start_month, ac.start_year, ac.end_month, ac.end_year
     FROM students s
     JOIN courses c ON s.course_id = c.id
@@ -21,7 +21,7 @@ $sql = "
     JOIN academic_sessions ac ON s.session_id = ac.id
     WHERE s.id = ?
 ";
-$stmt = $pdo->prepare($sql);
+$stmt = $pdo->prepare($sqlStudent);
 $stmt->execute([$student_id]);
 $student = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -29,215 +29,175 @@ if (!$student) {
     die("Student not found.");
 }
 
-// Result Data
+// 2. Fetch Results for Grade Calculation
+// We need to calculate the grand total and percentage to determine the grade.
 $sqlResults = "
-    SELECT er.*, sub.total_marks as subject_total, er.score as obtained_total
+    SELECT er.*, 
+           sub.subject_name, sub.total_marks as subject_total,
+           er.score as obtained_total
     FROM exam_results er
     JOIN exam_schedules es ON er.exam_schedule_id = es.id
     JOIN subjects sub ON es.subject_id = sub.id
     WHERE er.student_id = ?
 ";
+
 $stmtRes = $pdo->prepare($sqlResults);
 $stmtRes->execute([$student_id]);
 $results = $stmtRes->fetchAll(PDO::FETCH_ASSOC);
 
+if (empty($results)) {
+    die("No completed exams found.");
+}
+
+// 3. Calculate Totals & Grade
 $grand_total_max = 0;
 $grand_total_obt = 0;
+$is_fail = false;
+$last_exam_date = '';
+
 foreach ($results as $row) {
     $grand_total_max += $row['subject_total'];
     $grand_total_obt += $row['obtained_total'];
+    if ($row['result_status'] !== 'Pass') {
+        $is_fail = true;
+    }
+    // Track latest exam date? (Optional, if needed for 'Exam Month')
+    // We don't have exam date in results easily without joining schedule.
+    // Assuming 'Issue Date' is today.
 }
 
 $percentage = ($grand_total_max > 0) ? ($grand_total_obt / $grand_total_max) * 100 : 0;
-$grade = 'F';
-if ($percentage >= 80) $grade = 'A';
-elseif ($percentage >= 60) $grade = 'B';
-elseif ($percentage >= 40) $grade = 'C';
-else $grade = 'Fail'; // Below 40
+$final_grade = 'F';
 
-// Formatting
-$student_name = strtoupper($student['first_name'] . ' ' . $student['last_name']);
-$father_name = strtoupper($student['father_name']);
-$enrollment = $student['enrollment_no'];
-$dob = date('d-m-Y', strtotime($student['dob']));
-$course_name = strtoupper($student['course_name']);
-$center_text = "(" . $student['center_code'] . ") " . strtoupper($student['center_name']);
-$duration = $student['duration_value'] . " " . ucfirst($student['duration_type']); // e.g., 12 Months
-
-// Session Dates
-$session_start = "01-" . substr($student['start_month'], 0, 3) . "-" . $student['start_year']; // approx
-$session_end = "30-" . substr($student['end_month'], 0, 3) . "-" . $student['end_year']; // approx
-
-// Exam Date (Use consolidated date or issue date)
-$exam_date = $session_end; // Placeholder
-$issue_date = date('d-M-Y');
-
-// Profile Image
-$profile_img = '';
-if (!empty($student['student_image'])) {
-    $path = '../../' . $student['student_image'];
-    if (file_exists($path)) {
-        $profile_img = $path;
-    }
+if (!$is_fail) {
+    if ($percentage >= 90) $final_grade = 'A+';
+    elseif ($percentage >= 80) $final_grade = 'A';
+    elseif ($percentage >= 70) $final_grade = 'B';
+    elseif ($percentage >= 60) $final_grade = 'C';
+    elseif ($percentage >= 50) $final_grade = 'D';
+} else {
+    $final_grade = 'Fail';
 }
 
-// QR Code
-$qrData = "Cert: $student_name\nEnroll: $enrollment\nCourse: $course_name\nGrade: $grade";
-$qrCodeHtml = '';
-$apiUrl = "https://quickchart.io/qr?text=" . urlencode($qrData) . "&size=100&margin=0";
-try {
-    $imageData = false;
-    if (ini_get('allow_url_fopen')) {
-        $imageData = @file_get_contents($apiUrl);
-    }
-    if ($imageData === false && function_exists('curl_init')) {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $apiUrl);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
-        $imageData = curl_exec($ch);
-        curl_close($ch);
-    }
-    if ($imageData !== false && !empty($imageData)) {
-         $base64 = 'data:image/png;base64,' . base64_encode($imageData);
-         $qrCodeHtml = '<img src="' . $base64 . '" style="width: 80px; height: 80px;">';
-    }
-} catch (\Throwable $e) {}
+// 4. Prepare Data for Display
+$name = strtoupper($student['first_name'] . ' ' . $student['last_name']);
+$father_name = strtoupper($student['father_name']);
+$enrollment_no = $student['enrollment_no'];
+$session = $student['session_name']; 
+if (!empty($student['start_year']) && !empty($student['end_year'])) {
+    $session = $student['start_month'] . ' ' . $student['start_year'] . ' - ' . $student['end_month'] . ' ' . $student['end_year'];
+}
+$dob = date('d-m-Y', strtotime($student['dob']));
+$course_name = strtoupper($student['course_name']);
+$center_name = strtoupper($student['center_name']);
+$duration = $student['duration_value'] . ' ' . ucfirst($student['duration_type']);
+$issue_date = date('d-m-Y');
+$exam_month = date('M Y'); // Default to current month/year or static
+$grade = $final_grade;
 
 
-// Generate PDF
+// 5. Generate PDF
 try {
+    // mPDF Configuration
+    // A4 Landscape is common for certificates, but 'background.png' orientation dictates it.
+    // Assuming Landscape based on typical certificates. If Portrait, change 'L' to 'P'.
+    // Let's assume Landscape for now.
     $mpdf = new \Mpdf\Mpdf([
         'mode' => 'utf-8', 
         'format' => 'A4-L', // Landscape
-        'margin_left' => 10,
-        'margin_right' => 10,
-        'margin_top' => 10,
-        'margin_bottom' => 10,
-        'default_font' => 'freeserif'
+        'margin_left' => 0,
+        'margin_right' => 0,
+        'margin_top' => 0,
+        'margin_bottom' => 0,
+        'default_font' => 'arial'
     ]);
 
-    // Background
-    $bg_path = 'background/certificate-bg.png';
+    // Background Image
+    // Using the specifically requested massive file.
+    // WARNING: 70MB file might be slow.
+    $bg_path = __DIR__ . '/background/background.png'; 
+    
     if (file_exists($bg_path)) {
         $mpdf->SetDefaultBodyCSS('background', "url('{$bg_path}')");
-        $mpdf->SetDefaultBodyCSS('background-image-resize', 6);
+        $mpdf->SetDefaultBodyCSS('background-image-resize', 6); // 6 = full page fit
+    } else {
+        die("Certificate background not found.");
     }
 
+    // Styles & Content
+    // Positions need to be calibrated. I'll use absolute positioning placeholders.
+    // User needs to verify positions.
+     
     $html = '
     <style>
-    <style>
-    <style>
-        body { font-family: freeserif; color: #000; }
-        .cert-container { 
-            padding-top: 140px; /* Adjusted to be safe but not too low */
-            padding-bottom: 20px;
-            padding-left: 60px; 
-            padding-right: 60px; 
-            position: relative; 
-        }
+        body { font-family: arial; color: #000; font-weight: bold; font-size: 16px; }
+        .data-overlay { position: absolute; }
         
-        /* Photo on LEFT Layout - Using Absolute/Overlay */
-        .header-photo {
-            position: absolute;
-            top: 280px; /* Moved down slightly */
-            left: 50px;
-            width: 100px; height: 120px; border: 1px solid #000;
-            padding-bottom: 40px;
-        }
+        /* ADJUST THESE TOP/LEFT VALUES BASED ON THE BACKGROUND IMAGE LAYOUT */
+        /* These are guesstimates for a standard landscape certificate */
         
-        .content-text {
-            font-size: 17px;           /* Increased size */
-            line-height: 2.0;          /* Increased line height for spacing */
-            margin-top: 0px; 
-            font-weight: bold;
-            text-align: center;       /* Justify to spread text */
-            text-align-last: center;   /* Center the last line/short lines if supported */
-            width: 100%;
-            margin-top: -40px;
-        }
+        .enrollment { top: 120px; left: 850px; } /* Top Right */
         
-        .fill-blank {
-            border-bottom: 1px dotted #000;
-            display: inline-block;
-            text-align: center;
-            font-weight: bold;
-            color: blue;
-            padding: 0 5px;
-            margin: 0 10px;
-        }
+        .student-name { top: 280px; left: 400px; font-size: 24px; color: #2c3e50; }
         
-        .footer-table { width: 100%; margin-top: 20px; }
-        .footer-table td { text-align: center; vertical-align: bottom; font-weight: bold; }
+        .father-name { top: 330px; left: 400px; }
         
-        .grade-legend { font-size: 10px; color: red; font-weight: bold; margin-top: 5px; }
-        .director-sign { font-size: 14px; border-top: 2px solid #000; display: inline-block; width: 150px; margin-top: 30px; }
-        .coordinator-sign { font-size: 14px; border-top: 2px solid #000; display: inline-block; width: 150px; margin-top: 30px; }
+        .dob { top: 330px; left: 800px; }
+        
+        .course-name { top: 380px; left: 400px; }
+        
+        .duration { top: 380px; left: 850px; }
+        
+        .center-name { top: 430px; left: 400px; width: 600px; }
+        
+        .session { top: 480px; left: 400px; }
+        
+        .grade { top: 530px; left: 400px; font-size: 18px; }
+        
+        .exam-month { top: 530px; left: 600px; }
+        
+        .issue-date { top: 650px; left: 200px; } /* Bottom Left */
+        
     </style>
     
-    <div class="cert-container">
-        
-    <div class="cert-container">
-        
-        <!-- Profile Photo REMOVED from Header -->
+    <!-- Enrollment No -->
+    <div class="data-overlay enrollment">'.$enrollment_no.'</div>
 
-        <div class="content-text">
-            This is to Certify that Mr./Miss/Mrs. <span class="fill-blank" style="min-width: 350px;">'.$student_name.'</span> 
-            Son of/Daughter of Sh. <span class="fill-blank" style="min-width: 350px;">'.$father_name.'</span><br>
-            
-            Registration No. <span class="fill-blank" style="min-width: 200px;">'.$enrollment.'</span> 
-            Session <span class="fill-blank" style="min-width: 200px;">'.$session_start.' to '.$session_end.'</span><br>
+    <!-- Name -->
+    <div class="data-overlay student-name">'.$name.'</div>
 
-            Date of Birth <span class="fill-blank" style="min-width: 150px;">'.$dob.'</span> 
-            In the course <span class="fill-blank" style="min-width: 450px;">'.$course_name.'</span><br>
+    <!-- Father Name -->
+    <div class="data-overlay father-name">'.$father_name.'</div>
+    
+    <!-- DOB -->
+    <div class="data-overlay dob">'.$dob.'</div>
 
-            Appeared from our ASC* <span class="fill-blank" style="min-width: 550px;">'.$center_text.'</span><br>
+    <!-- Course -->
+    <div class="data-overlay course-name">'.$course_name.'</div>
+    
+    <!-- Duration -->
+    <div class="data-overlay duration">'.$duration.'</div>
 
-            Duration of <span class="fill-blank" style="min-width: 150px;">'.$duration.'</span> 
-            has successfully used by his/her final Examination held in <span class="fill-blank" style="min-width: 200px;">'.$exam_date.'</span><br>
+    <!-- Center -->
+    <div class="data-overlay center-name">'.$center_name.'</div>
 
-            Obtained marks <span class="fill-blank" style="min-width: 80px;">'.(0 + $grand_total_obt).'</span> 
-            Out of <span class="fill-blank" style="min-width: 80px;">'.(0 + $grand_total_max).'</span> 
-            with Grade <span class="fill-blank" style="min-width: 60px;">'.$grade.'</span> 
-            and hereby awarded CERTIFICATE/DIPLOMA.
-            <br><br>
-            
-            Date of Issue : <span class="fill-blank" style="min-width: 200px; margin-top: -60px;">'.$issue_date.'</span>
-        </div>
+    <!-- Session -->
+    <div class="data-overlay session">'.$session.'</div>
+    
+    <!-- Grade -->
+    <div class="data-overlay grade">'.$grade.'</div>
+    
+    <!-- Exam Month -->
+    <div class="data-overlay exam-month">'.$exam_month.'</div>
 
-        <table class="footer-table">
-            <tr>
-                <td width="30%" align="center" valign="bottom">
-                     <!-- Student Image Here -->
-                     '.($profile_img ? '<img src="'.$profile_img.'" style="width: 100px; height: 120px; border: 1px solid #000; padding: 2px;">' : '<div style="width: 100px; height: 120px; border: 1px solid #000; margin: 0 auto; margin-bottom: 40px;"></div>').'
-                </td>
-                <td width="40%" style="padding-bottom: 40px;">
-                    '.$qrCodeHtml.'
-                </td>
-                <td width="30%" align="center">
-                    <div class="director-sign">Director</div>
-                </td>
-            </tr>
-        </table>
-        
-        <!-- Legend and Footer Text centered at bottom -->
-        <div style="text-align: center; margin-top: -35px;">
-             <div class="grade-legend">
-                Grade A 80% & Above, Grade B 60-79, Grade C 40-59, Grade Below 40%
-            </div>
-            <div style="font-size: 10px; color: #333; margin-top: 5px;">
-                This Certificate/Diploma is issued by SIR CHHOTU RAM EDUCATION PVT. LTD.<br>
-                Result may be verified on www.screduc.com
-            </div>
-        </div>
-
-    </div>
+    <!-- Date of Issue -->
+    <div class="data-overlay issue-date">'.$issue_date.'</div>
     ';
 
     $mpdf->WriteHTML($html);
     $mpdf->Output('Certificate.pdf', 'I');
 
 } catch (\Mpdf\MpdfException $e) {
-    die("PDF Error: " . $e->getMessage());
+    die("PDF Generation Error: " . $e->getMessage());
 }
 ?>
