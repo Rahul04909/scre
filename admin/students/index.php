@@ -79,7 +79,7 @@ $courses = $pdo->query("SELECT id, course_name FROM courses ORDER BY course_name
         <?php include '../sidebar.php'; ?>
         
         <div id="page-content-wrapper" style="width: 100%; margin-left: 280px;">
-            <?php include '../header.php'; ?>
+
             
             <div class="container-fluid px-4 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-4">
