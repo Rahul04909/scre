@@ -129,19 +129,23 @@ if ($selected_center_id > 0) {
                 <?php endif; ?>
 
                 <!-- Select Center -->
-                <div class="card shadow-sm border-0 mb-5">
-                    <div class="card-body">
-                        <form method="GET" class="row align-items-end">
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold opacity-75">Select Center</label>
+                <div class="card shadow-sm border-0 mb-5 bg-white">
+                    <div class="card-body p-4">
+                        <form method="GET">
+                            <label class="form-label fw-bold text-uppercase text-secondary small mb-2">
+                                <i class="fas fa-search me-2"></i>Search Center
+                            </label>
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text bg-light border-end-0"><i class="fas fa-building text-muted"></i></span>
                                 <select name="center_id" class="form-select select2" required onchange="this.form.submit()">
-                                    <option value="">-- Search by Name or Code --</option>
+                                    <option value="">Select a Center...</option>
                                     <?php foreach ($centers as $c): ?>
                                         <option value="<?php echo $c['id']; ?>" <?php echo ($selected_center_id == $c['id']) ? 'selected' : ''; ?>>
                                             <?php echo clean($c['center_name'] . ' (' . $c['center_code'] . ')'); ?>
                                         </option>
                                     <?php endforeach; ?>
                                 </select>
+                                <button class="btn btn-primary px-4" type="submit">View Details</button>
                             </div>
                         </form>
                     </div>
@@ -292,7 +296,9 @@ if ($selected_center_id > 0) {
         $(document).ready(function() {
             $('.select2').select2({
                 theme: 'bootstrap-5',
-                width: '100%'
+                width: '100%',
+                placeholder: 'Search for a center...',
+                allowClear: true
             });
         });
     </script>
