@@ -11,12 +11,10 @@ $center_id = intval($_GET['id']);
 $message = '';
 $messageType = '';
 
-// Helper function to safely output data and strip Xdebug error junk if present in DB
+// Helper function to safely output data
 function safe_output($value) {
     if ($value === null) return '';
     $valStr = (string)$value;
-    // Check if the value looks like an Xdebug error message (starts with <br />, contains xdebug-error)
-    // or just generally if it starts with <br /> which is not valid for these inputs
     if (strpos($valStr, 'xdebug-error') !== false || stripos($valStr, '<br />') === 0) {
         return '';
     }
@@ -114,6 +112,9 @@ if (isset($_POST['update_center'])) {
     // 5. Fees & Working
     $franchise_fee = floatval($_POST['franchise_fee']);
     $royalty_percentage = floatval($_POST['royalty_percentage']);
+    $validity_date = !empty($_POST['validity_date']) ? $_POST['validity_date'] : null;
+    $created_at_input = !empty($_POST['created_at']) ? $_POST['created_at'] : $center['created_at'];
+
     $weekdays = isset($_POST['working_days']) ? implode(', ', $_POST['working_days']) : '';
     $weekend_off = isset($_POST['weekend_off_days']) ? implode(', ', $_POST['weekend_off_days']) : '';
     $opening_time = $_POST['opening_time'];
@@ -179,7 +180,7 @@ if (isset($_POST['update_center'])) {
             owner_image = :oimg, owner_sign = :osig, center_stamp = :cst, auth_letter = :auth,
             pincode = :pin, country = :ctr, state = :st, city = :ct, address = :addr, map_url = :map,
             num_computers = :nc, num_classrooms = :ncl, num_staff = :ns, internet_avail = :ia, power_backup = :pb, lab_type = :lt,
-            franchise_fee = :ff, royalty_percentage = :rp,
+            franchise_fee = :ff, royalty_percentage = :rp, validity_date = :vd, created_at = :ca,
             banner_image = :bi, logo_image = :li, gallery_images = :gi,
             weekdays = :wd, weekend_off = :weo, opening_time = :ot, closing_time = :ctm,
             bank_name = :bn, account_no = :an, ifsc_code = :ic, account_holder = :ah, branch_address = :ba,
@@ -192,7 +193,7 @@ if (isset($_POST['update_center'])) {
             ':oimg' => $owner_image, ':osig' => $owner_sign, ':cst' => $center_stamp, ':auth' => $auth_letter,
             ':pin' => $pincode, ':ctr' => $country, ':st' => $state, ':ct' => $city, ':addr' => $address, ':map' => $map_url,
             ':nc' => $num_computers, ':ncl' => $num_classrooms, ':ns' => $num_staff, ':ia' => $internet_avail, ':pb' => $power_backup, ':lt' => $lab_type,
-            ':ff' => $franchise_fee, ':rp' => $royalty_percentage,
+            ':ff' => $franchise_fee, ':rp' => $royalty_percentage, ':vd' => $validity_date, ':ca' => $created_at_input,
             ':bi' => $banner_image, ':li' => $logo_image, ':gi' => $gallery_json,
             ':wd' => $weekdays, ':weo' => $weekend_off, ':ot' => $opening_time, ':ctm' => $closing_time,
             ':bn' => $bank_name, ':an' => $account_no, ':ic' => $ifsc_code, ':ah' => $account_holder, ':ba' => $branch_address,
@@ -215,7 +216,6 @@ if (isset($_POST['update_center'])) {
                 if(intval($did) > 0) {
                      $stmtDel = $pdo->prepare("DELETE FROM center_documents WHERE id = ?");
                      $stmtDel->execute([$did]);
-                     // Optionally unlink file
                 }
             }
         }
@@ -290,8 +290,6 @@ if (isset($_POST['update_center'])) {
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
     <style>
-        .nav-tabs .nav-link.active { background-color: #0d6efd; color: white; border-color: #0d6efd; }
-        .nav-tabs .nav-link { color: #495057; font-weight: 500; }
         .select2-container .select2-selection--single { height: 38px !important; }
         .select2-container--bootstrap-5 .select2-selection { border: 1px solid #dee2e6; }
         .img-preview { max-height: 100px; margin-top: 5px; border: 1px solid #ddd; padding: 2px; }
@@ -302,88 +300,65 @@ if (isset($_POST['update_center'])) {
         <?php include '../sidebar.php'; ?>
         <div id="page-content-wrapper" style="margin-left: 280px;">
             <div class="container-fluid py-5 px-lg-5">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="mb-0">Edit Center: <?php echo safe_output($center['center_name'] ?? ''); ?></h2>
-                    <a href="manage-centers.php" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i> Back to List</a>
-                </div>
-
-                <?php if ($message): ?>
-                    <div class="alert alert-<?php echo $messageType; ?> alert-dismissible fade show"><?php echo $message; ?><button class="btn-close" data-bs-dismiss="alert"></button></div>
-                <?php endif; ?>
-
                 <form method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="delete_doc_ids" id="delete_doc_ids" value="">
 
-                    <div class="card shadow-sm border-0">
-                        <div class="card-header bg-white pt-3 pb-0 border-bottom-0">
-                            <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
-                                <li class="nav-item"><button class="nav-link active" id="basic-tab" data-bs-toggle="tab" data-bs-target="#basic" type="button">Basic Info</button></li>
-                                <li class="nav-item"><button class="nav-link" id="location-tab" data-bs-toggle="tab" data-bs-target="#location" type="button">Location</button></li>
-                                <li class="nav-item"><button class="nav-link" id="infra-tab" data-bs-toggle="tab" data-bs-target="#infra" type="button">Infrastructure</button></li>
-                                <li class="nav-item"><button class="nav-link" id="legal-tab" data-bs-toggle="tab" data-bs-target="#legal" type="button">Legal & Docs</button></li>
-                                <li class="nav-item"><button class="nav-link" id="config-tab" data-bs-toggle="tab" data-bs-target="#config" type="button">Config & Fees</button></li>
-                                <li class="nav-item"><button class="nav-link" id="media-tab" data-bs-toggle="tab" data-bs-target="#media" type="button">Media</button></li>
-                            </ul>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="mb-0 fw-bold">Edit Center: <?php echo safe_output($center['center_name'] ?? ''); ?></h2>
+                        <div>
+                            <a href="manage-centers.php" class="btn btn-secondary me-2"><i class="fas fa-arrow-left me-2"></i> Back</a>
+                            <button type="submit" name="update_center" class="btn btn-primary"><i class="fas fa-save me-2"></i> Update Center</button>
                         </div>
-                        <div class="card-body">
-                            <div class="tab-content" id="myTabContent">
-                                
-                                <!-- 1. Basic Info -->
-                                <div class="tab-pane fade show active" id="basic">
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
+                    </div>
+
+                    <?php if ($message): ?>
+                        <div class="alert alert-<?php echo $messageType; ?> alert-dismissible fade show"><?php echo $message; ?><button class="btn-close" data-bs-dismiss="alert"></button></div>
+                    <?php endif; ?>
+
+                    <div class="row">
+                        <!-- Main Content (Left Column) -->
+                        <div class="col-lg-9">
+                            
+                            <!-- 1. Basic Info -->
+                            <div class="card mb-4 shadow-sm border-0">
+                                <div class="card-header bg-white fw-bold py-3 border-bottom-0">Basic Information</div>
+                                <div class="card-body pt-0">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
                                             <label class="form-label">Center Code (Read Only)</label>
-                                            <input type="text" class="form-control" value="<?php echo safe_output($center['center_code'] ?? ''); ?>" readonly disabled>
+                                            <input type="text" class="form-control bg-light" value="<?php echo safe_output($center['center_code'] ?? ''); ?>" readonly disabled>
                                         </div>
-                                        <div class="col-md-6 mb-3">
+                                        <div class="col-md-6">
                                             <label class="form-label">Center Name <span class="text-danger">*</span></label>
                                             <input type="text" name="center_name" class="form-control" required value="<?php echo safe_output($center['center_name'] ?? ''); ?>">
                                         </div>
-                                        <div class="col-md-6 mb-3">
+                                        <div class="col-md-6">
                                             <label class="form-label">Owner Name <span class="text-danger">*</span></label>
                                             <input type="text" name="owner_name" class="form-control" required value="<?php echo safe_output($center['owner_name'] ?? ''); ?>">
                                         </div>
-                                        <div class="col-md-6 mb-3">
+                                        <div class="col-md-6">
                                             <label class="form-label">Email Address <span class="text-danger">*</span></label>
                                             <input type="email" name="email" class="form-control" required value="<?php echo safe_output($center['email'] ?? ''); ?>">
                                         </div>
-                                        <div class="col-md-6 mb-3">
+                                        <div class="col-md-6">
                                             <label class="form-label">Mobile Number <span class="text-danger">*</span></label>
                                             <input type="text" name="mobile" class="form-control" required value="<?php echo safe_output($center['mobile'] ?? ''); ?>">
                                         </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Change Password (Leave blank to keep current)</label>
-                                            <input type="password" name="new_password" class="form-control" placeholder="New Password">
-                                        </div>
-
-                                        <div class="col-md-4 mb-3">
-                                            <label class="form-label">Owner Image</label>
-                                            <input type="file" name="owner_image" class="form-control" accept="image/*">
-                                            <?php if($center['owner_image'] ?? false): ?>
-                                                <img src="../../<?php echo $center['owner_image']; ?>" class="img-preview">
-                                            <?php endif; ?>
-                                        </div>
-                                        <div class="col-md-4 mb-3">
-                                            <label class="form-label">Owner Sign</label>
-                                            <input type="file" name="owner_sign" class="form-control" accept="image/*">
-                                            <?php if($center['owner_sign'] ?? false): ?>
-                                                <img src="../../<?php echo $center['owner_sign']; ?>" class="img-preview">
-                                            <?php endif; ?>
-                                        </div>
-                                        <div class="col-md-4 mb-3">
-                                            <label class="form-label">Center Stamp</label>
-                                            <input type="file" name="center_stamp" class="form-control" accept="image/*">
-                                            <?php if($center['center_stamp'] ?? false): ?>
-                                                <img src="../../<?php echo $center['center_stamp']; ?>" class="img-preview">
-                                            <?php endif; ?>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold text-primary">Change Password</label>
+                                            <input type="password" name="new_password" class="form-control border-primary" placeholder="Enter new password (leave blank to keep current)">
+                                            <div class="form-text text-muted">Admin can force reset password here.</div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- 2. Location -->
-                                <div class="tab-pane fade" id="location">
-                                    <div class="row">
-                                        <div class="col-md-3 mb-3">
+                            <!-- 2. Location -->
+                            <div class="card mb-4 shadow-sm border-0">
+                                <div class="card-header bg-white fw-bold py-3 border-bottom-0">Location Details</div>
+                                <div class="card-body pt-0">
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
                                             <label class="form-label">Country</label>
                                             <select name="country" id="country" class="form-select select2" required>
                                                 <option value="">-- Select Country --</option>
@@ -394,7 +369,7 @@ if (isset($_POST['update_center'])) {
                                                 <?php endforeach; ?>
                                             </select>
                                         </div>
-                                        <div class="col-md-3 mb-3">
+                                        <div class="col-md-4">
                                             <label class="form-label">State</label>
                                             <select name="state" id="state" class="form-select select2" required>
                                                 <option value="">-- Select State --</option>
@@ -405,7 +380,7 @@ if (isset($_POST['update_center'])) {
                                                 <?php endforeach; ?>
                                             </select>
                                         </div>
-                                        <div class="col-md-3 mb-3">
+                                        <div class="col-md-4">
                                             <label class="form-label">City/District</label>
                                             <select name="city" id="city" class="form-select select2" required>
                                                 <option value="">-- Select City --</option>
@@ -416,80 +391,114 @@ if (isset($_POST['update_center'])) {
                                                 <?php endforeach; ?>
                                             </select>
                                         </div>
-                                        <div class="col-md-3 mb-3">
+                                        <div class="col-md-4">
                                             <label class="form-label">Pincode <span class="text-danger">*</span></label>
                                             <input type="text" name="pincode" id="pincode" class="form-control" required maxlength="6" value="<?php echo safe_output($center['pincode'] ?? ''); ?>">
                                         </div>
-                                        <div class="col-12 mb-3">
+                                        <div class="col-md-8">
                                             <label class="form-label">Full Address</label>
-                                            <textarea name="address" class="form-control" rows="2"><?php echo safe_output($center['address'] ?? ''); ?></textarea>
+                                            <textarea name="address" class="form-control" rows="1"><?php echo safe_output($center['address'] ?? ''); ?></textarea>
                                         </div>
-                                        <div class="col-12 mb-3">
+                                        <div class="col-12">
                                             <label class="form-label">Google Maps Embed URL</label>
                                             <textarea name="map_url" class="form-control" rows="2"><?php echo htmlspecialchars($center['map_url'] ?? ''); ?></textarea>
                                         </div>
-                                        <?php if($center['map_url'] ?? false): ?>
-                                            <div class="col-12 mb-3">
-                                                <h6>Map Preview:</h6>
-                                                <div style="max-width: 400px;"><?php echo $center['map_url']; ?></div>
-                                            </div>
-                                        <?php endif; ?>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- 3. Infrastructure -->
-                                <div class="tab-pane fade" id="infra">
-                                    <div class="row">
-                                        <div class="col-md-4 mb-3">
+                            <!-- 3. Infrastructure -->
+                            <div class="card mb-4 shadow-sm border-0">
+                                <div class="card-header bg-white fw-bold py-3 border-bottom-0">Infrastructure</div>
+                                <div class="card-body pt-0">
+                                    <div class="row g-3">
+                                        <div class="col-md-3">
                                             <label class="form-label">No. of Computers</label>
                                             <input type="number" name="num_computers" class="form-control" value="<?php echo safe_output($center['num_computers'] ?? ''); ?>">
                                         </div>
-                                        <div class="col-md-4 mb-3">
+                                        <div class="col-md-3">
                                             <label class="form-label">No. of Classrooms</label>
                                             <input type="number" name="num_classrooms" class="form-control" value="<?php echo safe_output($center['num_classrooms'] ?? ''); ?>">
                                         </div>
-                                        <div class="col-md-4 mb-3">
+                                        <div class="col-md-3">
                                             <label class="form-label">No. of Staff</label>
                                             <input type="number" name="num_staff" class="form-control" value="<?php echo safe_output($center['num_staff'] ?? ''); ?>">
                                         </div>
-                                        <div class="col-md-4 mb-3">
+                                        <div class="col-md-3">
+                                            <label class="form-label">Lab Type</label>
+                                            <input type="text" name="lab_type" class="form-control" value="<?php echo safe_output($center['lab_type'] ?? ''); ?>">
+                                        </div>
+                                        <div class="col-md-6">
                                             <label class="form-label">Internet Availability</label>
                                             <select name="internet_avail" class="form-select">
                                                 <option value="Yes" <?php echo (($center['internet_avail'] ?? '') == 'Yes') ? 'selected' : ''; ?>>Yes</option>
                                                 <option value="No" <?php echo (($center['internet_avail'] ?? '') == 'No') ? 'selected' : ''; ?>>No</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-4 mb-3">
+                                        <div class="col-md-6">
                                             <label class="form-label">Power Backup</label>
                                             <select name="power_backup" class="form-select">
                                                 <option value="Yes" <?php echo (($center['power_backup'] ?? '') == 'Yes') ? 'selected' : ''; ?>>Yes</option>
                                                 <option value="No" <?php echo (($center['power_backup'] ?? '') == 'No') ? 'selected' : ''; ?>>No</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-4 mb-3">
-                                            <label class="form-label">Lab Type</label>
-                                            <input type="text" name="lab_type" class="form-control" value="<?php echo safe_output($center['lab_type'] ?? ''); ?>">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 4. Course Allotment -->
+                            <div class="card mb-4 shadow-sm border-0">
+                                <div class="card-header bg-white fw-bold py-3 border-bottom-0">Course Allotment</div>
+                                <div class="card-body pt-0">
+                                    <div class="row">
+                                        <?php foreach ($courses as $c): ?>
+                                            <div class="col-md-4 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="courses[]" value="<?php echo $c['id']; ?>" id="c_<?php echo $c['id']; ?>" 
+                                                    <?php echo in_array($c['id'], $allotted_courses) ? 'checked' : ''; ?>>
+                                                    <label class="form-check-label" for="c_<?php echo $c['id']; ?>"><?php echo htmlspecialchars($c['course_name']); ?></label>
+                                                </div>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 5. Bank Details -->
+                            <div class="card mb-4 shadow-sm border-0">
+                                <div class="card-header bg-white fw-bold py-3 border-bottom-0">Bank Details</div>
+                                <div class="card-body pt-0">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Bank Name</label>
+                                            <input type="text" name="bank_name" class="form-control" value="<?php echo safe_output($center['bank_name'] ?? ''); ?>">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Account No</label>
+                                            <input type="text" name="account_no" class="form-control" value="<?php echo safe_output($center['account_no'] ?? ''); ?>">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">IFSC Code</label>
+                                            <input type="text" name="ifsc_code" class="form-control" value="<?php echo safe_output($center['ifsc_code'] ?? ''); ?>">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Holder Name</label>
+                                            <input type="text" name="account_holder" class="form-control" value="<?php echo safe_output($center['account_holder'] ?? ''); ?>">
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label">Branch Address</label>
+                                            <input type="text" name="branch_address" class="form-control" value="<?php echo safe_output($center['branch_address'] ?? ''); ?>">
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- 4. Legal & Docs -->
-                                <div class="tab-pane fade" id="legal">
-                                    <h6 class="text-primary mb-3">Authorization</h6>
-                                    <div class="mb-3">
-                                        <label class="form-label">Authorization Letter (PDF)</label>
-                                        <input type="file" name="auth_letter" class="form-control" accept="application/pdf">
-                                        <?php if($center['auth_letter'] ?? false): ?>
-                                            <div class="mt-2">
-                                                Current: <a href="../../<?php echo $center['auth_letter']; ?>" target="_blank" class="text-decoration-none"><i class="fas fa-file-pdf text-danger"></i> View Letter</a>
-                                            </div>
-                                        <?php endif; ?>
-                                    </div>
-                                    <hr>
-                                    
-                                    <h6 class="text-primary mb-3">Center Documents</h6>
+                            <!-- 6. Documents -->
+                            <div class="card mb-4 shadow-sm border-0">
+                                <div class="card-header bg-white fw-bold py-3 border-bottom-0">Center Documents</div>
+                                <div class="card-body p-0">
                                     <div class="table-responsive">
-                                        <table class="table table-bordered align-middle" id="docTable">
+                                        <table class="table table-bordered align-middle mb-0" id="docTable">
                                             <thead class="bg-light">
                                                 <tr>
                                                     <th>Document Name</th>
@@ -511,7 +520,6 @@ if (isset($_POST['update_center'])) {
                                                         </td>
                                                     </tr>
                                                 <?php endforeach; ?>
-                                                <!-- New Row Template -->
                                                 <tr class="add-new-row-placeholder">
                                                     <td colspan="4" class="text-center bg-light">
                                                         <button type="button" class="btn btn-sm btn-success add-row"><i class="fas fa-plus me-1"></i> Add New Document</button>
@@ -521,159 +529,137 @@ if (isset($_POST['update_center'])) {
                                         </table>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- 5. Config, Fees, Courses, Working, Bank -->
-                                <div class="tab-pane fade" id="config">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <h6 class="text-success fw-bold">Financials</h6>
-                                            <div class="mb-3">
-                                                <label class="form-label">Franchise Fee</label>
-                                                <input type="number" step="0.01" name="franchise_fee" class="form-control" value="<?php echo safe_output($center['franchise_fee'] ?? ''); ?>">
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Royalty Percentage (%)</label>
-                                                <input type="number" step="0.01" name="royalty_percentage" class="form-control" value="<?php echo safe_output($center['royalty_percentage'] ?? ''); ?>">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <h6 class="text-success fw-bold">Working Hours</h6>
-                                            <?php 
-                                            // Arrays from DB string
-                                            $db_weekdays = array_map('trim', explode(',', $center['weekdays'] ?? ''));
-                                            $db_weekend_off = array_map('trim', explode(',', $center['weekend_off'] ?? ''));
-                                            $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-                                            ?>
-                                            <div class="row">
-                                                <div class="col-12 mb-3">
-                                                    <label class="form-label d-block">Working Days</label>
-                                                    <?php foreach($days as $day): ?>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="checkbox" name="working_days[]" value="<?php echo $day; ?>" id="wd_<?php echo $day; ?>" <?php echo in_array($day, $db_weekdays) ? 'checked' : ''; ?>>
-                                                            <label class="form-check-label" for="wd_<?php echo $day; ?>"><?php echo $day; ?></label>
-                                                        </div>
-                                                    <?php endforeach; ?>
-                                                </div>
-                                                <div class="col-12 mb-3">
-                                                    <label class="form-label d-block">Weekend Off</label>
-                                                    <?php foreach($days as $day): ?>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="checkbox" name="weekend_off_days[]" value="<?php echo $day; ?>" id="we_<?php echo $day; ?>" <?php echo in_array($day, $db_weekend_off) ? 'checked' : ''; ?>>
-                                                            <label class="form-check-label" for="we_<?php echo $day; ?>"><?php echo $day; ?></label>
-                                                        </div>
-                                                    <?php endforeach; ?>
-                                                </div>
-                                                <div class="col-6">
-                                                    <label class="form-label">Opening</label>
-                                                    <input type="time" name="opening_time" class="form-control" value="<?php echo safe_output($center['opening_time'] ?? ''); ?>">
-                                                </div>
-                                                <div class="col-6">
-                                                    <label class="form-label">Closing</label>
-                                                    <input type="time" name="closing_time" class="form-control" value="<?php echo safe_output($center['closing_time'] ?? ''); ?>">
-                                                </div>
-                                            </div>
-                                        </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="col-lg-3">
+                            
+                            <!-- Config & Validity -->
+                            <div class="card mb-4 shadow-sm border-0">
+                                <div class="card-header bg-white fw-bold py-3 border-bottom-0">Config & Validity</div>
+                                <div class="card-body pt-0">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Creation Date</label>
+                                        <input type="date" name="created_at" class="form-control" value="<?php echo date('Y-m-d', strtotime($center['created_at'])); ?>">
                                     </div>
-                                    <hr>
-                                    <h6 class="text-success fw-bold">Course Allotment</h6>
-                                    <div class="mb-3 p-3 bg-light rounded" style="max-height: 200px; overflow-y: auto;">
-                                        <?php foreach ($courses as $c): ?>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" name="courses[]" value="<?php echo $c['id']; ?>" id="c_<?php echo $c['id']; ?>" 
-                                                <?php echo in_array($c['id'], $allotted_courses) ? 'checked' : ''; ?>>
-                                                <label class="form-check-label" for="c_<?php echo $c['id']; ?>"><?php echo htmlspecialchars($c['course_name']); ?></label>
-                                            </div>
-                                        <?php endforeach; ?>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Validity Date</label>
+                                        <input type="date" name="validity_date" class="form-control" value="<?php echo $center['validity_date']; ?>"> 
                                     </div>
-                                    <hr>
-                                    <h6 class="text-success fw-bold">Bank Details</h6>
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Bank Name</label>
-                                            <input type="text" name="bank_name" class="form-control" value="<?php echo safe_output($center['bank_name'] ?? ''); ?>">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Account No</label>
-                                            <input type="text" name="account_no" class="form-control" value="<?php echo safe_output($center['account_no'] ?? ''); ?>">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">IFSC Code</label>
-                                            <input type="text" name="ifsc_code" class="form-control" value="<?php echo safe_output($center['ifsc_code'] ?? ''); ?>">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Holder Name</label>
-                                            <input type="text" name="account_holder" class="form-control" value="<?php echo safe_output($center['account_holder'] ?? ''); ?>">
-                                        </div>
-                                        <div class="col-12">
-                                            <label class="form-label">Branch Address</label>
-                                            <input type="text" name="branch_address" class="form-control" value="<?php echo safe_output($center['branch_address'] ?? ''); ?>">
-                                        </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Franchise Fee</label>
+                                        <input type="number" step="0.01" name="franchise_fee" class="form-control" value="<?php echo safe_output($center['franchise_fee'] ?? ''); ?>">
                                     </div>
-                                    <hr>
-                                    <h6 class="text-success fw-bold">API & Payment</h6>
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Razorpay Key</label>
-                                            <input type="text" name="razorpay_key" class="form-control" value="<?php echo safe_output($center['razorpay_key'] ?? ''); ?>">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Razorpay Secret</label>
-                                            <input type="text" name="razorpay_secret" class="form-control" value="<?php echo safe_output($center['razorpay_secret'] ?? ''); ?>">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">QR Code 1</label>
-                                            <input type="file" name="qr_code_1" class="form-control" accept="image/*">
-                                            <?php if($center['qr_code_1'] ?? false): ?>
-                                                <img src="../../<?php echo $center['qr_code_1']; ?>" class="img-preview">
-                                            <?php endif; ?>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">QR Code 2</label>
-                                            <input type="file" name="qr_code_2" class="form-control" accept="image/*">
-                                            <?php if($center['qr_code_2'] ?? false): ?>
-                                                <img src="../../<?php echo $center['qr_code_2']; ?>" class="img-preview">
-                                            <?php endif; ?>
-                                        </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Royalty (%)</label>
+                                        <input type="number" step="0.01" name="royalty_percentage" class="form-control" value="<?php echo safe_output($center['royalty_percentage'] ?? ''); ?>">
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- 6. Media -->
-                                <div class="tab-pane fade" id="media">
+                            <!-- Key Uploads -->
+                            <div class="card mb-4 shadow-sm border-0">
+                                <div class="card-header bg-white fw-bold py-3 border-bottom-0">Key Documents</div>
+                                <div class="card-body pt-0">
                                     <div class="mb-3">
-                                        <label class="form-label">Background Banner</label>
-                                        <input type="file" name="banner_image" class="form-control" accept="image/*">
-                                        <?php if($center['banner_image'] ?? false): ?>
-                                            <img src="../../<?php echo $center['banner_image']; ?>" class="img-preview w-100" style="max-height: 200px; object-fit:cover;">
+                                        <label class="form-label fw-bold">Auth Letter (PDF)</label>
+                                        <input type="file" name="auth_letter" class="form-control" accept="application/pdf">
+                                        <?php if($center['auth_letter'] ?? false): ?>
+                                            <a href="../../<?php echo $center['auth_letter']; ?>" target="_blank" class="small d-block mt-1">View Current Letter</a>
                                         <?php endif; ?>
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">Logo</label>
+                                        <label class="form-label">Owner Photo</label>
+                                        <input type="file" name="owner_image" class="form-control" accept="image/*">
+                                        <?php if($center['owner_image'] ?? false): ?>
+                                            <img src="../../<?php echo $center['owner_image']; ?>" class="img-preview">
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Owner Signature</label>
+                                        <input type="file" name="owner_sign" class="form-control" accept="image/*">
+                                        <?php if($center['owner_sign'] ?? false): ?>
+                                            <img src="../../<?php echo $center['owner_sign']; ?>" class="img-preview">
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Center Stamp</label>
+                                        <input type="file" name="center_stamp" class="form-control" accept="image/*">
+                                        <?php if($center['center_stamp'] ?? false): ?>
+                                            <img src="../../<?php echo $center['center_stamp']; ?>" class="img-preview">
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Branding -->
+                            <div class="card mb-4 shadow-sm border-0">
+                                <div class="card-header bg-white fw-bold py-3 border-bottom-0">Branding & Media</div>
+                                <div class="card-body pt-0">
+                                    <div class="mb-3">
+                                        <label class="form-label">Center Logo</label>
                                         <input type="file" name="logo_image" class="form-control" accept="image/*">
                                         <?php if($center['logo_image'] ?? false): ?>
                                             <img src="../../<?php echo $center['logo_image']; ?>" class="img-preview">
                                         <?php endif; ?>
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">Add Gallery Images (Appends to existing)</label>
+                                        <label class="form-label">Banner Image</label>
+                                        <input type="file" name="banner_image" class="form-control" accept="image/*">
+                                        <?php if($center['banner_image'] ?? false): ?>
+                                            <img src="../../<?php echo $center['banner_image']; ?>" class="img-preview w-100" style="height:80px; object-fit:cover;">
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Gallery (Append)</label>
                                         <input type="file" name="gallery_images[]" class="form-control" multiple accept="image/*">
                                     </div>
-                                    <div class="mb-3 row">
+                                    <div class="mb-3">
                                         <h6>Existing Gallery:</h6>
-                                        <?php 
+                                        <div class="row g-2">
+                                            <?php 
                                             $gal = json_decode($center['gallery_images'] ?? '[]', true);
                                             if($gal && is_array($gal)):
-                                                foreach($gal as $g):
-                                        ?>
-                                            <div class="col-md-2 mb-2">
-                                                <img src="../../<?php echo $g; ?>" class="img-thumbnail w-100">
-                                            </div>
-                                        <?php endforeach; endif; ?>
+                                                foreach($gal as $g): ?>
+                                                <div class="col-4">
+                                                    <img src="../../<?php echo $g; ?>" class="img-thumbnail" style="width:100%; height: auto;">
+                                                </div>
+                                            <?php endforeach; endif; ?>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="card-footer bg-white border-top-0 pb-4">
-                            <button type="submit" name="update_center" class="btn btn-primary w-100 btn-lg"><i class="fas fa-save me-2"></i> Update Center Details</button>
+
+                            <!-- Working Hours -->
+                            <div class="card mb-4 shadow-sm border-0">
+                                <div class="card-header bg-white fw-bold py-3 border-bottom-0">Working Hours</div>
+                                <div class="card-body pt-0">
+                                    <div class="mb-2">
+                                        <label class="form-label">Opening Time</label>
+                                        <input type="time" name="opening_time" class="form-control" value="<?php echo safe_output($center['opening_time'] ?? ''); ?>">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Closing Time</label>
+                                        <input type="time" name="closing_time" class="form-control" value="<?php echo safe_output($center['closing_time'] ?? ''); ?>">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold d-block">Working Days</label>
+                                        <?php 
+                                        $db_weekdays = array_map('trim', explode(',', $center['weekdays'] ?? ''));
+                                        $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                                        foreach($days as $day):
+                                        ?>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="working_days[]" value="<?php echo $day; ?>" id="wd_<?php echo $day; ?>" <?php echo in_array($day, $db_weekdays) ? 'checked' : ''; ?>>
+                                                <label class="form-check-label" for="wd_<?php echo $day; ?>"><?php echo substr($day,0,3); ?></label>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </form>
@@ -682,7 +668,6 @@ if (isset($_POST['update_center'])) {
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- jQuery & Select2 -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="../assets/js/sidebar.js"></script>
@@ -727,23 +712,20 @@ if (isset($_POST['update_center'])) {
                                 <td><input type="file" name="doc_file[]" class="form-control"></td>
                                 <td><button type="button" class="btn btn-sm btn-danger remove-row"><i class="fas fa-trash"></i></button></td>
                             </tr>`;
-                // Insert before the LAST row (placeholder)
                 $(this).closest('tr').before(html);
             });
 
-            // Remove New Row
             $(document).on('click', '.remove-row', function() {
                 $(this).closest('tr').remove();
             });
 
-            // Remove Existing Doc Logic
             $(document).on('click', '.remove-existing-doc', function() {
                 if(confirm('Are you sure? This will delete the document upon saving.')) {
                     var id = $(this).data('id');
                     var currentIds = $('#delete_doc_ids').val();
                     var newIds = currentIds ? currentIds + ',' + id : id;
                     $('#delete_doc_ids').val(newIds);
-                    $(this).closest('tr').hide(); // Visually hide
+                    $(this).closest('tr').hide(); 
                 }
             });
         });
