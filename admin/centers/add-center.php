@@ -76,6 +76,7 @@ if (isset($_POST['add_center'])) {
     $franchise_fee = floatval($_POST['franchise_fee']);
     $royalty_percentage = floatval($_POST['royalty_percentage']);
     $validity_date = !empty($_POST['validity_date']) ? $_POST['validity_date'] : null;
+    $created_at_input = !empty($_POST['created_at']) ? $_POST['created_at'] : date('Y-m-d'); // Default to today
     $weekdays = isset($_POST['working_days']) ? implode(', ', $_POST['working_days']) : '';
     $weekend_off = isset($_POST['weekend_off_days']) ? implode(', ', $_POST['weekend_off_days']) : '';
     $opening_time = $_POST['opening_time'];
@@ -140,7 +141,7 @@ if (isset($_POST['add_center'])) {
             owner_image, owner_sign, center_stamp, auth_letter,
             pincode, country, state, city, address, map_url,
             num_computers, num_classrooms, num_staff, internet_avail, power_backup, lab_type,
-            franchise_fee, royalty_percentage, validity_date,
+            franchise_fee, royalty_percentage, validity_date, created_at,
             banner_image, logo_image, gallery_images,
             weekdays, weekend_off, opening_time, closing_time,
             bank_name, account_no, ifsc_code, account_holder, branch_address,
@@ -150,7 +151,7 @@ if (isset($_POST['add_center'])) {
             :oimg, :osig, :cst, :auth,
             :pin, :ctr, :st, :ct, :addr, :map,
             :nc, :ncl, :ns, :ia, :pb, :lt,
-            :ff, :rp, :vd,
+            :ff, :rp, :vd, :ca,
             :bi, :li, :gi,
             :wd, :weo, :ot, :ctm,
             :bn, :an, :ic, :ah, :ba,
@@ -163,7 +164,7 @@ if (isset($_POST['add_center'])) {
             ':oimg' => $owner_image, ':osig' => $owner_sign, ':cst' => $center_stamp, ':auth' => $auth_letter,
             ':pin' => $pincode, ':ctr' => $country, ':st' => $state, ':ct' => $city, ':addr' => $address, ':map' => $map_url,
             ':nc' => $num_computers, ':ncl' => $num_classrooms, ':ns' => $num_staff, ':ia' => $internet_avail, ':pb' => $power_backup, ':lt' => $lab_type,
-            ':ff' => $franchise_fee, ':rp' => $royalty_percentage, ':vd' => $validity_date,
+            ':ff' => $franchise_fee, ':rp' => $royalty_percentage, ':vd' => $validity_date, ':ca' => $created_at_input,
             ':bi' => $banner_image, ':li' => $logo_image, ':gi' => $gallery_json,
             ':wd' => $weekdays, ':weo' => $weekend_off, ':ot' => $opening_time, ':ctm' => $closing_time,
             ':bn' => $bank_name, ':an' => $account_no, ':ic' => $ifsc_code, ':ah' => $account_holder, ':ba' => $branch_address,
@@ -513,6 +514,10 @@ if (isset($_POST['add_center'])) {
                              <div class="card mb-4">
                                 <div class="card-header">Config & Validity</div>
                                 <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Creation Date</label>
+                                        <input type="date" name="created_at" class="form-control" value="<?php echo date('Y-m-d'); ?>">
+                                    </div>
                                     <div class="mb-3">
                                         <label class="form-label fw-bold">Validity Date</label>
                                         <!-- Validity Date Field -->
