@@ -106,24 +106,11 @@ try {
     <link href="../../admin/assets/css/sidebar.css" rel="stylesheet">
     <style>
         .slide-preview {
-            width: 150px;
-            height: 80px;
+            width: 80px;
+            height: 50px;
             object-fit: cover;
-            border-radius: 5px;
+            border-radius: 3px;
             border: 1px solid #ddd;
-        }
-        .form-section {
-            background: #fff;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-        }
-        .table-section {
-            background: #fff;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.05);
         }
     </style>
 </head>
@@ -133,99 +120,105 @@ try {
         <?php include '../../admin/sidebar.php'; ?>
 
         <!-- Page Content -->
-        <div id="page-content-wrapper" style="margin-left: 280px;">
-            <div class="container-fluid py-5 px-lg-5">
+        <div id="page-content-wrapper">
+            <div class="container-fluid py-4 px-4">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="mb-0 text-dark fw-bold">Manage Hero Section</h2>
                 </div>
 
                 <?php if ($message): ?>
-                    <div class="alert alert-<?php echo $messageType; ?> alert-dismissible fade show">
+                    <div class="alert alert-<?php echo $messageType; ?> alert-dismissible fade show" role="alert">
                         <?php echo $message; ?>
-                        <button class="btn-close" data-bs-dismiss="alert"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 <?php endif; ?>
 
                 <div class="row">
                     <!-- Add Slide Form -->
                     <div class="col-lg-4">
-                        <div class="form-section">
-                            <h4 class="mb-3 border-bottom pb-2">Add New Slide</h4>
-                            <form method="POST" enctype="multipart/form-data">
-                                <div class="mb-3">
-                                    <label class="form-label fw-bold">Slide Image <span class="text-danger">*</span></label>
-                                    <input type="file" name="hero_image" class="form-control" accept="image/*" required>
-                                    <div class="form-text text-muted">Recommended Size: 1920x600px</div>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Title</label>
-                                    <input type="text" name="title" class="form-control" placeholder="e.g. Empowering Future">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Subtitle</label>
-                                    <textarea name="subtitle" class="form-control" rows="2" placeholder="e.g. Quality education that transforms lives..."></textarea>
-                                </div>
-                                <div class="row g-2">
-                                    <div class="col-6 mb-3">
-                                        <label class="form-label">Button Text</label>
-                                        <input type="text" name="button_text" class="form-control" placeholder="e.g. Join Now">
+                        <div class="card">
+                            <div class="card-header">Add New Slide</div>
+                            <div class="card-body">
+                                <form method="POST" enctype="multipart/form-data">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Slide Image <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <input type="file" name="hero_image" class="form-control" accept="image/*" required>
+                                        </div>
+                                        <div class="form-text text-muted">Recommended Size: 1920x600px</div>
                                     </div>
-                                    <div class="col-6 mb-3">
-                                        <label class="form-label">Button Link</label>
-                                        <input type="text" name="button_link" class="form-control" placeholder="e.g. courses.php">
+                                    <div class="mb-3">
+                                        <label class="form-label">Title</label>
+                                        <input type="text" name="title" class="form-control" placeholder="e.g. Empowering Future">
                                     </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Display Order</label>
-                                    <input type="number" name="display_order" class="form-control" value="0">
-                                </div>
-                                <button type="submit" name="add_slide" class="btn btn-primary w-100"><i class="fas fa-plus-circle me-1"></i> Add Slide</button>
-                            </form>
+                                    <div class="mb-3">
+                                        <label class="form-label">Subtitle</label>
+                                        <textarea name="subtitle" class="form-control" rows="2" placeholder="e.g. Quality education that transforms lives..."></textarea>
+                                    </div>
+                                    <div class="row g-2">
+                                        <div class="col-6 mb-3">
+                                            <label class="form-label">Button Text</label>
+                                            <input type="text" name="button_text" class="form-control" placeholder="e.g. Join Now">
+                                        </div>
+                                        <div class="col-6 mb-3">
+                                            <label class="form-label">Button Link</label>
+                                            <input type="text" name="button_link" class="form-control" placeholder="e.g. courses.php">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Display Order</label>
+                                        <input type="number" name="display_order" class="form-control" value="0">
+                                    </div>
+                                    <button type="submit" name="add_slide" class="btn btn-primary w-100">Add Slide</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Slides List -->
                     <div class="col-lg-8">
-                        <div class="table-section">
-                            <h4 class="mb-3 border-bottom pb-2">Existing Slides</h4>
-                            <div class="table-responsive">
-                                <table class="table table-hover align-middle">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Image</th>
-                                            <th>Content</th>
-                                            <th>Order</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php if (count($slides) > 0): ?>
-                                            <?php foreach ($slides as $slide): ?>
+                        <div class="card">
+                            <div class="card-header">Existing Slides</div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle mb-0">
+                                        <thead class="table-light">
                                             <tr>
-                                                <td>
-                                                    <img src="../../<?php echo htmlspecialchars($slide['image_path']); ?>" alt="Slide" class="slide-preview">
-                                                </td>
-                                                <td>
-                                                    <div class="fw-bold"><?php echo htmlspecialchars($slide['title'] ?? 'No Title'); ?></div>
-                                                    <div class="text-muted small"><?php echo htmlspecialchars(substr($slide['subtitle'] ?? '', 0, 50)) . '...'; ?></div>
-                                                </td>
-                                                <td>
-                                                    <span class="badge bg-secondary rounded-pill"><?php echo $slide['display_order']; ?></span>
-                                                </td>
-                                                <td>
-                                                    <a href="manage-hero.php?delete_id=<?php echo $slide['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this slide?');">
-                                                        <i class="fas fa-trash"></i>
-                                                    </a>
-                                                </td>
+                                                <th scope="col" class="ps-3">Image</th>
+                                                <th scope="col">Content</th>
+                                                <th scope="col">Order</th>
+                                                <th scope="col" class="text-end pe-3">Actions</th>
                                             </tr>
-                                            <?php endforeach; ?>
-                                        <?php else: ?>
-                                            <tr>
-                                                <td colspan="4" class="text-center py-4 text-muted">No slides found. Add one to get started!</td>
-                                            </tr>
-                                        <?php endif; ?>
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            <?php if (count($slides) > 0): ?>
+                                                <?php foreach ($slides as $slide): ?>
+                                                <tr>
+                                                    <td class="ps-3">
+                                                        <img src="../../<?php echo htmlspecialchars($slide['image_path']); ?>" alt="Slide" class="slide-preview">
+                                                    </td>
+                                                    <td>
+                                                        <div class="fw-bold text-dark"><?php echo htmlspecialchars($slide['title'] ?? 'No Title'); ?></div>
+                                                        <div class="text-muted small"><?php echo htmlspecialchars(substr($slide['subtitle'] ?? '', 0, 50)) . '...'; ?></div>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-secondary"><?php echo $slide['display_order']; ?></span>
+                                                    </td>
+                                                    <td class="text-end pe-3">
+                                                        <a href="manage-hero.php?delete_id=<?php echo $slide['id']; ?>" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this slide?');">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <?php endforeach; ?>
+                                            <?php else: ?>
+                                                <tr>
+                                                    <td colspan="4" class="text-center py-5 text-muted">No slides found. Add one to get started!</td>
+                                                </tr>
+                                            <?php endif; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>

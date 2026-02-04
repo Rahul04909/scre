@@ -100,26 +100,13 @@ try {
     <link href="../../admin/assets/css/sidebar.css" rel="stylesheet">
     <style>
         .logo-preview {
-            width: 120px;
-            height: 60px;
+            width: 100px;
+            height: 50px;
             object-fit: contain;
             border: 1px solid #ddd;
             padding: 5px;
             border-radius: 4px;
             background: #fff;
-        }
-        .form-section {
-            background: #fff;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-        }
-        .table-section {
-            background: #fff;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.05);
         }
     </style>
 </head>
@@ -129,88 +116,92 @@ try {
         <?php include '../../admin/sidebar.php'; ?>
 
         <!-- Page Content -->
-        <div id="page-content-wrapper" style="margin-left: 280px;">
-            <div class="container-fluid py-5 px-lg-5">
+        <div id="page-content-wrapper">
+            <div class="container-fluid py-4 px-4">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="mb-0 text-dark fw-bold">Manage Partners</h2>
                 </div>
 
                 <?php if ($message): ?>
-                    <div class="alert alert-<?php echo $messageType; ?> alert-dismissible fade show">
+                    <div class="alert alert-<?php echo $messageType; ?> alert-dismissible fade show" role="alert">
                         <?php echo $message; ?>
-                        <button class="btn-close" data-bs-dismiss="alert"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 <?php endif; ?>
 
                 <div class="row">
                     <!-- Add Partner Form -->
                     <div class="col-lg-4">
-                        <div class="form-section">
-                            <h4 class="mb-3 border-bottom pb-2">Add New Partner</h4>
-                            <form method="POST" enctype="multipart/form-data">
-                                <div class="mb-3">
-                                    <label class="form-label fw-bold">Partner Logo <span class="text-danger">*</span></label>
-                                    <input type="file" name="partner_logo" class="form-control" accept="image/*" required>
-                                    <div class="form-text text-muted">Transparent PNG recomended.</div>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Partner Name (Alt Text)</label>
-                                    <input type="text" name="name" class="form-control" placeholder="e.g. Google">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Display Order</label>
-                                    <input type="number" name="display_order" class="form-control" value="0">
-                                </div>
-                                <button type="submit" name="add_partner" class="btn btn-primary w-100"><i class="fas fa-plus-circle me-1"></i> Add Partner</button>
-                            </form>
+                        <div class="card">
+                            <div class="card-header">Add New Partner</div>
+                            <div class="card-body">
+                                <form method="POST" enctype="multipart/form-data">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Partner Logo <span class="text-danger">*</span></label>
+                                        <input type="file" name="partner_logo" class="form-control" accept="image/*" required>
+                                        <div class="form-text text-muted">Transparent PNG recomended.</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Partner Name (Alt Text)</label>
+                                        <input type="text" name="name" class="form-control" placeholder="e.g. Google">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Display Order</label>
+                                        <input type="number" name="display_order" class="form-control" value="0">
+                                    </div>
+                                    <button type="submit" name="add_partner" class="btn btn-primary w-100">Add Partner</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Partners List -->
                     <div class="col-lg-8">
-                        <div class="table-section">
-                            <h4 class="mb-3 border-bottom pb-2">Existing Partners</h4>
-                            <div class="table-responsive">
-                                <table class="table table-hover align-middle">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Logo</th>
-                                            <th>Name</th>
-                                            <th>Order</th>
-                                            <th>Created At</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php if (count($partners) > 0): ?>
-                                            <?php foreach ($partners as $partner): ?>
+                        <div class="card">
+                            <div class="card-header">Existing Partners</div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle mb-0">
+                                        <thead class="table-light">
                                             <tr>
-                                                <td>
-                                                    <img src="../../<?php echo htmlspecialchars($partner['logo_path']); ?>" alt="Logo" class="logo-preview">
-                                                </td>
-                                                <td>
-                                                    <div class="fw-bold"><?php echo htmlspecialchars($partner['name']); ?></div>
-                                                </td>
-                                                <td>
-                                                    <span class="badge bg-secondary rounded-pill"><?php echo $partner['display_order']; ?></span>
-                                                </td>
-                                                <td class="text-muted small">
-                                                    <?php echo date('M d, Y', strtotime($partner['created_at'])); ?>
-                                                </td>
-                                                <td>
-                                                    <a href="manage-partners.php?delete_id=<?php echo $partner['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this partner?');">
-                                                        <i class="fas fa-trash"></i>
-                                                    </a>
-                                                </td>
+                                                <th scope="col" class="ps-3">Logo</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Order</th>
+                                                <th scope="col">Created At</th>
+                                                <th scope="col" class="text-end pe-3">Actions</th>
                                             </tr>
-                                            <?php endforeach; ?>
-                                        <?php else: ?>
-                                            <tr>
-                                                <td colspan="5" class="text-center py-4 text-muted">No partners found. Add one to get started!</td>
-                                            </tr>
-                                        <?php endif; ?>
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            <?php if (count($partners) > 0): ?>
+                                                <?php foreach ($partners as $partner): ?>
+                                                <tr>
+                                                    <td class="ps-3">
+                                                        <img src="../../<?php echo htmlspecialchars($partner['logo_path']); ?>" alt="Logo" class="logo-preview">
+                                                    </td>
+                                                    <td>
+                                                        <div class="fw-bold"><?php echo htmlspecialchars($partner['name']); ?></div>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-secondary"><?php echo $partner['display_order']; ?></span>
+                                                    </td>
+                                                    <td class="text-muted small">
+                                                        <?php echo date('M d, Y', strtotime($partner['created_at'])); ?>
+                                                    </td>
+                                                    <td class="text-end pe-3">
+                                                        <a href="manage-partners.php?delete_id=<?php echo $partner['id']; ?>" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this partner?');">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <?php endforeach; ?>
+                                            <?php else: ?>
+                                                <tr>
+                                                    <td colspan="5" class="text-center py-5 text-muted">No partners found. Add one to get started!</td>
+                                                </tr>
+                                            <?php endif; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
