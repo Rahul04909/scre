@@ -39,6 +39,16 @@
                 <a href="<?php echo $sidebarPrefix; ?>admin/centers/manage-center-franchise-fees.php" class="list-group-item list-group-item-action bg-transparent">Franchise Fees</a>
             </div>
         </div>
+
+        <!-- Students -->
+        <a href="#studentsSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action bg-transparent">
+            <i class="fas fa-user-graduate menu-icon"></i> Students <i class="fas fa-chevron-right menu-arrow ms-auto"></i>
+        </a>
+        <div class="collapse" id="studentsSubmenu">
+            <div class="sub-menu">
+                <a href="<?php echo $sidebarPrefix; ?>admin/students/index.php" class="list-group-item list-group-item-action bg-transparent">Manage Students</a>
+            </div>
+        </div>
         
 
         <!-- Fees Collection Example with dropdown -->
