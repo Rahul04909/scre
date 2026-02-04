@@ -1,6 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 require_once '../../database/config.php';
 
 // Pagination Setup
@@ -14,7 +12,7 @@ $course_id = isset($_GET['course_id']) ? intval($_GET['course_id']) : '';
 
 // Base Query
 $sql = "SELECT s.id, s.enrollment_no, s.first_name, s.last_name, s.father_name, s.mobile, s.student_image, 
-               s.enrollment_date, s.is_active,
+               s.enrollment_date,
                c.course_name, c.course_fees, c.admission_fees, c.exam_fees, c.exam_fees_enabled,
                ctr.center_name, ctr.center_code,
                (SELECT COALESCE(SUM(amount), 0) FROM student_fees sf WHERE sf.student_id = s.id) as total_paid
@@ -38,7 +36,7 @@ if (!empty($course_id)) {
 
 // Count Total for Pagination
 $countSql = str_replace("SELECT s.id, s.enrollment_no, s.first_name, s.last_name, s.father_name, s.mobile, s.student_image, 
-               s.enrollment_date, s.is_active,
+               s.enrollment_date,
                c.course_name, c.course_fees, c.admission_fees, c.exam_fees, c.exam_fees_enabled,
                ctr.center_name, ctr.center_code,
                (SELECT COALESCE(SUM(amount), 0) FROM student_fees sf WHERE sf.student_id = s.id) as total_paid", "SELECT COUNT(*)", $sql);
