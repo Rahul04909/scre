@@ -307,7 +307,7 @@ if (isset($_POST['submit_admission'])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
     
     <style>
-
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f3f4f6; }
         .section-title { color: #115E59; font-weight: 700; border-bottom: 2px solid #FCD34D; padding-bottom: 5px; margin-bottom: 20px; display: inline-block; }
         .form-label { font-weight: 500; color: #374151; font-size: 0.95rem; }
         .card { border: none; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 1.5rem; }
@@ -322,7 +322,7 @@ if (isset($_POST['submit_admission'])) {
 <div class="d-flex" id="wrapper">
     <?php include '../sidebar.php'; ?>
     
-    <div id="page-content-wrapper" style="width: 100%;">
+    <div id="page-content-wrapper" style="margin-left: 280px; width: 100%;">
         <?php include '../header.php'; ?>
         
         <div class="container-fluid px-4 py-5">

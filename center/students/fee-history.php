@@ -67,7 +67,7 @@ $pending = $total_fee - $total_paid;
     <div class="d-flex" id="wrapper">
         <?php include '../sidebar.php'; ?>
         
-        <div id="page-content-wrapper" style="width: 100%;">
+        <div id="page-content-wrapper" style="width: 100%; margin-left: 280px;">
             <?php include '../header.php'; ?>
             
             <div class="container-fluid px-4 py-5">

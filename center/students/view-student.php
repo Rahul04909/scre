@@ -77,7 +77,7 @@ function safe_output($value) {
 <body>
     <div class="d-flex" id="wrapper">
         <?php include '../sidebar.php'; ?>
-        <div id="page-content-wrapper" style="width: 100%;">
+        <div id="page-content-wrapper" style="margin-left: 280px; width: 100%;">
             <?php include '../header.php'; ?>
             
             <div class="container-fluid py-5 px-lg-5">

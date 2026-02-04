@@ -68,6 +68,7 @@ if (!$center) {
     <!-- Custom CSS -->
     <link href="assets/css/sidebar.css" rel="stylesheet">
     <style>
+        body { background-color: #f3f4f6; font-family: 'Inter', sans-serif; }
         .profile-header {
             background: linear-gradient(135deg, #0F766E 0%, #115E59 100%);
             padding: 2rem 2rem 5rem; /* Increased bottom padding */
@@ -124,7 +125,9 @@ if (!$center) {
             border-radius: 8px;
             margin-right: 12px;
         }
-        /* Mobile adjustment handled by sidebar.css media queries generally */
+        
+        #page-content-wrapper { margin-left: 280px; transition: margin 0.3s; }
+        @media (max-width: 768px) { #page-content-wrapper { margin-left: 0; } }
     </style>
 </head>
 <body>

@@ -59,7 +59,26 @@
     </div>
 </nav>
 
+<style>
+    /* Mobile Sidebar Toggle Logic */
+    @media (max-width: 768px) {
+        #sidebar { margin-left: -280px; transition: margin 0.25s ease-out; }
+        #sidebar.active { margin-left: 0; box-shadow: 10px 0 30px rgba(0,0,0,0.5); }
+        #main-header, #page-content-wrapper { margin-left: 0 !important; width: 100% !important; }
+    }
+    
+    /* Desktop Toggle Logic */
+    @media (min-width: 769px) {
+        #sidebar { transition: margin 0.25s ease-out; }
+        #page-content-wrapper { transition: margin 0.25s ease-out; }
+        
+        .toggled #sidebar { margin-left: -280px; }
+        .toggled #page-content-wrapper { margin-left: 0 !important; }
+        .toggled #main-header { margin-left: 0 !important; }
+    }
 
+    .form-control:focus { box-shadow: none; background-color: #f8f9fa; }
+</style>
 
     <!-- Toggle Script -->
     <script src="../assets/js/sidebar-interactive.js"></script>

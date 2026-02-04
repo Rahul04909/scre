@@ -26,7 +26,7 @@ $center_name = $_SESSION['center_name'] ?? 'Demo Center';
 $center_code = $_SESSION['center_code'] ?? 'CODE123';
 ?>
 
-<div class="sidebar d-flex flex-column" id="sidebar-wrapper">
+<div class="sidebar d-flex flex-column" id="sidebar">
     
     <!-- 1. Header -->
     <div class="sidebar-header p-3 d-flex align-items-center mb-2">
@@ -198,4 +198,53 @@ $center_code = $_SESSION['center_code'] ?? 'CODE123';
     </div>
 </div>
 
+<style>
+    :root {
+        --sidebar-bg: #115E59; 
+        --sidebar-active-bg: #F59E0B; 
+        --sidebar-active-text: #1f2937;
+        --sidebar-text: #ffffff;
+        --badge-blue: #2563EB;
+        --profile-border: #F59E0B;
+    }
+    #sidebar {
+        width: 280px; height: 100vh; position: fixed; top: 0; left: 0; z-index: 1000;
+        background-color: var(--sidebar-bg); color: var(--sidebar-text);
+        transition: all 0.3s; box-shadow: 2px 0 10px rgba(0,0,0,0.1); overflow-y: auto;
+    }
+    .profile-section { padding: 10px 15px; }
+    .profile-img { width: 80px; height: 80px; object-fit: cover; border: 3px solid var(--profile-border); padding: 2px; }
+    .status-dot { position: absolute; bottom: 5px; right: 5px; width: 12px; height: 12px; background-color: #10B981; border: 2px solid var(--sidebar-bg); border-radius: 50%; }
+    .badge-pill { background-color: var(--badge-blue); color: white; padding: 4px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; display: inline-block; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
 
+    /* Nav Links */
+    .nav-link { color: white; padding: 14px 24px; font-size: 1rem; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); border-left: 3px solid transparent; }
+    .nav-link i:first-child { width: 24px; margin-right: 12px; text-align: center; font-size: 1.1rem; }
+    .nav-link:hover { background-color: rgba(255,255,255,0.1); color: white; border-left-color: rgba(255,255,255,0.5); padding-left: 28px; } /* Hover slide effect */
+    
+    .nav-link.active { background-color: var(--sidebar-active-bg); color: var(--sidebar-active-text); font-weight: 600; border-left-color: white; }
+    .nav-link.active i:first-child { color: var(--sidebar-active-text); }
+    .nav-link.active .small-arrow { color: var(--sidebar-active-text); }
+    
+    /* Fix for blue color on collapse */
+    .nav-link:focus, .nav-link[aria-expanded="true"] { 
+        color: white !important; 
+        background-color: rgba(255,255,255,0.05); /* Slight tint when open */
+    }
+    .nav-link[aria-expanded="true"] .small-arrow { color: var(--sidebar-active-bg); } /* Yellow arrow when open */
+
+    /* Sub-menu Styles */
+    .sub-link { font-size: 0.9rem; padding: 10px 15px 10px 0; opacity: 0.8; }
+    .sub-link:hover { opacity: 1; padding-left: 5px; background: none; border: none; color: #ffeb3b; }
+    .active-sub { color: #F59E0B !important; font-weight: bold; opacity: 1; }
+
+    /* Arrow Rotation */
+    .transition-icon { transition: transform 0.3s ease; }
+    [aria-expanded="true"] .transition-icon { transform: rotate(90deg); }
+
+    /* Action Buttons */
+    .action-box { width: 44px; height: 44px; background-color: rgba(255,255,255,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; transition: 0.2s; }
+    .action-box:hover { background-color: rgba(255,255,255,0.3); color: white; transform: translateY(-2px); }
+
+    @media (max-width: 768px) { #sidebar { margin-left: -280px; } #sidebar.active { margin-left: 0; } }
+</style>

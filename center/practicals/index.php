@@ -64,7 +64,7 @@ $practicals = $stmt->fetchAll();
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="../../assets/css/sidebar.css" rel="stylesheet">
     <style>
-
+        #page-content-wrapper { margin-left: 280px; transition: margin 0.3s; }
         @media (max-width: 768px) { #page-content-wrapper { margin-left: 0; } }
         /* Custom Table Styling */
         .table-hover tbody tr:hover { background-color: #f8f9fa; }
