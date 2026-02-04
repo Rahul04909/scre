@@ -91,6 +91,40 @@
                 <a href="<?php echo $sidebarPrefix; ?>admin/locations/add-city.php" class="list-group-item list-group-item-action bg-transparent">Add City</a>
             </div>
         </div>
+
+        <!-- Marksheet -->
+        <a href="#marksheetSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action bg-transparent">
+            <i class="fas fa-file-invoice menu-icon"></i>Marksheet<i class="fas fa-chevron-right menu-arrow ms-auto"></i>
+        </a>
+        <div class="collapse" id="marksheetSubmenu">
+            <div class="sub-menu">
+                <a href="<?php echo $sidebarPrefix; ?>admin/marksheet/index.php" class="list-group-item list-group-item-action bg-transparent">Manage Marksheet</a>
+                <a href="<?php echo $sidebarPrefix; ?>admin/marksheet/generate-marksheet.php" class="list-group-item list-group-item-action bg-transparent">Generate Marksheet</a>
+            </div>
+        </div>
+
+        <!-- Pages -->
+        <a href="#pagesSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action bg-transparent">
+            <i class="fas fa-columns menu-icon"></i>Pages<i class="fas fa-chevron-right menu-arrow ms-auto"></i>
+        </a>
+        <div class="collapse" id="pagesSubmenu">
+            <div class="sub-menu">
+                <a href="<?php echo $sidebarPrefix; ?>admin/pages/manage-verification.php" class="list-group-item list-group-item-action bg-transparent">Manage Verification</a>
+            </div>
+        </div>
+        
+        <!-- Frontend Components -->
+        <a href="#frontendSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action bg-transparent">
+            <i class="fas fa-laptop-code menu-icon"></i>Frontend<i class="fas fa-chevron-right menu-arrow ms-auto"></i>
+        </a>
+        <div class="collapse" id="frontendSubmenu">
+            <div class="sub-menu">
+                <a href="<?php echo $sidebarPrefix; ?>admin/components/manage-hero.php" class="list-group-item list-group-item-action bg-transparent">Hero Slider</a>
+                <a href="<?php echo $sidebarPrefix; ?>admin/components/manage-news.php" class="list-group-item list-group-item-action bg-transparent">Latest News</a>
+                <a href="<?php echo $sidebarPrefix; ?>admin/components/manage-partners.php" class="list-group-item list-group-item-action bg-transparent">Our Partners</a>
+                <a href="<?php echo $sidebarPrefix; ?>admin/components/manage-teachers.php" class="list-group-item list-group-item-action bg-transparent">Teachers</a>
+            </div>
+        </div>
     </div>
 </div>
 <!-- /#sidebar-wrapper -->
