@@ -44,7 +44,7 @@ if ($test_id) {
         }
         
         .typing-area {
-            flex: 1; padding: 2rem; display: flex; flex-direction: column; gap: 1rem;
+            flex: 1; padding: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem;
             max-width: 1000px; margin: 0 auto;
         }
         
@@ -54,9 +54,9 @@ if ($test_id) {
         }
         
         .text-display-box {
-            background: white; border: 1px solid #d1d5db; border-radius: 8px; padding: 1.5rem;
-            font-family: 'Roboto Mono', monospace; font-size: 1.2rem; line-height: 1.8;
-            height: 300px; overflow-y: auto; user-select: none; color: #6b7280;
+            background: white; border: 1px solid #d1d5db; border-radius: 8px; padding: 1rem;
+            font-family: 'Roboto Mono', monospace; font-size: 1.1rem; line-height: 1.6;
+            height: 250px; overflow-y: auto; user-select: none; color: #6b7280;
             position: relative; white-space: pre-wrap;
         }
         
@@ -66,10 +66,10 @@ if ($test_id) {
         .word.incorrect { color: #dc2626; background-color: #fecaca; }
         
         .input-area textarea {
-            width: 100%; height: 150px; padding: 1rem; font-family: 'Roboto Mono', monospace; font-size: 1.2rem;
+            width: 100%; height: 200px; padding: 1rem; font-family: 'Roboto Mono', monospace; font-size: 1.1rem;
             border: 2px solid #0f766e; border-radius: 8px; resize: none; outline: none;
         }
-        .input-area textarea:disabled { background-color: #f9fafb; border-color: #d1d5db; }
+        .input-area textarea:disabled { background-color: #f9fafb; border-color: #d1d5db; cursor: not-allowed; }
 
         .timer-box { font-size: 1.5rem; font-weight: bold; font-family: 'Roboto Mono', monospace; }
         .stat-badge { background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; }
@@ -92,7 +92,7 @@ if ($test_id) {
             <div class="stat-badge"><i class="fas fa-tachometer-alt me-2"></i>WPM: <span id="wpm-display">0</span></div>
             <div class="stat-badge"><i class="fas fa-bullseye me-2"></i>Acc: <span id="acc-display">100%</span></div>
             <div class="timer-box text-warning" id="timer">--:--</div>
-            <button class="btn btn-danger btn-sm fw-bold px-3" onclick="finishTest()">SUBMIT</button>
+            <button class="btn btn-danger btn-sm fw-bold px-3 d-none" id="submit-btn" onclick="finishTest()">SUBMIT</button>
         </div>
     </div>
 
@@ -104,11 +104,11 @@ if ($test_id) {
             </div>
             
             <div class="input-area">
-                <textarea id="typing-input" placeholder="Start typing here..." spellcheck="false" onpaste="return false;"></textarea>
+                <textarea id="typing-input" placeholder="Click 'Start Test' button to begin..." spellcheck="false" onpaste="return false;" disabled></textarea>
             </div>
             
             <div class="text-center text-muted small mt-2">
-                <i class="fas fa-info-circle me-1"></i> Timer starts when you begin typing.
+                <i class="fas fa-info-circle me-1"></i> Press Space to move to next word. Backspace behavior depends on settings.
             </div>
         </div>
 
@@ -153,7 +153,9 @@ if ($test_id) {
             </div>
             
             <div class="mt-4">
-               <a href="dashboard.php" class="btn btn-outline-secondary w-100 btn-sm">Exit Test</a>
+               <button class="btn btn-success w-100 fw-bold mb-2 p-2" id="start-btn" onclick="startTestLogic()"><i class="fas fa-play me-2"></i> Start Test</button>
+               <a href="dashboard.php" class="btn btn-outline-secondary w-100 btn-sm" id="exit-btn" style="display: none;">Exit Test</a>
+               <a href="dashboard.php" class="btn btn-outline-secondary w-100 btn-sm" id="back-btn">Back to Dashboard</a>
             </div>
         </div>
     </div>
@@ -183,6 +185,9 @@ if ($test_id) {
         let totalKeystrokes = 0;
         let errorCount = 0;
         
+        // Track the starting index of the *current word* in the textarea to lock previous content
+        let currentInputStartIndex = 0;
+        
         // --- Initialization ---
         function init() {
             // Render words
@@ -195,15 +200,17 @@ if ($test_id) {
         
         // --- Event Listeners ---
         inputField.addEventListener('input', (e) => {
-            if (!isRunning) startTest();
+            if (!isRunning) return;
             
-            const value = inputField.value;
+            const fullText = inputField.value;
+            const currentTyped = fullText.substring(currentInputStartIndex);
+            
             const currentWordSpan = document.getElementById(`w-${currentWordIndex}`);
             const targetWord = words[currentWordIndex];
             
             // Handle Spacebar (Word Submission)
-            if (e.data === ' ' || value.endsWith(' ')) {
-                const typedWord = value.trim();
+            if (e.data === ' ' || currentTyped.endsWith(' ')) {
+                const typedWord = currentTyped.trim(); // The word they just typed
                 
                 if (typedWord.length > 0) {
                     // Check correctness
@@ -221,33 +228,42 @@ if ($test_id) {
                     
                     // Move to next word
                     currentWordIndex++;
+                    
+                    // Lock current progress
+                    currentInputStartIndex = inputField.value.length;
+                    
                     if (currentWordIndex < words.length) {
                         const nextSpan = document.getElementById(`w-${currentWordIndex}`);
                         nextSpan.classList.add('current');
                         
-                        // Auto Scroll
+                        // Auto Scroll (Reference Text)
                         if (document.getElementById('auto_scroll').checked) {
-                            // Logic to check if next word is out of view
                             const containerRect = textDisplay.getBoundingClientRect();
                             const spanRect = nextSpan.getBoundingClientRect();
                             if (spanRect.bottom > containerRect.bottom - 50) {
                                 nextSpan.scrollIntoView({ behavior: 'smooth', block: 'center' });
                             }
                         }
+                        
+                         // Auto Scroll (Input Textarea)
+                        if (document.getElementById('auto_scroll').checked) {
+                            inputField.scrollTop = inputField.scrollHeight;
+                        }
+
                     } else {
                         finishTest(); // All words typed
                     }
-                    
-                    // Clear Input
-                    inputField.value = '';
                 } else {
-                    // Just a space typed at start
-                    inputField.value = ''; 
+                    // Prevent double spaces or space at start of word if strict? 
+                    // For now, allow it but don't advance if empty. 
+                    // To keep things clean, we might reset the input value to strip the trailing space
+                    // if it was just a space. But that fights user input. 
+                    // Let's just update start index to skip the extra space
+                    currentInputStartIndex = inputField.value.length;
                 }
             } else {
-                // Real-time highlighting (Letter by letter - optional, keeping simple for now)
-                // We could highlight the current word red if prefix doesn't match
-                if (!targetWord.startsWith(value)) {
+                // Real-time highlighting
+                 if (!targetWord.startsWith(currentTyped)) {
                     currentWordSpan.classList.add('incorrect');
                 } else {
                     currentWordSpan.classList.remove('incorrect');
@@ -257,21 +273,63 @@ if ($test_id) {
             updateStats();
         });
         
-        // --- Backspace Prevention Logic ---
+        // --- Backspace & Locking Logic ---
         inputField.addEventListener('keydown', (e) => {
+            if (!isRunning) {
+                e.preventDefault();
+                return;
+            }
+
+            // Prevent editing previous words (History Lock)
+            if (inputField.selectionStart < currentInputStartIndex) {
+                // Allow only navigating forward or valid keys? 
+                // Mostly just block modification
+                if(e.key.length === 1 || e.key === 'Backspace' || e.key === 'Delete') {
+                    e.preventDefault();
+                }
+            }
+            
+            // Backspace Options
             if (e.key === 'Backspace') {
+                // Also prevent backspacing into locked area (redundant check but safe)
+                if (inputField.selectionStart === currentInputStartIndex) {
+                    e.preventDefault();
+                    return;
+                }
+                
                 const opt = document.querySelector('input[name="backspace_opt"]:checked').value;
                 if (opt === 'off') {
                     e.preventDefault();
-                } 
-                // Logic for 'one' word backspace is implicitly handled as we clear input on space
-                // 'Full' allows standard backspace behaviour
+                } else if (opt === 'one') {
+                     // One word backspace is allowed implicitly because we only allow editing current word
+                     // So no special logic needed here as History Lock handles previous words
+                }
             }
         });
 
-        function startTest() {
+        // Prevent clicking/selecting previous text to cheat history
+        inputField.addEventListener('mousedown', (e) => {
+            // We can't easily block click position but we can correct focus or generic validation
+        });
+        
+        // Stop pasting
+        inputField.addEventListener('paste', e => e.preventDefault());
+
+        function startTestLogic() {
             isRunning = true;
             startTime = new Date();
+            
+            // UI Updates
+            document.getElementById('start-btn').style.display = 'none';
+            document.getElementById('back-btn').style.display = 'none';
+            document.getElementById('exit-btn').style.display = 'block';
+            document.getElementById('submit-btn').classList.remove('d-none');
+            
+            inputField.disabled = false;
+            inputField.value = ''; // Ensure clean start
+            inputField.focus();
+            currentInputStartIndex = 0;
+            
             timerInterval = setInterval(() => {
                 timeRemaining--;
                 updateTimerDisplay();
@@ -294,14 +352,8 @@ if ($test_id) {
             const elapsedMin = (totalTime - timeRemaining) / 60;
             if (elapsedMin <= 0) return;
             
-            // WPM Calculation: (Gross Keystrokes / 5) / TimeInMinutes
-            // Usually Gross WPM = (Total Entries / 5) / Time
-            // Net WPM = Gross WPM - (Uncorrected Errors / Time)
-            
-            // Simplified here: Correct Words / Time ? Or standard (Chars / 5) / Time
             const wpm = Math.round(((totalKeystrokes / 5) / elapsedMin));
             
-            // Accuracy: (Total - Errors) / Total * 100
             let acc = 100;
             if (currentWordIndex > 0) {
                 acc = Math.round(((currentWordIndex - errorCount) / currentWordIndex) * 100);
@@ -316,9 +368,8 @@ if ($test_id) {
             isRunning = false;
             inputField.disabled = true;
             
-            // Calculate Final Stats
             const timeTaken = totalTime - timeRemaining;
-            const elapsedMin = Math.max(timeTaken / 60, 0.1); // Avoid div by zero
+            const elapsedMin = Math.max(timeTaken / 60, 0.1); 
             
             const wpm = Math.round(((totalKeystrokes / 5) / elapsedMin));
             let acc = 0;
@@ -337,7 +388,7 @@ if ($test_id) {
                     errors: errorCount,
                     duration_seconds: timeTaken,
                     total_words: words.length,
-                    typed_content: "Encrytped" // Optional: Send actual content if needed
+                    typed_content: inputField.value // Send full typed content
                 },
                 success: function(res) {
                     if(res.success) {
@@ -353,9 +404,6 @@ if ($test_id) {
         document.querySelectorAll('input[name="highlight_opt"]').forEach(el => {
             el.addEventListener('change', (e) => {
                 if(e.target.value === 'off') {
-                    textDisplay.style.color = '#000';
-                    // Need more css logic to hide colors, or just rely on class toggling
-                   // For now, simpler implementation: Just toggle a class on body or container
                    textDisplay.classList.add('no-highlight');
                 } else {
                    textDisplay.classList.remove('no-highlight');
