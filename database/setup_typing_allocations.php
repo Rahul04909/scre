@@ -2,11 +2,12 @@
 require_once 'config.php';
 
 try {
+    // Note: 'courses' table uses MyISAM, so we cannot use Foreign Keys with InnoDB.
+    // We will create the table without the Foreign Key constraint.
     $sql = "CREATE TABLE IF NOT EXISTS typing_course_allocations (
         id INT AUTO_INCREMENT PRIMARY KEY,
         course_id INT NOT NULL UNIQUE,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
 
     $pdo->exec($sql);
