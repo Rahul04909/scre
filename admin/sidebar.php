@@ -113,6 +113,17 @@
             </div>
         </div>
 
+        <!-- Typing Master -->
+        <a href="#typingMasterSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action bg-transparent">
+            <i class="fas fa-keyboard menu-icon"></i>Typing Master<i class="fas fa-chevron-right menu-arrow ms-auto"></i>
+        </a>
+        <div class="collapse" id="typingMasterSubmenu">
+            <div class="sub-menu">
+                <a href="<?php echo $sidebarPrefix; ?>admin/typing-master/manage-languages.php" class="list-group-item list-group-item-action bg-transparent">Manage Languages</a>
+                <a href="<?php echo $sidebarPrefix; ?>admin/typing-master/add-language.php" class="list-group-item list-group-item-action bg-transparent">Add Language</a>
+            </div>
+        </div>
+
         <!-- Pages -->
         <a href="#pagesSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action bg-transparent">
             <i class="fas fa-columns menu-icon"></i>Pages<i class="fas fa-chevron-right menu-arrow ms-auto"></i>
