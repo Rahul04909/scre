@@ -121,6 +121,8 @@
             <div class="sub-menu">
                 <a href="<?php echo $sidebarPrefix; ?>admin/typing-master/manage-languages.php" class="list-group-item list-group-item-action bg-transparent">Manage Languages</a>
                 <a href="<?php echo $sidebarPrefix; ?>admin/typing-master/add-language.php" class="list-group-item list-group-item-action bg-transparent">Add Language</a>
+                <a href="<?php echo $sidebarPrefix; ?>admin/typing-master/manage-lessons.php" class="list-group-item list-group-item-action bg-transparent">Manage Lessons</a>
+                <a href="<?php echo $sidebarPrefix; ?>admin/typing-master/add-lesson.php" class="list-group-item list-group-item-action bg-transparent">Add Lesson</a>
             </div>
         </div>
 
