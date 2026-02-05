@@ -50,7 +50,7 @@ if (!$result) {
 
     <div class="result-card">
         <div class="result-header">
-            <h4 class="fw-bold mb-0">Test Completed!</h4>
+            <h4 class="fw-bold mb-0"><?php echo !empty($result['lesson_id']) ? 'Lesson Completed!' : 'Test Completed!'; ?></h4>
             <p class="mb-0 opacity-75">Here is your performance report</p>
         </div>
         <div class="p-4">
