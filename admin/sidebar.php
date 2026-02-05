@@ -123,6 +123,8 @@
                 <a href="<?php echo $sidebarPrefix; ?>admin/typing-master/add-language.php" class="list-group-item list-group-item-action bg-transparent">Add Language</a>
                 <a href="<?php echo $sidebarPrefix; ?>admin/typing-master/manage-lessons.php" class="list-group-item list-group-item-action bg-transparent">Manage Lessons</a>
                 <a href="<?php echo $sidebarPrefix; ?>admin/typing-master/add-lesson.php" class="list-group-item list-group-item-action bg-transparent">Add Lesson</a>
+                <a href="<?php echo $sidebarPrefix; ?>admin/typing-master/manage-practice-tests.php" class="list-group-item list-group-item-action bg-transparent">Manage Practice Tests</a>
+                <a href="<?php echo $sidebarPrefix; ?>admin/typing-master/add-practice-test.php" class="list-group-item list-group-item-action bg-transparent">Add Practice Test</a>
             </div>
         </div>
 
