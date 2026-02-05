@@ -125,6 +125,7 @@
                 <a href="<?php echo $sidebarPrefix; ?>admin/typing-master/add-lesson.php" class="list-group-item list-group-item-action bg-transparent">Add Lesson</a>
                 <a href="<?php echo $sidebarPrefix; ?>admin/typing-master/manage-practice-tests.php" class="list-group-item list-group-item-action bg-transparent">Manage Practice Tests</a>
                 <a href="<?php echo $sidebarPrefix; ?>admin/typing-master/add-practice-test.php" class="list-group-item list-group-item-action bg-transparent">Add Practice Test</a>
+                <a href="<?php echo $sidebarPrefix; ?>admin/typing-master/allot-typing-master.php" class="list-group-item list-group-item-action bg-transparent">Allot to Course</a>
             </div>
         </div>
 
