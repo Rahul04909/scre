@@ -106,9 +106,9 @@ body {
 }
 
 .sidebar-logo {
-    width: 105px;
+    width: 40px;
     /* Adjusted based on user feedback */
-    height: 105px;
+    height: 40px;
     /* Maintain square aspect ratio */
     border-radius: 50%;
     object-fit: contain;
