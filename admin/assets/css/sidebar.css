@@ -106,10 +106,10 @@ body {
 }
 
 .sidebar-logo {
-    width: 130px;
-    /* Increased size for better visibility */
-    height: 130px;
-    /* Ensure square aspect ratio given border-radius 50% */
+    width: 105px;
+    /* Adjusted based on user feedback */
+    height: 105px;
+    /* Maintain square aspect ratio */
     border-radius: 50%;
     object-fit: contain;
     /* ensure image is not cropped */
