@@ -105,20 +105,17 @@ body {
     height: auto;
 }
 
-.sidebar-logo {
-    width: 40px;
-    /* Adjusted based on user feedback */
-    height: 40px;
-    /* Maintain square aspect ratio */
+/* CSS Specificity Fix */
+#sidebar-wrapper .sidebar-heading .sidebar-logo {
+    width: 70px;
+    /* Balanced size */
+    height: 70px;
     border-radius: 50%;
     object-fit: contain;
-    /* ensure image is not cropped */
     background-color: #fff;
     padding: 2px;
     border: 3px solid rgba(255, 255, 255, 0.2);
-    /* Slightly thicker border */
     margin-bottom: 5px;
-
 }
 
 /* Profile Section in Sidebar */
