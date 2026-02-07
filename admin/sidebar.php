@@ -165,6 +165,17 @@
                 <a href="<?php echo $sidebarPrefix; ?>admin/components/manage-teachers.php" class="list-group-item list-group-item-action bg-transparent">Teachers</a>
             </div>
         </div>
+
+        <!-- Blogs Menu -->
+        <a href="#blogSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+            <i class="fas fa-blog me-2"></i>Blogs <i class="fas fa-chevron-down ms-auto"></i>
+        </a>
+        <div class="collapse" id="blogSubmenu">
+            <div class="sub-menu">
+                <a href="<?php echo $sidebarPrefix; ?>admin/blog/manage-categories.php" class="list-group-item list-group-item-action bg-transparent">Categories</a>
+                <a href="<?php echo $sidebarPrefix; ?>admin/blog/manage-blogs.php" class="list-group-item list-group-item-action bg-transparent">Manage Blogs</a>
+            </div>
+        </div>
     </div>
 </div>
 <!-- /#sidebar-wrapper -->
