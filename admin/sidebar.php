@@ -2,10 +2,8 @@
 <?php $sidebarPrefix = isset($sidebarPrefix) ? $sidebarPrefix : '../../'; ?>
 <div id="sidebar-wrapper">
     <div class="sidebar-heading">
-        <div class="d-flex align-items-center">
-            <!-- Replace with actual logo path if available -->
-            <img src="https://cdn-icons-png.flaticon.com/512/3413/3413535.png" alt="Logo"> 
-            <span class="logo-text">EduDash</span>
+        <div class="d-flex align-items-center justify-content-center w-100">
+            <img src="<?php echo $sidebarPrefix; ?>assets/logo/logo.jpeg" alt="Logo" style="max-width: 150px; height: auto;">
         </div>
         <a href="#" id="toggle-sidebar" class="d-md-none"><i class="fas fa-times"></i></a>
     </div>
