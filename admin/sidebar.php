@@ -134,6 +134,7 @@
         <div class="collapse" id="pagesSubmenu">
             <div class="sub-menu">
                 <a href="<?php echo $sidebarPrefix; ?>admin/pages/manage-verification.php" class="list-group-item list-group-item-action bg-transparent">Manage Verification</a>
+                <a href="<?php echo $sidebarPrefix; ?>admin/pages/manage-downloads.php" class="list-group-item list-group-item-action bg-transparent">Manage Downloads</a>
             </div>
         </div>
         
