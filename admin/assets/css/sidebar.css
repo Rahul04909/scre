@@ -100,8 +100,19 @@ body {
 }
 
 #sidebar-wrapper .sidebar-heading img {
-    width: 24px;
+    /* default just in case, but overridden by specific class */
+    width: auto;
     height: auto;
+}
+
+.sidebar-logo {
+    width: 80px;  /* Adjust size as needed */
+    height: auto;
+    border-radius: 50%; /* Make it circular if square base, or rounded corners */
+    object-fit: contain;
+    background-color: #fff; /* Optional: background if transparent png needs it */
+    padding: 2px; /* Optional: border effect */
+    border: 2px solid rgba(255,255,255,0.1);
 }
 
 /* Profile Section in Sidebar */

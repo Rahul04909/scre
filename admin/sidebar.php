@@ -3,7 +3,7 @@
 <div id="sidebar-wrapper">
     <div class="sidebar-heading">
         <div class="d-flex align-items-center justify-content-center w-100">
-            <img src="<?php echo $sidebarPrefix; ?>assets/logo/logo.jpeg" alt="Logo" style="max-width: 280px; height: 100px;">
+            <img src="<?php echo $sidebarPrefix; ?>assets/logo/logo.jpeg" alt="Logo" class="sidebar-logo">
         </div>
         <a href="#" id="toggle-sidebar" class="d-md-none"><i class="fas fa-times"></i></a>
     </div>
