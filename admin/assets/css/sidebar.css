@@ -106,13 +106,19 @@ body {
 }
 
 .sidebar-logo {
-    width: 80px;  /* Adjust size as needed */
-    height: auto;
-    border-radius: 50%; /* Make it circular if square base, or rounded corners */
+    width: 130px;
+    /* Increased size for better visibility */
+    height: 130px;
+    /* Ensure square aspect ratio given border-radius 50% */
+    border-radius: 50%;
     object-fit: contain;
-    background-color: #fff; /* Optional: background if transparent png needs it */
-    padding: 2px; /* Optional: border effect */
-    border: 2px solid rgba(255,255,255,0.1);
+    /* ensure image is not cropped */
+    background-color: #fff;
+    padding: 2px;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    /* Slightly thicker border */
+    margin-bottom: 5px;
+
 }
 
 /* Profile Section in Sidebar */
