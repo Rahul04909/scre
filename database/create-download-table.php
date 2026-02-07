@@ -1,5 +1,5 @@
 <?php
-require_once 'database/config.php';
+require_once 'config.php';
 
 try {
     $sql = "CREATE TABLE IF NOT EXISTS downloads (
