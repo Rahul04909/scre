@@ -36,10 +36,6 @@
             </div>
         </div>
 
-        <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-            <i class="fas fa-cog me-2"></i>Settings
-        </a>
-
         <!-- Centers (Added) -->
         <a href="#centersSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action bg-transparent">
             <i class="fas fa-building menu-icon"></i> Centers <i class="fas fa-chevron-right menu-arrow ms-auto"></i>
