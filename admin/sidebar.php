@@ -25,6 +25,21 @@
             <i class="fas fa-tachometer-alt menu-icon"></i> Dashboard
         </a>
 
+        <!-- Gallery Menu -->
+        <a href="#gallerySubmenu" data-bs-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+            <i class="fas fa-images me-2"></i>Gallery <i class="fas fa-chevron-down ms-auto"></i>
+        </a>
+        <div class="collapse" id="gallerySubmenu">
+            <div class="sub-menu">
+                <a href="<?php echo $sidebarPrefix; ?>admin/gallery/manage-categories.php" class="list-group-item list-group-item-action bg-transparent">Categories</a>
+                <a href="<?php echo $sidebarPrefix; ?>admin/gallery/manage-images.php" class="list-group-item list-group-item-action bg-transparent">Images</a>
+            </div>
+        </div>
+
+        <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+            <i class="fas fa-cog me-2"></i>Settings
+        </a>
+
         <!-- Centers (Added) -->
         <a href="#centersSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action bg-transparent">
             <i class="fas fa-building menu-icon"></i> Centers <i class="fas fa-chevron-right menu-arrow ms-auto"></i>
