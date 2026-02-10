@@ -1,5 +1,7 @@
 <?php
 // student/id-card/download-id-card.php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 // 1. Start session and check auth
 if (session_status() == PHP_SESSION_NONE) {
