@@ -118,7 +118,7 @@ function addText($image, $size, $angle, $x, $y, $color, $font, $text) {
 
 // Left Side Details
 $base_x = 55;
-$base_y = 160; // Moved further up from 240
+$base_y = 180; // Moved further up from 240
 $line_height = 35;
 $font_size_label = 16; 
 $font_size_value = 16;
