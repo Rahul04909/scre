@@ -177,29 +177,50 @@ $photo_h = 240;
 // Load Photo
 $photo_path = '';
 if (!empty($student['student_image'])) {
-    $check_path = __DIR__ . '/../../' . $student['student_image'];
-    if (file_exists($check_path)) {
-        $photo_path = $check_path;
+    // Try multiple path variations to be safe
+    $paths_to_try = [
+        __DIR__ . '/../../' . $student['student_image'], // Standard relative path
+        $_SERVER['DOCUMENT_ROOT'] . '/scre/' . $student['student_image'], // Absolute path guess
+        $_SERVER['DOCUMENT_ROOT'] . '/' . $student['student_image']
+    ];
+
+    foreach ($paths_to_try as $p) {
+        if (file_exists($p) && !is_dir($p)) {
+            $photo_path = $p;
+            break;
+        }
     }
-}
-// Default photo if needed?
-if (empty($photo_path)) {
-    $photo_path = __DIR__ . '/../../assets/uploads/students/default-user.png';
 }
 
-if (file_exists($photo_path)) {
-    $photo_info = getimagesize($photo_path);
-    $photo_mime = $photo_info['mime'];
-    
-    $src_photo = null;
-    if ($photo_mime == 'image/jpeg') $src_photo = imagecreatefromjpeg($photo_path);
-    elseif ($photo_mime == 'image/png') $src_photo = imagecreatefrompng($photo_path);
-    
-    if ($src_photo) {
-        imagecopyresampled($image, $src_photo, $photo_x, $photo_y, 0, 0, $photo_w, $photo_h, imagesx($src_photo), imagesy($src_photo));
-        // Draw border around photo
-        imagerectangle($image, $photo_x, $photo_y, $photo_x + $photo_w, $photo_y + $photo_h, $color_dark_blue);
+// Default photo if needed
+if (empty($photo_path)) {
+    $photo_path = __DIR__ . '/../../assets/uploads/students/default-user.png';
+    if (!file_exists($photo_path)) {
+        // Make sure we have SOME default or just skip
+        $photo_path = ''; 
     }
+}
+
+if (!empty($photo_path) && file_exists($photo_path)) {
+    $photo_info = @getimagesize($photo_path); // Start with @ to suppress errors
+    if ($photo_info) {
+        $photo_mime = $photo_info['mime'];
+        
+        $src_photo = null;
+        if ($photo_mime == 'image/jpeg') $src_photo = imagecreatefromjpeg($photo_path);
+        elseif ($photo_mime == 'image/png') $src_photo = imagecreatefrompng($photo_path);
+        elseif ($photo_mime == 'image/webp') $src_photo = imagecreatefromwebp($photo_path);
+        
+        if ($src_photo) {
+            imagecopyresampled($image, $src_photo, $photo_x, $photo_y, 0, 0, $photo_w, $photo_h, imagesx($src_photo), imagesy($src_photo));
+            // Draw border around photo
+            imagerectangle($image, $photo_x, $photo_y, $photo_x + $photo_w, $photo_y + $photo_h, $color_dark_blue);
+        }
+    }
+} else {
+    // Draw placeholder box
+    imagerectangle($image, $photo_x, $photo_y, $photo_x + $photo_w, $photo_y + $photo_h, $color_dark_blue);
+    addText($image, 10, 0, $photo_x + 20, $photo_y + 100, $color_black, $font_path, "No Photo");
 }
 
 // Enrollment under photo
@@ -220,32 +241,33 @@ $qr_x = 830;
 $qr_y = 40; 
 $qr_size = 140;
 
-if (class_exists('chillerlan\QRCode\QRCode') && class_exists('chillerlan\QRCode\QROptions')) {
-    try {
-        $qrData = "Valid: " . $student['enrollment_no'] . "\nName: " . $student['first_name'];
-        $qrOptions = new QROptions([
-            'version'    => 5,
-            'outputType' => QRCode::OUTPUT_IMAGE_PNG,
-            'eccLevel'   => QRCode::ECC_L,
-            'scale'      => 4,
-            'imageBase64' => true,
-        ]);
-        $qrcode = new QRCode($qrOptions);
-        $qrBase64 = $qrcode->render($qrData);
-        $qrBase64 = explode(',', $qrBase64)[1];
-        $qrString = base64_decode($qrBase64);
-        $qrGd = imagecreatefromstring($qrString);
+// Use QuickChart API (like marksheet) to avoid dependency issues
+$qrData = "Valid: " . $student['enrollment_no'] . "\nName: " . $student['first_name'];
+$apiUrl = "https://quickchart.io/qr?text=" . urlencode($qrData) . "&size=300&margin=0";
 
-        if ($qrGd) {
-            imagecopyresampled($image, $qrGd, $qr_x, $qr_y, 0, 0, $qr_size, $qr_size, imagesx($qrGd), imagesy($qrGd));
-        }
-    } catch (Exception $e) {
-        // QR Failed, skip
-        addText($image, 10, 0, $qr_x, $qr_y + 20, $color_black, $font_path, "QR Error");
+// Try to fetch image data
+$qrContent = false;
+if (ini_get('allow_url_fopen')) {
+    $qrContent = @file_get_contents($apiUrl);
+}
+// Fallback to cURL
+if ($qrContent === false && function_exists('curl_init')) {
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    $qrContent = curl_exec($ch);
+    curl_close($ch);
+}
+
+if ($qrContent) {
+    $qrGd = imagecreatefromstring($qrContent);
+    if ($qrGd) {
+        imagecopyresampled($image, $qrGd, $qr_x, $qr_y, 0, 0, $qr_size, $qr_size, imagesx($qrGd), imagesy($qrGd));
     }
 } else {
-    // Library missing
-    addText($image, 10, 0, $qr_x, $qr_y + 20, $color_black, $font_path, "QR Lib Missing");
+    // If API fails, show text
+    addText($image, 10, 0, $qr_x, $qr_y + 20, $color_black, $font_path, "QR Service Unavailable");
 }
 
 // Signatures
