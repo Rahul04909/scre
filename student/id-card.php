@@ -311,6 +311,9 @@ $is_download = isset($_GET['download']) && $_GET['download'] == '1';
                                 <button onclick="window.print()" class="btn btn-primary rounded-pill px-4">
                                     <i class="fas fa-print me-2"></i> Print ID Card
                                 </button>
+                                <a href="id-card/download-id-card.php" class="btn btn-success rounded-pill px-4 ms-2">
+                                    <i class="fas fa-download me-2"></i> Download ID Card
+                                </a>
                             </div>
                             
                         <?php endif; ?>
