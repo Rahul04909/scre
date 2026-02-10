@@ -129,69 +129,83 @@ try {
      
     $html = '
     <style>
-        body { font-family: arial; color: #1a1a1a; font-weight: bold; font-size: 18px; }
+        body { font-family: arial; color: #1d1d1d; font-weight: bold; font-size: 18px; }
         .data-overlay { position: absolute; }
         
-        /* Adjusted coordinates based on background lines */
-        /* Shifted UP ~115px */
+        /* Fine-tuned coordinates to match background lines */
         
-        /* Line 1: Certify that Mr./Miss/Mrs... */
-        .student-name { top: 190px; left: 380px; font-size: 22px; color: #000; text-transform: uppercase; }
+        /* Line 1: Name */
+        /* "Certify that Mr./Miss/Mrs..............." */
+        .student-name { top: 225px; left: 420px; font-size: 20px; text-transform: uppercase; color: #000; }
         
-        /* Line 2: Son of/Daughter of... */
-        .father-name { top: 233px; left: 380px; text-transform: uppercase; }
+        /* Line 2: Father Name */
+        /* "Son of/Daughter of Sh..................." */
+        .father-name { top: 268px; left: 420px; text-transform: uppercase; }
         
-        /* Line 3: Registration No... */
-        .enrollment { top: 275px; left: 380px; }
+        /* Line 3: Registration No */
+        /* "Registration No........................." */
+        .enrollment { top: 310px; left: 420px; }
         
-        /* Line 4: Session... to... */
-        .session { top: 317px; left: 280px; }
-        .session-start { top: 317px; left: 260px; } 
-        .session-end { top: 317px; left: 700px; } 
+        /* Line 4: Session */
+        /* "Session................................. to ................................." */
+        /* Session Start */
+        .session-start { top: 353px; left: 300px; } 
+        /* Session End */
+        .session-end { top: 353px; left: 750px; } 
+        /* Fallback Session */
+        .session { top: 353px; left: 300px; }
 
-        /* Line 5: Date of Birth... */
-        .dob { top: 360px; left: 380px; }
+        /* Line 5: DOB */
+        /* "Date of Birth..........................." */
+        .dob { top: 395px; left: 420px; }
 
-        /* Line 6: In the course... (Subject/Course) */
-        .course-name { top: 403px; left: 380px; }
+        /* Line 6: Course Name */
+        /* "In the course..........................." */
+        .course-name { top: 438px; left: 420px; }
         
-        /* Line 7: Appeared from our ASC... */
-        .center-name { top: 445px; left: 450px; width: 600px; }
+        /* Line 7: Center Name */
+        /* "Appeared from our ASC..................." */
+        .center-name { top: 480px; left: 480px; width: 600px; }
         
-        /* Line 8: Duration of... */
-        .duration { top: 487px; left: 380px; }
+        /* Line 8: Duration */
+        /* "Duration of............................." */
+        .duration { top: 523px; left: 420px; }
 
-        /* Line 9: final Examination held in... */
-        .exam-month { top: 520px; left: 580px; }
+        /* Line 9: Exam Month */
+        /* "his/her final Examination held in......." */
+        .exam-month { top: 565px; left: 620px; }
         
-        /* Line 10: Obtained marks... Out of... */
-        .marks-obt { top: 555px; left: 420px; }
-        .marks-max { top: 555px; left: 750px; }
+        /* Line 10: Marks */
+        /* "Obtained marks....... Out of ..........." */
+        .marks-obt { top: 608px; left: 450px; }
+        .marks-max { top: 608px; left: 800px; }
         
-        /* Line 11: with Grade... */
-        .grade { top: 590px; left: 380px; }
+        /* Line 11: Grade */
+        /* "with Grade.............................." */
+        .grade { top: 650px; left: 420px; }
         
-        /* Line 12: Date of Issue... */
-        .issue-date { top: 645px; left: 280px; }
+        /* Line 12: Issue Date */
+        /* "Date of Issue..........................." */
+        .issue-date { top: 700px; left: 320px; }
 
-        /* Scanned QR or extra reg no if needed */
-        .top-serial { top: 35px; left: 850px; font-size: 14px; color: #666; }
+        /* Top Right Reg No */
+        .top-serial { top: 60px; left: 880px; font-size: 14px; color: #555; }
         
     </style>
     
-    <!-- Top Serial/Ref -->
+    <!-- Top Serial -->
     <div class="data-overlay top-serial">Reg: ' . $enrollment_no . '</div>
 
-    <!-- Line 1 -->
+    <!-- Line 1: Name -->
     <div class="data-overlay student-name">' . $name . '</div>
 
-    <!-- Line 2 -->
+    <!-- Line 2: Father -->
     <div class="data-overlay father-name">' . $father_name . '</div>
     
-    <!-- Line 3 -->
+    <!-- Line 3: Enrollment -->
     <div class="data-overlay enrollment">' . $enrollment_no . '</div>
 
-    <!-- Line 4 - Session split logic -->';
+    <!-- Line 4: Session -->';
     
     if (!empty($student['start_month']) && !empty($student['end_month'])) {
         $html .= '
@@ -202,29 +216,29 @@ try {
     }
     
     $html .= '
-    <!-- Line 5 -->
+    <!-- Line 5: DOB -->
     <div class="data-overlay dob">' . $dob . '</div>
 
-    <!-- Line 6 -->
+    <!-- Line 6: Course -->
     <div class="data-overlay course-name">' . $course_name . '</div>
     
-     <!-- Line 7 -->
+    <!-- Line 7: Center -->
     <div class="data-overlay center-name">' . $center_name . '</div>
 
-    <!-- Line 8 -->
+    <!-- Line 8: Duration -->
     <div class="data-overlay duration">' . $duration . '</div>
 
-    <!-- Line 9 -->
+    <!-- Line 9: Exam Month -->
     <div class="data-overlay exam-month">' . $exam_month . '</div>
     
-    <!-- Line 10 -->
+    <!-- Line 10: Marks -->
     <div class="data-overlay marks-obt">' . $grand_total_obt . '</div>
     <div class="data-overlay marks-max">' . $grand_total_max . '</div>
 
-    <!-- Line 11 -->
+    <!-- Line 11: Grade -->
     <div class="data-overlay grade">' . $grade . '</div>
     
-    <!-- Line 12 -->
+    <!-- Line 12: Date -->
     <div class="data-overlay issue-date">' . $issue_date . '</div>
     ';
 
