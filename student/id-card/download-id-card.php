@@ -1,3 +1,4 @@
+<?php
 // student/id-card/download-id-card.php
 
 // 1. Start session and check auth
