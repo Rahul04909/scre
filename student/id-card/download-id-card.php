@@ -308,7 +308,11 @@ imagettftext($image, 10, 0, 860, $sig_y + 20, $color_black, $font_path, "Authori
 // 8. Output
 ob_clean(); // Clean any previous output/buffers
 header('Content-Type: image/png');
-header('Content-Disposition: attachment; filename="ID_Card_'.$student['enrollment_number'].'.png"');
+
+if (!isset($_GET['preview'])) {
+    header('Content-Disposition: attachment; filename="ID_Card_'.$student['enrollment_number'].'.png"');
+}
+
 imagepng($image);
 imagedestroy($image);
 
