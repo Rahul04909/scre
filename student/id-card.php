@@ -26,8 +26,8 @@ require_once '../database/config.php';
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
     <!-- Custom CSS -->
-    <link href="../assets/css/sidebar.css" rel="stylesheet">
-    <link href="../assets/css/dashboard.css" rel="stylesheet">
+    <link href="assets/css/sidebar.css" rel="stylesheet">
+    <link href="assets/css/dashboard.css" rel="stylesheet">
     
     <style>
         .id-card-preview-container {
