@@ -51,6 +51,15 @@ try {
         die("Student not found.");
     }
 
+    // Fix enrollment number
+    if (empty($student['enrollment_number']) && !empty($student['enrollment_id'])) {
+        $student['enrollment_number'] = $student['enrollment_id'];
+    }
+    // Final fallback
+    if (empty($student['enrollment_number'])) {
+        $student['enrollment_number'] = 'N/A';
+    }
+
     // Fetch center signature
     $center_signature = null;
     if (isset($student['center_id'])) {
@@ -77,12 +86,11 @@ if (!file_exists($bg_image_path)) {
     die("Background image not found.");
 }
 if (!file_exists($font_path)) {
-    // Fallback if specific font not found, try generic system font or arial if available, 
-    // but better to die or use a built-in font (1-5) if TTF fails.
-    // For now we assume verify path is correct.
-    // Ensure we have a valid font file for imagettftext.
-    // If not, we might need to use basic image string.
-     die("Font file not found at: " . $font_path);
+    // If font not found, try GD's built-in fonts as verify path is correct locally but maybe not on server
+    // Actually, if we use built-in font, we don't need TTF.
+    // For now, let's just warn or fallback if possible.
+     // die("Font file not found at: " . $font_path);
+     // Fallback to built-in font logic inside drawing functions
 }
 
 // Create Image from Background
@@ -98,7 +106,12 @@ $color_white = imagecolorallocate($image, 255, 255, 255);
 
 // 5. Helper function for text
 function addText($image, $size, $angle, $x, $y, $color, $font, $text) {
-    imagettftext($image, $size, $angle, $x, $y, $color, $font, $text);
+    if (file_exists($font)) {
+        imagettftext($image, $size, $angle, $x, $y, $color, $font, $text);
+    } else {
+        // Fallback to simpler text
+        imagestring($image, 5, $x, $y - 15, $text, $color);
+    }
 }
 
 // 6. Overlay Data
@@ -110,20 +123,20 @@ function addText($image, $size, $angle, $x, $y, $color, $font, $text) {
 $base_x = 55;
 $base_y = 310;
 $line_height = 35;
-$font_size_label = 16; // Bold? We only have Regular font. 
+$font_size_label = 16; 
 $font_size_value = 16;
-$label_width = 240; // width reserved for label
+$label_width = 240; 
 
 // Helper to draw Label: Value
 function drawField($image, $font, $color, $x, $y, $label, $value, $label_width) {
     // Label
-    imagettftext($image, 14, 0, $x, $y, $color, $font, $label);
+    addText($image, 14, 0, $x, $y, $color, $font, $label);
     // Value
-    imagettftext($image, 14, 0, $x + $label_width, $y, $color, $font, ": " . $value);
+    addText($image, 14, 0, $x + $label_width, $y, $color, $font, ": " . $value);
 }
 
 // Enrollment No
-drawField($image, $font_path, $color_black, $base_x, $base_y, "Enrolment Number", $student['enrollment_number'] ?? '', $label_width);
+drawField($image, $font_path, $color_black, $base_x, $base_y, "Enrolment Number", $student['enrollment_number'], $label_width);
 
 // Center Code / RC Code - Using Center Name as per sample
 $base_y += $line_height;
@@ -147,10 +160,7 @@ drawField($image, $font_path, $color_black, $base_x, $base_y, "Name", $full_name
 $base_y += $line_height;
 drawField($image, $font_path, $color_black, $base_x, $base_y, "Father's Name", $student['father_name'] ?? '', $label_width);
 
-// Address (multiline if needed? Sample has Address) - Using DOB/Mobile instead based on sample fields or available space.
-// Sample image has: Enrolment, RC Code, Programme, Name, Father's Name, Address, Pin Code.
-// Let's stick to what we have or is important.
-// Let's add DOB and Mobile as they are specific.
+// Address / DOB / Mobile
 $base_y += $line_height;
 drawField($image, $font_path, $color_black, $base_x, $base_y, "DOB", $student['dob'] ?? '', $label_width);
 
@@ -195,41 +205,50 @@ if (file_exists($photo_path)) {
     }
 }
 
-// Student Name under photo (Sample has bold name under photo?)
-// Sample has Enrollment ID overlaid on photo or separate? Sample has it under.
-// Let's print Enrollment ID just under photo
+// Enrollment under photo
 $enroll_text = $student['enrollment_number'];
-$bbox = imagettfbbox(18, 0, $font_path, $enroll_text);
-$text_w = $bbox[2] - $bbox[0];
-$enroll_x = $photo_x + ($photo_w - $text_w) / 2;
-imagettftext($image, 18, 0, $enroll_x, $photo_y + $photo_h + 25, $color_black, $font_path, $enroll_text);
+if (file_exists($font_path)) {
+    $bbox = imagettfbbox(18, 0, $font_path, $enroll_text);
+    $text_w = $bbox[2] - $bbox[0];
+    $enroll_x = $photo_x + ($photo_w - $text_w) / 2;
+    addText($image, 18, 0, $enroll_x, $photo_y + $photo_h + 25, $color_black, $font_path, $enroll_text);
+} else {
+    imagestring($image, 5, $photo_x, $photo_y + $photo_h + 10, $enroll_text, $color_black);
+}
 
 
 // QR Code
-// Position: Top Right, above photo? Or as per sample? Sample has QR code top right in header.
-// "background me header h already student details image qr code & sign pe focus kro"
-// So header including QR placeholder might be there?
-// Assuming we need to place a REAL QR code.
-$qr_x = 760; // Align with photo left?
-$qr_y = 60; // Top area
-$qr_size = 130;
+// Position: Top Right area
+$qr_x = 830; 
+$qr_y = 40; 
+$qr_size = 140;
 
-$qrData = "Valid: " . $student['enrollment_number'] . "\nName: " . $student['first_name'];
-$qrOptions = new QROptions([
-    'version'    => 5,
-    'outputType' => QRCode::OUTPUT_IMAGE_PNG,
-    'eccLevel'   => QRCode::ECC_L,
-    'scale'      => 4,
-    'imageBase64' => true,
-]);
-$qrcode = new QRCode($qrOptions);
-$qrBase64 = $qrcode->render($qrData);
-$qrBase64 = explode(',', $qrBase64)[1];
-$qrString = base64_decode($qrBase64);
-$qrGd = imagecreatefromstring($qrString);
+if (class_exists('chillerlan\QRCode\QRCode') && class_exists('chillerlan\QRCode\QROptions')) {
+    try {
+        $qrData = "Valid: " . $student['enrollment_number'] . "\nName: " . $student['first_name'];
+        $qrOptions = new QROptions([
+            'version'    => 5,
+            'outputType' => QRCode::OUTPUT_IMAGE_PNG,
+            'eccLevel'   => QRCode::ECC_L,
+            'scale'      => 4,
+            'imageBase64' => true,
+        ]);
+        $qrcode = new QRCode($qrOptions);
+        $qrBase64 = $qrcode->render($qrData);
+        $qrBase64 = explode(',', $qrBase64)[1];
+        $qrString = base64_decode($qrBase64);
+        $qrGd = imagecreatefromstring($qrString);
 
-if ($qrGd) {
-    imagecopyresampled($image, $qrGd, 830, 40, 0, 0, 140, 140, imagesx($qrGd), imagesy($qrGd));
+        if ($qrGd) {
+            imagecopyresampled($image, $qrGd, $qr_x, $qr_y, 0, 0, $qr_size, $qr_size, imagesx($qrGd), imagesy($qrGd));
+        }
+    } catch (Exception $e) {
+        // QR Failed, skip
+        addText($image, 10, 0, $qr_x, $qr_y + 20, $color_black, $font_path, "QR Error");
+    }
+} else {
+    // Library missing
+    addText($image, 10, 0, $qr_x, $qr_y + 20, $color_black, $font_path, "QR Lib Missing");
 }
 
 // Signatures
