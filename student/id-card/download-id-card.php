@@ -50,12 +50,12 @@ try {
     }
 
     // Fix enrollment number
-    if (empty($student['enrollment_number']) && !empty($student['enrollment_id'])) {
-        $student['enrollment_number'] = $student['enrollment_id'];
+    if (empty($student['enrollment_no']) && !empty($student['enrollment_id'])) {
+        $student['enrollment_no'] = $student['enrollment_id'];
     }
     // Final fallback
-    if (empty($student['enrollment_number'])) {
-        $student['enrollment_number'] = 'N/A';
+    if (empty($student['enrollment_no'])) {
+        $student['enrollment_no'] = 'N/A';
     }
 
     // Fetch center signature
@@ -133,11 +133,11 @@ function drawField($image, $font, $color, $x, $y, $label, $value, $label_width) 
 }
 
 // Enrollment No
-drawField($image, $font_path, $color_black, $base_x, $base_y, "Enrolment Number", $student['enrollment_number'], $label_width);
+drawField($image, $font_path, $color_black, $base_x, $base_y, "Enrolment Number", $student['enrollment_no'], $label_width);
 
 // Center Code / RC Code - Using Center Name as per sample
 $base_y += $line_height;
-drawField($image, $font_path, $color_black, $base_x, $base_y, "Center Name", $student['center_name'] ?? '', $label_width);
+drawField($image, $font_path, $color_black, $base_x, $base_y, "ASC Name", $student['center_name'] ?? '', $label_width);
 
 // Course Name
 $base_y += $line_height;
@@ -203,7 +203,7 @@ if (file_exists($photo_path)) {
 }
 
 // Enrollment under photo
-$enroll_text = $student['enrollment_number'];
+$enroll_text = $student['enrollment_no'];
 if (file_exists($font_path)) {
     $bbox = imagettfbbox(18, 0, $font_path, $enroll_text);
     $text_w = $bbox[2] - $bbox[0];
@@ -222,7 +222,7 @@ $qr_size = 140;
 
 if (class_exists('chillerlan\QRCode\QRCode') && class_exists('chillerlan\QRCode\QROptions')) {
     try {
-        $qrData = "Valid: " . $student['enrollment_number'] . "\nName: " . $student['first_name'];
+        $qrData = "Valid: " . $student['enrollment_no'] . "\nName: " . $student['first_name'];
         $qrOptions = new QROptions([
             'version'    => 5,
             'outputType' => QRCode::OUTPUT_IMAGE_PNG,
@@ -273,7 +273,7 @@ if (!empty($student['student_signature'])) {
     }
 }
 // Label for student sign
-imagettftext($image, 10, 0, 720, $sig_y + 20, $color_black, $font_path, "Student Signature");
+addText($image, 10, 0, 720, $sig_y + 20, $color_black, $font_path, "Student Signature");
 
 
 // Authority Signature (Center or Admin)
@@ -301,7 +301,7 @@ if ($auth_sig_path) {
     }
 }
 // Label
-imagettftext($image, 10, 0, 860, $sig_y + 20, $color_black, $font_path, "Authority Signature");
+addText($image, 10, 0, 860, $sig_y + 20, $color_black, $font_path, "Authority Signature");
 
 
 // 8. Output
@@ -309,7 +309,7 @@ ob_clean(); // Clean any previous output/buffers
 header('Content-Type: image/png');
 
 if (!isset($_GET['preview'])) {
-    header('Content-Disposition: attachment; filename="ID_Card_'.$student['enrollment_number'].'.png"');
+    header('Content-Disposition: attachment; filename="ID_Card_'.$student['enrollment_no'].'.png"');
 }
 
 imagepng($image);
