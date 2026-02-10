@@ -52,18 +52,14 @@ try {
     // Fetch center signature
     $center_signature = null;
     if (isset($student['center_id'])) {
-        $stmt_center = $conn->prepare("SELECT signature FROM centers WHERE id = :center_id");
+        $stmt_center = $conn->prepare("SELECT owner_sign FROM centers WHERE id = :center_id");
         $stmt_center->execute([':center_id' => $student['center_id']]);
         $center_row = $stmt_center->fetch(PDO::FETCH_ASSOC);
-        if ($center_row) $center_signature = $center_row['signature'];
+        if ($center_row) $center_signature = $center_row['owner_sign'];
     }
 
-    // Fetch admin signature
+    // Admin signature removed as table does not exist
     $admin_signature = null;
-    $stmt_admin = $conn->prepare("SELECT signature FROM admin WHERE id = 1");
-    $stmt_admin->execute();
-    $admin_row = $stmt_admin->fetch(PDO::FETCH_ASSOC);
-    if ($admin_row) $admin_signature = $admin_row['signature'];
 
 
 } catch (Exception $e) {

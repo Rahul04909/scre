@@ -1,0 +1,89 @@
+Tables:
+academic_sessions
+applications
+blog_categories
+blogs
+center_course_allotment
+center_documents
+center_requests
+center_wallet_transactions
+centers
+cities
+countries
+course_categories
+courses
+downloads
+exam_questions
+exam_results
+exam_schedules
+exams
+gallery_categories
+gallery_images
+hero_slides
+news_updates
+partners
+practical_submissions
+practicals
+razorpay_payments
+razorpay_settings
+smtp_settings
+states
+student_fees
+student_qualifications
+students
+subjects
+teachers
+typing_course_allocations
+typing_languages
+typing_lessons
+typing_practice_tests
+typing_test_results
+verification_documents
+
+Centers Columns:
+id - int
+center_code - varchar(50)
+center_name - varchar(255)
+email - varchar(100)
+password - varchar(255)
+mobile - varchar(20)
+owner_name - varchar(100)
+owner_image - varchar(255)
+owner_sign - varchar(255)
+center_stamp - varchar(255)
+auth_letter - varchar(255)
+pincode - varchar(10)
+country - varchar(50)
+state - varchar(50)
+city - varchar(50)
+address - text
+map_url - text
+num_computers - int
+num_classrooms - int
+num_staff - int
+internet_avail - enum('Yes','No')
+power_backup - enum('Yes','No')
+lab_type - varchar(50)
+franchise_fee - decimal(10,2)
+royalty_percentage - decimal(5,2)
+wallet_balance - decimal(10,2)
+banner_image - varchar(255)
+logo_image - varchar(255)
+gallery_images - json
+weekdays - varchar(255)
+weekend_off - varchar(255)
+opening_time - time
+closing_time - time
+bank_name - varchar(100)
+account_no - varchar(50)
+ifsc_code - varchar(20)
+account_holder - varchar(100)
+branch_address - text
+razorpay_key - varchar(255)
+razorpay_secret - varchar(255)
+qr_code_1 - varchar(255)
+qr_code_2 - varchar(255)
+is_active - tinyint(1)
+created_at - timestamp
+validity_date - date
+updated_at - timestamp

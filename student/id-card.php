@@ -336,7 +336,7 @@ function renderIDCard($student, $conn) {
     $center_data = null;
     if (isset($student['center_id'])) {
         try {
-            $stmt_center = $conn->prepare("SELECT signature FROM centers WHERE id = :center_id");
+            $stmt_center = $conn->prepare("SELECT owner_sign FROM centers WHERE id = :center_id");
             $stmt_center->bindParam(':center_id', $student['center_id']);
             $stmt_center->execute();
             $center_data = $stmt_center->fetch(PDO::FETCH_ASSOC);
@@ -344,11 +344,13 @@ function renderIDCard($student, $conn) {
     }
 
     $admin_data = null;
+    /* Admin table does not exist, skipping
     try {
         $stmt_admin = $conn->prepare("SELECT signature, stamp FROM admin WHERE id = 1");
         $stmt_admin->execute();
         $admin_data = $stmt_admin->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {}
+    */
     ?>
     <div class="id-card">
         <div class="id-card-content">
@@ -429,8 +431,8 @@ function renderIDCard($student, $conn) {
                     <div class="signature-name">Student Signal</div>
                 </div>
                 <div class="signature">
-                     <?php if (!empty($center_data['signature']) && file_exists('../'.$center_data['signature'])): ?>
-                        <img src="../<?php echo htmlspecialchars($center_data['signature']); ?>" style="height: 12px;">
+                     <?php if (!empty($center_data['owner_sign']) && file_exists('../'.$center_data['owner_sign'])): ?>
+                        <img src="../<?php echo htmlspecialchars($center_data['owner_sign']); ?>" style="height: 12px;">
                     <?php endif; ?>
                     <div class="signature-line"></div>
                     <div class="signature-name">Center Director</div>
