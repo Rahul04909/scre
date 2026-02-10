@@ -275,59 +275,62 @@ if ($qrContent) {
 }
 
 // Signatures
-// Bottom Right: Authority
-// Bottom Left/Center: Student
-$sig_y = 560; // Near bottom
-$sig_h = 50;  // approximate height
+// Bottom Layout: Left (Center), Middle (Auth), Right (Student) or similar
+$sig_y = 560; 
+$sig_h = 45; 
 
-// Student Signature
+// 1. Center Signature (Left)
+$center_sig_x = 80; // Adjusted Left
+if ($center_signature) {
+    $c_path = __DIR__ . '/../../' . $center_signature;
+    if (file_exists($c_path)) {
+       $c_sig_img = imagecreatefrompng($c_path);
+       if (!$c_sig_img) $c_sig_img = imagecreatefromjpeg($c_path);
+       if ($c_sig_img) {
+            $orig_w = imagesx($c_sig_img);
+            $orig_h = imagesy($c_sig_img);
+            $new_w = ($orig_w / $orig_h) * $sig_h;
+            // Center image relative to text roughly
+            $img_x = $center_sig_x + (100 - $new_w)/2; 
+            imagecopyresampled($image, $c_sig_img, $img_x, $sig_y - 40, 0, 0, $new_w, $sig_h, $orig_w, $orig_h);
+       }
+    }
+}
+addText($image, 10, 0, $center_sig_x, $sig_y + 20, $color_black, $font_path, "Center Director");
+
+// 2. Authorize Signatory (Middle)
+$auth_sig_x = 440; // Adjusted Middle
+// If a static file exists, load it:
+$static_auth_path = __DIR__ . '/../../assets/images/auth_sign.png'; 
+if (file_exists($static_auth_path)) {
+    $a_sig_img = imagecreatefrompng($static_auth_path);
+    if ($a_sig_img) {
+        $orig_w = imagesx($a_sig_img);
+        $orig_h = imagesy($a_sig_img);
+        $new_w = ($orig_w / $orig_h) * $sig_h;
+        $img_x = $auth_sig_x + (120 - $new_w)/2; // Center relative to text
+        imagecopyresampled($image, $a_sig_img, $img_x, $sig_y - 40, 0, 0, $new_w, $sig_h, $orig_w, $orig_h);
+    }
+}
+addText($image, 10, 0, $auth_sig_x, $sig_y + 20, $color_black, $font_path, "Authorized Signatory");
+
+// 3. Student Signature (Right)
+$student_sig_x = 800; // Adjusted Right
 if (!empty($student['student_signature'])) {
     $s_sig_path = __DIR__ . '/../../' . $student['student_signature'];
     if (file_exists($s_sig_path)) {
-        // Load and place
-        $s_sig_img = imagecreatefrompng($s_sig_path); // Assuming PNG
-        if (!$s_sig_img) $s_sig_img = imagecreatefromjpeg($s_sig_path); // Try JPG
-        
+        $s_sig_img = imagecreatefrompng($s_sig_path); 
+        if (!$s_sig_img) $s_sig_img = imagecreatefromjpeg($s_sig_path);
         if ($s_sig_img) {
-            // Resize preserving aspect ratio
             $orig_w = imagesx($s_sig_img);
             $orig_h = imagesy($s_sig_img);
             $new_w = ($orig_w / $orig_h) * $sig_h;
-            
-            imagecopyresampled($image, $s_sig_img, 720, $sig_y - 40, 0, 0, $new_w, $sig_h, $orig_w, $orig_h);
+            $img_x = $student_sig_x + (100 - $new_w)/2;
+            imagecopyresampled($image, $s_sig_img, $img_x, $sig_y - 40, 0, 0, $new_w, $sig_h, $orig_w, $orig_h);
         }
     }
 }
-// Label for student sign
-addText($image, 10, 0, 720, $sig_y + 20, $color_black, $font_path, "Student Signature");
-
-
-// Authority Signature (Center or Admin)
-// Use Admin signature as default or Center director
-$auth_sig_path = '';
-if ($center_signature) {
-    $c_path = __DIR__ . '/../../' . $center_signature;
-    if (file_exists($c_path)) $auth_sig_path = $c_path;
-}
-if (!$auth_sig_path && $admin_signature) {
-    $a_path = __DIR__ . '/../../assets/uploads/admin/' . $admin_signature;
-    if (file_exists($a_path)) $auth_sig_path = $a_path;
-}
-
-if ($auth_sig_path) {
-    $a_sig_img = imagecreatefrompng($auth_sig_path);
-    if (!$a_sig_img) $a_sig_img = imagecreatefromjpeg($auth_sig_path);
-    
-    if ($a_sig_img) {
-         $orig_w = imagesx($a_sig_img);
-         $orig_h = imagesy($a_sig_img);
-         $new_w = ($orig_w / $orig_h) * $sig_h;
-         
-         imagecopyresampled($image, $a_sig_img, 860, $sig_y - 40, 0, 0, $new_w, $sig_h, $orig_w, $orig_h);
-    }
-}
-// Label
-addText($image, 10, 0, 860, $sig_y + 20, $color_black, $font_path, "Authority Signature");
+addText($image, 10, 0, $student_sig_x, $sig_y + 20, $color_black, $font_path, "Student Signature");
 
 
 // 8. Output
