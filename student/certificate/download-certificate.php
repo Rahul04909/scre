@@ -104,7 +104,7 @@ try {
     // Let's assume Landscape for now.
     $mpdf = new \Mpdf\Mpdf([
         'mode' => 'utf-8', 
-        'format' => 'A4-L', // Landscape
+        'format' => [297, 210], // Force A4 Landscape (mm)
         'margin_left' => 0,
         'margin_right' => 0,
         'margin_top' => 0,
@@ -114,7 +114,6 @@ try {
 
     // Background Image
     // Using the specifically requested massive file.
-    // WARNING: 70MB file might be slow.
     $bg_path = __DIR__ . '/background/background-img.png'; 
     
     if (file_exists($bg_path)) {
@@ -125,8 +124,8 @@ try {
     }
 
     // Styles & Content
-    // Positions need to be calibrated. I'll use absolute positioning placeholders.
-    // User needs to verify positions.
+    // Positions need to be calibrated. 
+    // Shifted UP by approx 115px based on user feedback.
      
     $html = '
     <style>
@@ -134,49 +133,49 @@ try {
         .data-overlay { position: absolute; }
         
         /* Adjusted coordinates based on background lines */
-        /* Distance between lines approx 40px - 45px */
+        /* Shifted UP ~115px */
         
         /* Line 1: Certify that Mr./Miss/Mrs... */
-        .student-name { top: 305px; left: 380px; font-size: 22px; color: #000; text-transform: uppercase; }
+        .student-name { top: 190px; left: 380px; font-size: 22px; color: #000; text-transform: uppercase; }
         
         /* Line 2: Son of/Daughter of... */
-        .father-name { top: 348px; left: 380px; text-transform: uppercase; }
+        .father-name { top: 233px; left: 380px; text-transform: uppercase; }
         
         /* Line 3: Registration No... */
-        .enrollment { top: 390px; left: 380px; }
+        .enrollment { top: 275px; left: 380px; }
         
         /* Line 4: Session... to... */
-        .session { top: 432px; left: 280px; }
-        .session-start { top: 432px; left: 260px; } 
-        .session-end { top: 432px; left: 700px; } 
+        .session { top: 317px; left: 280px; }
+        .session-start { top: 317px; left: 260px; } 
+        .session-end { top: 317px; left: 700px; } 
 
         /* Line 5: Date of Birth... */
-        .dob { top: 475px; left: 380px; }
+        .dob { top: 360px; left: 380px; }
 
         /* Line 6: In the course... (Subject/Course) */
-        .course-name { top: 518px; left: 380px; }
+        .course-name { top: 403px; left: 380px; }
         
         /* Line 7: Appeared from our ASC... */
-        .center-name { top: 560px; left: 450px; width: 600px; }
+        .center-name { top: 445px; left: 450px; width: 600px; }
         
         /* Line 8: Duration of... */
-        .duration { top: 602px; left: 380px; }
+        .duration { top: 487px; left: 380px; }
 
         /* Line 9: final Examination held in... */
-        .exam-month { top: 635px; left: 580px; }
+        .exam-month { top: 520px; left: 580px; }
         
         /* Line 10: Obtained marks... Out of... */
-        .marks-obt { top: 670px; left: 420px; }
-        .marks-max { top: 670px; left: 750px; }
+        .marks-obt { top: 555px; left: 420px; }
+        .marks-max { top: 555px; left: 750px; }
         
         /* Line 11: with Grade... */
-        .grade { top: 705px; left: 380px; }
+        .grade { top: 590px; left: 380px; }
         
         /* Line 12: Date of Issue... */
-        .issue-date { top: 760px; left: 280px; }
+        .issue-date { top: 645px; left: 280px; }
 
         /* Scanned QR or extra reg no if needed */
-        .top-serial { top: 150px; left: 850px; font-size: 14px; color: #666; }
+        .top-serial { top: 35px; left: 850px; font-size: 14px; color: #666; }
         
     </style>
     
