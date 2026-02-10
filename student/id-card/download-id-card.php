@@ -132,7 +132,12 @@ function drawField($image, $font, $color, $x, $y, $label, $value, $label_width) 
     addText($image, 14, 0, $x + $label_width, $y, $color, $font, ": " . $value);
 }
 
+// Student Name (First)
+$full_name = trim(($student['first_name'] ?? '') . ' ' . ($student['last_name'] ?? ''));
+drawField($image, $font_path, $color_black, $base_x, $base_y, "Name", $full_name, $label_width);
+
 // Enrollment No
+$base_y += $line_height;
 drawField($image, $font_path, $color_black, $base_x, $base_y, "Enrolment Number", $student['enrollment_no'], $label_width);
 
 // Center Code / RC Code - Using Center Name as per sample
@@ -148,10 +153,9 @@ if (strlen($course_name) > 40) {
 }
 drawField($image, $font_path, $color_black, $base_x, $base_y, "Course Name", $course_name, $label_width);
 
-// Student Name
+// Session (New)
 $base_y += $line_height;
-$full_name = trim(($student['first_name'] ?? '') . ' ' . ($student['last_name'] ?? ''));
-drawField($image, $font_path, $color_black, $base_x, $base_y, "Name", $full_name, $label_width);
+drawField($image, $font_path, $color_black, $base_x, $base_y, "Session", $student['session_name'] ?? '', $label_width);
 
 // Father's Name
 $base_y += $line_height;
