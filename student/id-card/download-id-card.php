@@ -118,7 +118,7 @@ function addText($image, $size, $angle, $x, $y, $color, $font, $text) {
 
 // Left Side Details
 $base_x = 55;
-$base_y = 310;
+$base_y = 240; // Moved up from 310 to reduce header gap
 $line_height = 35;
 $font_size_label = 16; 
 $font_size_value = 16;
@@ -174,7 +174,7 @@ drawField($image, $font_path, $color_black, $base_x, $base_y, "Mobile", $student
 // Student Photo
 // Positioning estimate: Right side, aligned with top details.
 $photo_x = 760;
-$photo_y = 230;
+$photo_y = 200; // Moved up from 230
 $photo_w = 210;
 $photo_h = 240;
 
