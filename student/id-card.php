@@ -51,11 +51,11 @@ require_once '../database/config.php';
 <body>
     <div class="d-flex" id="wrapper">
         <!-- Sidebar -->
-        <?php include '../student/sidebar.php'; ?>
+        <?php include 'sidebar.php'; ?>
         
         <!-- Page Content -->
         <div id="page-content-wrapper">
-            <?php include '../student/header.php'; ?>
+            <?php include 'header.php'; ?>
             
             <div class="container-fluid px-4 py-4">
                 <div class="row">
@@ -92,6 +92,6 @@ require_once '../database/config.php';
 
     <!-- Bootstrap Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/sidebar.js"></script>
+    <script src="assets/js/sidebar.js"></script>
 </body>
 </html>

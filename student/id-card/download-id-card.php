@@ -78,17 +78,16 @@ try {
 // 4. Image Generation Setup
 // Paths
 $bg_image_path = __DIR__ . '/background/school-id-card.png';
-$font_path = __DIR__ . '/../../assets/fonts/NotoSansDevanagari-Regular.ttf';
+// Use FreeSans for better compatibility
+$font_path = __DIR__ . '/../../vendor/mpdf/mpdf/ttfonts/FreeSans.ttf'; 
 
 if (!file_exists($bg_image_path)) {
     die("Background image not found.");
 }
 if (!file_exists($font_path)) {
-    // If font not found, try GD's built-in fonts as verify path is correct locally but maybe not on server
-    // Actually, if we use built-in font, we don't need TTF.
-    // For now, let's just warn or fallback if possible.
-     // die("Font file not found at: " . $font_path);
-     // Fallback to built-in font logic inside drawing functions
+    // If specific font not found, try another or fallback
+    // Fallback to simpler font if needed
+    // die("Font file not found at: " . $font_path);
 }
 
 // Create Image from Background
