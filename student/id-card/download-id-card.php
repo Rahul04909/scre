@@ -1,7 +1,4 @@
-<?php
 // student/id-card/download-id-card.php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
 // 1. Start session and check auth
 if (session_status() == PHP_SESSION_NONE) {
@@ -308,6 +305,7 @@ imagettftext($image, 10, 0, 860, $sig_y + 20, $color_black, $font_path, "Authori
 
 
 // 8. Output
+ob_clean(); // Clean any previous output/buffers
 header('Content-Type: image/png');
 header('Content-Disposition: attachment; filename="ID_Card_'.$student['enrollment_number'].'.png"');
 imagepng($image);
