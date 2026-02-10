@@ -171,12 +171,15 @@ drawField($image, $font_path, $color_black, $base_x, $base_y, "Mobile", $student
 
 // 7. Right Side Images
 
+// 7. Right Side Images
+
 // Student Photo
 // Positioning estimate: Right side, aligned with top details.
-$photo_x = 760;
-$photo_y = 160; // Moved up to match details
-$photo_w = 210;
-$photo_h = 240;
+// Reduced size as requested (was 210x240)
+$photo_w = 170;
+$photo_h = 200;
+$photo_x = 780; // Centered roughly in the right area (was 760)
+$photo_y = 160; 
 
 // Load Photo
 $photo_path = '';
@@ -242,9 +245,8 @@ if (file_exists($font_path)) {
 // QR Code
 // Position: Moved to Bottom Right (Below Photo and Enrollment)
 $qr_size = 100;
-// Center under photo: Photo X (760) + Photo W (210)/2 = 865 center. 
-// QR X = 865 - 50 = 815.
-$qr_x = 815; 
+// Center under photo
+$qr_x = $photo_x + ($photo_w - $qr_size)/2; 
 $qr_y = $photo_y + $photo_h + 40; // Below enrollment text (which is +25)
 
 // Use QuickChart API (like marksheet) to avoid dependency issues
@@ -278,7 +280,7 @@ if ($qrContent) {
 
 // Signatures
 // Bottom Layout: Left (Center), Middle (Auth), Right (Student) or similar
-$sig_y = 560; 
+$sig_y = 575; // Moved down from 560
 $sig_h = 45; 
 
 // 1. Center Signature (Left)
