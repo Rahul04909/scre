@@ -239,7 +239,7 @@ $html = '
     .issue-date { top: 72.6%; left: 29%; }
     
     /* QR Code Position: Below Date of Issue */
-    .qr-code { top: 76%; left: 40%; }
+    .qr-code { top: 76%; left: 45%; }
 
     /* Stamp & Signature: Right side of QR */
     .stamp { top: 74%; left: 70%; z-index: 1; }
