@@ -158,7 +158,7 @@ $html = '
     .marks-max { top: 63.8%; left: 70%; }
     
     .grade { top: 68%; left: 29%; }
-    .issue-date { top: 74%; left: 27%; }
+    .issue-date { top: 73.2%; left: 29%; }
     
     .reg-top { top: 12%; left: 75%; font-size: 14px; }
     
