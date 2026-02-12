@@ -146,7 +146,7 @@ $html = '
     .enroll { top: 35%; left: 46%; }
     
     .session-start { top: 38%; left: 28%; }
-    .session-end { top: 38%; left: 49%; }
+    .session-end { top: 38%; left: 56%; }
     
     .dob { top: 48%; left: 35%; }
     .course { top: 52%; left: 35%; }
