@@ -164,57 +164,214 @@ try {
         $qrCodeHtml = '';
     }
 
-    // 6. Load Stamp and Signature
-    $stamp_path = __DIR__ . '/../assets/scre-stamp.png';
-    $sign_path = __DIR__ . '/../assets/scre-sign.png';
-
-    $stamp_html = '';
-    if (file_exists($stamp_path)) {
-        $type = pathinfo($stamp_path, PATHINFO_EXTENSION);
-        $data = file_get_contents($stamp_path);
-        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-        $stamp_html = '<img src="' . $base64 . '" style="width: 100px; opacity: 0.8;">';
-    }
-
-    $sign_html = '';
-    if (file_exists($sign_path)) {
-        $type = pathinfo($sign_path, PATHINFO_EXTENSION);
-        $data = file_get_contents($sign_path);
-        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-        $sign_html = '<img src="' . $base64 . '" style="width: 220px;">';
-    }
-
     // Styles
     $html = '
     <style>
         body { font-family: freeserif; color: #000; }
-        /* ... existing styles ... */
-        /* Update signature box for mPDF */
-        .signature-container {
-             width: 250px; 
-             text-align: center; 
-             float: right; 
-             margin-right: 20px;
+        .container { padding: 40px 80px; padding-top: 220px; } /* Increased sidebar padding to decrease width */
+        
+        .header-overlay {
+            position: absolute;
+            top: 78px;
+            left: 80px; 
+            right: 80px; 
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
         }
+        
+        .section-box {
+            background-color: #3b5998; color: white;
+            padding: 5px; text-align: center;
+            font-weight: bold; font-size: 14px;
+            margin-bottom: 8px; border-radius: 4px;
+        }
+        
+        .student-details-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 12px; }
+        .student-details-table td { padding: 4px; font-weight: bold; color: #333; }
+        .label { color: #0d6efd; width: 140px; }
+        
+        .marks-table { width: 100%; border-collapse: collapse; margin-top: 5px; font-size: 11px; }
+        .marks-table th { 
+            background-color: #3b5998; color: white; 
+            padding: 6px; border: 1px solid #999; 
+        }
+        .marks-table td { 
+            padding: 6px; border: 1px solid #999; 
+            text-align: center; font-weight: bold; 
+        }
+        
+        .summary-table { width: 40%; border-collapse: collapse; font-size: 11px; margin-top: 10px; }
+        .summary-table td { border: 1px solid #999; padding: 4px; font-weight: bold; }
+        .summary-header { background-color: #3b5998; color: white; text-align: center; }
+        
+        .footer { position: absolute; bottom: 80px; left: 50px; right: 50px; }
+        .qr-box { width: 100px; height: 100px; border: 1px solid #ddd; margin-top: 20px; }
+        .signature-box { text-align: center; width: 150px; float: right; margin-right: 60px; }
+        
+        /* Specific adjustments to match sample */
+        .blue-bar { background-color: #2c64b6; color: white; padding: 5px; text-align: center; font-weight: bold; margin: 10px 0; }
+        
+        .meta-table td { white-space: nowrap; padding: 0 20px; font-weight: bold; font-size: 14px; }
     </style>
     
-    <!-- ... HTML content ... -->
-
-                        <div class="signature-container">
-                            <!-- Attempting simple layering for mPDF -->
-                            <div style="height: 100px; position: relative;">
-                                <!-- Stamp -->
-                                <div style="position: absolute; top: 10px; left: 70px; z-index: 0;">
-                                    '.$stamp_html.'
-                                </div>
-                                <!-- Signature -->
-                                <div style="position: absolute; top: 0px; left: 10px; z-index: 1;">
-                                    '.$sign_html.'
-                                </div>
-                            </div>
-                            <div style="font-weight: bold; margin-top: 5px;">Authorized Signatory</div>
+    <!-- Absolute Header Meta -->
+    <div class="header-overlay">
+        <table width="100%" class="meta-table">
+            <tr>
+                <td align="center">National ID: <span style="font-weight: bold;">'.($student['national_id'] ?? 'N/A').'</span></td>
+                <td align="center">Serial No: <span style="font-weight: bold;">SC-'.str_pad($student['id'], 6, '0', STR_PAD_LEFT).'</span></td>
+                <td align="center">Enrollment No: <span style="font-weight: bold;">'.$student['enrollment_no'].'</span></td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="container">
+        
+        <!-- Student Details -->
+        <div class="blue-bar">STUDENT DETAILS</div>
+        
+        <table width="100%">
+            <tr>
+                <td width="75%" valign="top">
+                    <!-- Details Left -->
+                    <table class="student-details-table">
+                        <tr>
+                            <td class="label">विद्यार्थी का नाम<br>Student Name:</td><td>'.htmlspecialchars($student['first_name'] . ' ' . $student['last_name']).'</td>
+                            <td class="label">पिता का नाम<br>Father\'s Name:</td><td>'.htmlspecialchars($student['father_name']).'</td>
+                        </tr>
+                        <tr>
+                            <td class="label">माँ का नाम<br>Mother\'s Name:</td><td>'.htmlspecialchars($student['mother_name']).'</td>
+                            <td class="label">जन्म तिथि<br>Date of Birth:</td><td>'.$dob.'</td>
+                        </tr>
+                        <tr>
+                            <td class="label">पैटर्न<br>Pattern:</td><td>'.ucfirst($student['unit_type'] ?? 'Annual').'</td>
+                            <td class="label">लिंग<br>Gender:</td><td>'.ucfirst($student['gender']).'</td>
+                        </tr>
+                    </table>
+                </td>
+                <td width="25%" align="right" valign="top">
+                    <!-- Photo -->
+                    '.($profile_img ? '<img src="'.$profile_img.'" style="width: 100px; height: 120px; border: 1px solid #000; padding: 2px;">' : '').'
+                </td>
+            </tr>
+        </table>
+        
+        <!-- Course Details -->
+        <div class="blue-bar">COURSE DETAILS</div>
+        <table class="student-details-table">
+            <tr>
+                <td class="label">प्रवेश मोड<br>Admission Mode:</td><td>Regular</td>
+                <td class="label">सत्र<br>Session:</td><td>'.$student['session_name'].'</td>
+            </tr>
+            <tr>
+                <td class="label">कोर्स का नाम<br>Course Name:</td><td>'.htmlspecialchars($student['course_name']).'</td>
+                <td class="label">अवधि<br>Duration:</td><td>'.$student['duration_value'] . ' ' . ucfirst($student['duration_type']).'</td>
+            </tr>
+            <tr>
+                <td class="label">ASC नाम<br>ASC Name:</td><td>'.htmlspecialchars($student['center_name']).'</td>
+                <td class="label">ASC कोड<br>ASC Code:</td><td>'.$student['center_code'].'</td>
+            </tr>
+            <tr>
+                <td class="label">ASC पता<br>ASC Address:</td><td colspan="3">'.htmlspecialchars($student['center_address']).'</td>
+            </tr>
+        </table>
+        
+        <!-- Marks Table -->
+        <table class="marks-table">
+            <thead>
+                <tr>
+                    <th rowspan="2" width="6%">Sr. No.</th>
+                    <th rowspan="2" width="28%">SUBJECT NAME</th>
+                    <th colspan="2">TOTAL MARKS</th>
+                    <th colspan="2">OBTAINED MARKS</th>
+                    <th rowspan="2" width="12%">TOTAL OBTAINED</th>
+                    <th rowspan="2" width="10%">STATUS</th>
+                </tr>
+                <tr style="font-size: 7px;">
+                    <th style="white-space: nowrap;">THEORY</th>
+                    <th style="white-space: nowrap;">PRACTICAL</th>
+                    <th style="white-space: nowrap;">THEORY</th>
+                    <th style="white-space: nowrap;">PRACTICAL</th>
+                </tr>
+            </thead>
+            <tbody>';
+            
+            $sr_no = 1;
+            foreach ($results as $row) {
+                // If practical marks not defined in DB, assume 0
+                $th_max = $row['theory_marks'];
+                $pr_max = $row['practical_marks'] ?? 0;
+                
+                // Assuming "score" is Theory Obtained if Practical is separate?
+                // Or "score" is Total Obtained. 
+                // Let's assume for this layout: Score is Theory + Practical. 
+                // Since we don't have split in `exam_results`.
+                // We will display Score in Total Obtained column, and 0/0 for split for now effectively?
+                // OR: Display Score in Theory Obtained and 0 in Practical.
+                
+                $th_obt = $row['obtained_total'];
+                $pr_obt = 0; // Placeholder
+                
+                $row_total = $th_obt + $pr_obt;
+                $status = ($row['result_status'] == 'Pass') ? 'Pass' : 'Fail';
+                
+                $html .= '
+                <tr>
+                    <td>'.$sr_no++.'</td>
+                    <td align="left" style="text-align:left; padding-left:10px;">'.htmlspecialchars($row['subject_name']).'</td>
+                    <td>'.(0 + $th_max).'</td>
+                    <td>'.(0 + $pr_max).'</td>
+                    <td>'.(0 + $th_obt).'</td>
+                    <td>'.(0 + $pr_obt).'</td>
+                    <td>'.(0 + $row_total).'</td>
+                    <td>'.strtoupper($status).'</td>
+                </tr>';
+            }
+            
+            // Grand Total Row
+            $html .= '
+                <tr style="background-color: #2c64b6; color: white;">
+                    <td colspan="2" align="right" style="padding-right: 10px;">GRAND TOTAL MARKS:</td>
+                    <td colspan="2">'.(0 + $grand_total_max).'</td>
+                    <td colspan="2">GRAND OBTAINED MARKS:</td>
+                    <td>'.(0 + $grand_total_obt).'</td>
+                    <td>'.$overall_status.'</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- Footer: Summary & Signatures -->
+        <div style="margin-top: 10px;">
+            <table width="100%">
+                <tr>
+                    <td width="40%" valign="top">
+                        <table class="summary-table" width="100%">
+                            <tr><td class="summary-header" colspan="2">SUMMARY</td></tr>
+                            <tr><td>Exam Date</td><td>'.$issue_date.'</td></tr> <!-- Using Issue Date as placeholder -->
+                            <tr><td>Result Date</td><td>'.$issue_date.'</td></tr>
+                            <tr><td>Date of Issue</td><td>'.$issue_date.'</td></tr>
+                            <tr><td>Percentage:</td><td>'.(0 + number_format($percentage, 2)).'%</td></tr>
+                            <tr><td>Grade:</td><td>'.$final_grade.'</td></tr>
+                            <tr><td>Overall Status:</td><td>'.$overall_status.'</td></tr>
+                        </table>
+                    </td>
+                    <td width="20%" align="center" valign="middle">
+                         '.$qrCodeHtml.'
+                    </td>
+                    <td width="40%" valign="bottom" align="right">
+                         <!-- QR Code Placeholder -->
+                         <!-- Implementation of real QR requires a library or API. -->
+                         <!-- Mpdf has basic QR support. -->
+                         <br><br>
+                         <div class="signature-box" style="white-space: nowrap;">
+                            <br>
+                            <b>Authorize Signature</b>
                          </div>
-
+                    </td>
+                </tr>
+            </table>
+        </div>
         
         <div style="position: absolute; bottom: 10px; width: 100%; text-align: center; font-size: 10px; color: #666; margin-top: 20px;">
             This Certificate/Diploma is issued by PACE FOUNDATION. Result may be verified on www.pacefoundation.com
