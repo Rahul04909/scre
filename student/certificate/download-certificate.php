@@ -149,8 +149,8 @@ $html = '
     .session-end { top: 39%; left: 59%; }
     
     .dob { top: 43%; left: 35%; }
-    .course { top: 48%; left: 35%; }
-    .center { top: 56%; left: 40%; width: 50%; }
+    .course { top: 47.3%; left: 35%; }
+    .center { top: 52%; left: 40%; width: 50%; }
     .duration { top: 60%; left: 35%; }
     .exam-month { top: 64%; left: 55%; }
     
