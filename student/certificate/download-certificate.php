@@ -71,8 +71,32 @@ if (!$is_fail) {
     $final_grade = 'Fail';
 }
 
+// 3. Serial Number Logic
+$certificate_serial = $student['certificate_serial_no'];
+if (empty($certificate_serial)) {
+    // Generate new SR-XXXXXX
+    // Ensure uniqueness
+    $unique = false;
+    $new_serial = '';
+    while (!$unique) {
+        $rand_num = str_pad(mt_rand(1, 999999), 6, '0', STR_PAD_LEFT);
+        $new_serial = 'SR-' . $rand_num;
+        
+        // Check if exists
+        $stmtCheck = $pdo->prepare("SELECT id FROM students WHERE certificate_serial_no = ?");
+        $stmtCheck->execute([$new_serial]);
+        if ($stmtCheck->rowCount() == 0) {
+            $unique = true;
+        }
+    }
+    
+    // Save to DB
+    $stmtUpdate = $pdo->prepare("UPDATE students SET certificate_serial_no = ? WHERE id = ?");
+    $stmtUpdate->execute([$new_serial, $student_id]);
+    $certificate_serial = $new_serial;
+}
 
-// 3. Prepare Variables
+// 4. Prepare Variables
 $name = strtoupper(trim($student['first_name'] . ' ' . $student['last_name']));
 $father_name = strtoupper(trim($student['father_name']));
 $enrollment_no = $student['enrollment_no'];
@@ -168,7 +192,7 @@ $html = '
     <img src="' . $bg_data . '" class="background">
     
     <div class="content">
-        <div class="field reg-top">Reg No: ' . $enrollment_no . '</div>
+        <div class="field reg-top">Reg No: ' . $certificate_serial . '</div>
         
         <div class="field name">' . $name . '</div>
         <div class="field father">' . $father_name . '</div>
