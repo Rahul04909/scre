@@ -184,7 +184,7 @@ $html = '
     .grade { top: 68%; left: 29%; }
     .issue-date { top: 72.6%; left: 29%; }
     
-    .reg-top { top: 12%; left: 75%; font-size: 14px; }
+    .reg-top { top: 8%; left: 50%; font-size: 14px; }
     
 </style>
 </head>
@@ -192,7 +192,7 @@ $html = '
     <img src="' . $bg_data . '" class="background">
     
     <div class="content">
-        <div class="field reg-top">Reg No: ' . $certificate_serial . '</div>
+        <div class="field reg-top">Serial Number: ' . $certificate_serial . '</div>
         
         <div class="field name">' . $name . '</div>
         <div class="field father">' . $father_name . '</div>
