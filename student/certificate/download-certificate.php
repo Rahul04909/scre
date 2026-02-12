@@ -243,7 +243,7 @@ $html = '
 
     /* Stamp & Signature: Right side of QR */
     .stamp { top: 74%; left: 70%; z-index: 1; }
-    .signature { top: 76.5%; left: 66%; z-index: 2; } 
+    .signature { top: 75%; left: 64%; z-index: 2; } 
     
     .auth-sign { top: 82%; left: 68%; width: 150px; text-align: center; font-size: 14px; font-weight: bold; }
 
