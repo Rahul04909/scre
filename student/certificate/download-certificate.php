@@ -167,7 +167,7 @@ $sign_html = '';
         $type = pathinfo($sign_path, PATHINFO_EXTENSION);
         $data = file_get_contents($sign_path);
         $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-        $sign_html = '<img src="' . $base64 . '" style="width: 150px;">';
+        $sign_html = '<img src="' . $base64 . '" style="width: 190px;">';
     }
 
 // 7. DomPDF Setup
@@ -243,7 +243,7 @@ $html = '
 
     /* Stamp & Signature: Right side of QR */
     .stamp { top: 74%; left: 70%; z-index: 1; }
-    .signature { top: 76.5%; left: 69%; z-index: 2; } 
+    .signature { top: 76.5%; left: 68.6%; z-index: 2; } 
     
     .auth-sign { top: 82%; left: 68%; width: 150px; text-align: center; font-size: 14px; font-weight: bold; }
 
