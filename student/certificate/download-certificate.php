@@ -142,7 +142,7 @@ $html = '
     /* Adjust these based on visual check */
     
     .name { top: 26.7%; left: 46%; }
-    .father { top: 32%; left: 46%; }
+    .father { top: 31%; left: 46%; }
     .enroll { top: 40%; left: 35%; }
     
     .session-start { top: 44%; left: 30%; }
