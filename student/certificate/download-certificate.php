@@ -219,7 +219,7 @@ $html = '
     .issue-date { top: 72.6%; left: 29%; }
     
     /* QR Code Position: Below Date of Issue */
-    .qr-code { top: 76%; left: 30%; }
+    .qr-code { top: 76%; left: 40%; }
 
     .reg-top { top: 8%; left: 40%; font-size: 14px; }
     
