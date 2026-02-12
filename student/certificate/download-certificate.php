@@ -151,8 +151,8 @@ try {
 }
 
 // 6. Load Stamp and Signature
-$stamp_path = __DIR__ . '../assets/scre-stamp.png';
-$sign_path = __DIR__ . '../assets/scre-sign.png';
+$stamp_path = __DIR__ . '/../assets/scre-stamp.png';
+$sign_path = __DIR__ . '/../assets/scre-sign.png'; // Corrected path with slash
 
 $stamp_html = '';
 if (file_exists($stamp_path)) {
