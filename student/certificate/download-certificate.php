@@ -150,7 +150,7 @@ $html = '
     
     .dob { top: 43%; left: 35%; }
     .course { top: 47.3%; left: 35%; }
-    .center { top: 52%; left: 40%; width: 50%; }
+    .center { top: 51.6%; left: 42%; width: 50%; }
     .duration { top: 60%; left: 35%; }
     .exam-month { top: 64%; left: 55%; }
     
