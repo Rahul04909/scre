@@ -116,6 +116,40 @@ if (!empty($student['start_month']) && !empty($student['end_month'])) {
     $session_end = $student['end_month'] . ' ' . $student['end_year'];
 }
 
+// 5. Generate QR Code
+$qrData = "Certificate: " . $course_name . "\n";
+$qrData .= "Student: " . $name . "\n";
+$qrData .= "Serial No: " . $certificate_serial . "\n";
+$qrData .= "Enrollment: " . $enrollment_no . "\n";
+$qrData .= "Grade: " . $final_grade . "\n";
+$qrData .= "Verify at: www.screduc.com"; 
+
+$qrCodeHtml = '';
+$apiUrl = "https://quickchart.io/qr?text=" . urlencode($qrData) . "&size=150&margin=0";
+
+try {
+    $imageData = false;
+    if (ini_get('allow_url_fopen')) {
+        $imageData = @file_get_contents($apiUrl);
+    }
+    if ($imageData === false && function_exists('curl_init')) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $apiUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+        $imageData = curl_exec($ch);
+        curl_close($ch);
+    }
+    
+    if ($imageData !== false && !empty($imageData)) {
+         $base64 = 'data:image/png;base64,' . base64_encode($imageData);
+         // QR Image HTML
+         $qrCodeHtml = '<img src="' . $base64 . '" style="width: 100px; height: 100px;">';
+    }
+} catch (\Throwable $e) {
+    // Ignore error
+}
+
 // 4. DomPDF Setup
 $options = new Options();
 $options->set('isHtml5ParserEnabled', true);
@@ -184,6 +218,9 @@ $html = '
     .grade { top: 68%; left: 29%; }
     .issue-date { top: 72.6%; left: 29%; }
     
+    /* QR Code Position: Below Date of Issue */
+    .qr-code { top: 76%; left: 30%; }
+
     .reg-top { top: 8%; left: 40%; font-size: 14px; }
     
 </style>
@@ -212,6 +249,8 @@ $html = '
         
         <div class="field grade">' . $final_grade . '</div>
         <div class="field issue-date">' . $issue_date . '</div>
+        
+        <div class="field qr-code">' . $qrCodeHtml . '</div>
     </div>
 </body>
 </html>
