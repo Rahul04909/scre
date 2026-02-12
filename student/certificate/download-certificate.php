@@ -151,7 +151,7 @@ $html = '
     .dob { top: 43%; left: 35%; }
     .course { top: 47.3%; left: 35%; }
     .center { top: 51.6%; left: 43%; width: 50%; }
-    .duration { top: 57%; left: 35%; }
+    .duration { top: 55.6%; left: 35%; }
     .exam-month { top: 64%; left: 55%; }
     
     .marks-obt { top: 68%; left: 40%; }
