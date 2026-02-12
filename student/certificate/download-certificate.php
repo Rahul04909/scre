@@ -145,8 +145,8 @@ $html = '
     .father { top: 31%; left: 46%; }
     .enroll { top: 35%; left: 46%; }
     
-    .session-start { top: 38%; left: 28%; }
-    .session-end { top: 38%; left: 56%; }
+    .session-start { top: 39%; left: 28%; }
+    .session-end { top: 39%; left: 59%; }
     
     .dob { top: 48%; left: 35%; }
     .course { top: 52%; left: 35%; }
