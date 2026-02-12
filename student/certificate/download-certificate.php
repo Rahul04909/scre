@@ -157,7 +157,7 @@ $options->set('isRemoteEnabled', true); // Allow loading images
 $dompdf = new Dompdf($options);
 
 // Load Background Image
-$bg_path = __DIR__ . '/background/compressed-bg.png';
+$bg_path = __DIR__ . '/background/background-img.png';
 $bg_data = '';
 if (file_exists($bg_path)) {
     $type = pathinfo($bg_path, PATHINFO_EXTENSION);
