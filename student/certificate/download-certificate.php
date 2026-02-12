@@ -245,7 +245,7 @@ $html = '
     .stamp { top: 74%; left: 70%; z-index: 1; }
     .signature { top: 73%; left: 69%; z-index: 2; } 
     
-    .auth-sign { top: 82%; left: 68%; width: 150px; text-align: center; font-size: 14px; font-weight: bold; }
+    .auth-sign { top: 85%; left: 68%; width: 190px; text-align: center; font-size: 14px; font-weight: bold; }
 
     .reg-top { top: 8%; left: 40%; font-size: 14px; }
     
