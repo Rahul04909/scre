@@ -157,7 +157,7 @@ $html = '
     .marks-obt { top: 63.8%; left: 40%; }
     .marks-max { top: 63.8%; left: 70%; }
     
-    .grade { top: 72%; left: 35%; }
+    .grade { top: 68.6%; left: 30%; }
     .issue-date { top: 78%; left: 25%; }
     
     .reg-top { top: 12%; left: 75%; font-size: 14px; }
