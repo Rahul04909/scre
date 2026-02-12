@@ -150,7 +150,27 @@ try {
     // Ignore error
 }
 
-// 4. DomPDF Setup
+// 6. Load Stamp and Signature
+$stamp_path = __DIR__ . '/../../assets/scre-stamp.png';
+$sign_path = __DIR__ . '/../../assets/scre-sign.png';
+
+$stamp_html = '';
+if (file_exists($stamp_path)) {
+    $type = pathinfo($stamp_path, PATHINFO_EXTENSION);
+    $data = file_get_contents($stamp_path);
+    $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+    $stamp_html = '<img src="' . $base64 . '" style="width: 100px; opacity: 0.8;">';
+}
+
+$sign_html = '';
+if (file_exists($sign_path)) {
+    $type = pathinfo($sign_path, PATHINFO_EXTENSION);
+    $data = file_get_contents($sign_path);
+    $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+    $sign_html = '<img src="' . $base64 . '" style="width: 120px;">';
+}
+
+// 7. DomPDF Setup
 $options = new Options();
 $options->set('isHtml5ParserEnabled', true);
 $options->set('isRemoteEnabled', true); // Allow loading images
@@ -221,6 +241,10 @@ $html = '
     /* QR Code Position: Below Date of Issue */
     .qr-code { top: 76%; left: 40%; }
 
+    /* Stamp & Signature: Right side of QR */
+    .stamp { top: 74%; left: 70%; z-index: 1; }
+    .signature { top: 73%; left: 69%; z-index: 2; } /* Signature slightly above/over stamp */
+
     .reg-top { top: 8%; left: 40%; font-size: 14px; }
     
 </style>
@@ -251,6 +275,8 @@ $html = '
         <div class="field issue-date">' . $issue_date . '</div>
         
         <div class="field qr-code">' . $qrCodeHtml . '</div>
+        <div class="field stamp">' . $stamp_html . '</div>
+        <div class="field signature">' . $sign_html . '</div>
     </div>
 </body>
 </html>
