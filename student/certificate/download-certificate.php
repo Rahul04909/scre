@@ -141,7 +141,7 @@ $html = '
     /* Coordinate Estimates for Portrait A4 (approx 794px width x 1123px height at 96dpi) */
     /* Adjust these based on visual check */
     
-    .name { top: 26%; left: 42%; }
+    .name { top: 26.7%; left: 42%; }
     .father { top: 36%; left: 35%; }
     .enroll { top: 40%; left: 35%; }
     
