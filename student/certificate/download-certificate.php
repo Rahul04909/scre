@@ -154,8 +154,8 @@ $html = '
     .duration { top: 55.6%; left: 35%; }
     .exam-month { top: 59.7%; left: 55%; }
     
-    .marks-obt { top: 65%; left: 40%; }
-    .marks-max { top: 65%; left: 60%; }
+    .marks-obt { top: 63.8%; left: 40%; }
+    .marks-max { top: 63.8%; left: 70%; }
     
     .grade { top: 72%; left: 35%; }
     .issue-date { top: 78%; left: 25%; }
