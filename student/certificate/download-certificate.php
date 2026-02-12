@@ -184,7 +184,7 @@ $html = '
     .grade { top: 68%; left: 29%; }
     .issue-date { top: 72.6%; left: 29%; }
     
-    .reg-top { top: 8%; left: 50%; font-size: 14px; }
+    .reg-top { top: 8%; left: 40%; font-size: 14px; }
     
 </style>
 </head>
