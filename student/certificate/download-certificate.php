@@ -243,7 +243,9 @@ $html = '
 
     /* Stamp & Signature: Right side of QR */
     .stamp { top: 74%; left: 70%; z-index: 1; }
-    .signature { top: 73%; left: 69%; z-index: 2; } /* Signature slightly above/over stamp */
+    .signature { top: 73%; left: 69%; z-index: 2; } 
+    
+    .auth-sign { top: 82%; left: 68%; width: 150px; text-align: center; font-size: 14px; font-weight: bold; }
 
     .reg-top { top: 8%; left: 40%; font-size: 14px; }
     
@@ -277,6 +279,7 @@ $html = '
         <div class="field qr-code">' . $qrCodeHtml . '</div>
         <div class="field stamp">' . $stamp_html . '</div>
         <div class="field signature">' . $sign_html . '</div>
+        <div class="field auth-sign">Authorized Signatory</div>
     </div>
 </body>
 </html>
