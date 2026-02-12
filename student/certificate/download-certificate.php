@@ -152,7 +152,7 @@ $html = '
     .course { top: 47.3%; left: 35%; }
     .center { top: 51.6%; left: 43%; width: 50%; }
     .duration { top: 55.6%; left: 35%; }
-    .exam-month { top: 61%; left: 55%; }
+    .exam-month { top: 59.7%; left: 55%; }
     
     .marks-obt { top: 68%; left: 40%; }
     .marks-max { top: 68%; left: 60%; }
