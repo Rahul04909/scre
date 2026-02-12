@@ -116,14 +116,48 @@ if (!empty($student['start_month']) && !empty($student['end_month'])) {
     $session_end = $student['end_month'] . ' ' . $student['end_year'];
 }
 
-// 4. DomPDF Setup
+// 5. Generate QR Code (Same logic as marksheet)
+$qrData = "Certificate: " . $course_name . "\n";
+$qrData .= "Student: " . $name . "\n";
+$qrData .= "Serial No: " . $certificate_serial . "\n";
+$qrData .= "Enrollment: " . $enrollment_no . "\n";
+$qrData .= "Grade: " . $final_grade . "\n";
+$qrData .= "Verify at: www.screduc.com"; 
+
+$qrCodeHtml = '';
+$apiUrl = "https://quickchart.io/qr?text=" . urlencode($qrData) . "&size=150&margin=0";
+
+try {
+    $imageData = false;
+    if (ini_get('allow_url_fopen')) {
+        $imageData = @file_get_contents($apiUrl);
+    }
+    if ($imageData === false && function_exists('curl_init')) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $apiUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+        $imageData = curl_exec($ch);
+        curl_close($ch);
+    }
+    
+    if ($imageData !== false && !empty($imageData)) {
+         $base64 = 'data:image/png;base64,' . base64_encode($imageData);
+         // QR Image HTML
+         $qrCodeHtml = '<img src="' . $base64 . '" style="width: 100px; height: 100px;">';
+    }
+} catch (\Throwable $e) {
+    // Ignore error
+}
+
+// 6. DomPDF Setup
 $options = new Options();
 $options->set('isHtml5ParserEnabled', true);
 $options->set('isRemoteEnabled', true); // Allow loading images
 $dompdf = new Dompdf($options);
 
 // Load Background Image
-$bg_path = __DIR__ . '/background/new-bg.png';
+$bg_path = __DIR__ . '/background/background-img.png';
 $bg_data = '';
 if (file_exists($bg_path)) {
     $type = pathinfo($bg_path, PATHINFO_EXTENSION);
@@ -165,24 +199,27 @@ $html = '
     /* Coordinate Estimates for Portrait A4 (approx 794px width x 1123px height at 96dpi) */
     /* Adjust these based on visual check */
     
-    .name { top: 26.7%; left: 46%; }
-    .father { top: 31%; left: 46%; }
-    .enroll { top: 35%; left: 46%; }
+    .name { top: 32%; left: 35%; }
+    .father { top: 36%; left: 35%; }
+    .enroll { top: 40%; left: 35%; }
     
-    .session-start { top: 39%; left: 28%; }
-    .session-end { top: 39%; left: 59%; }
+    .session-start { top: 44%; left: 30%; }
+    .session-end { top: 44%; left: 60%; }
     
-    .dob { top: 43%; left: 35%; }
-    .course { top: 47.3%; left: 35%; }
-    .center { top: 51.6%; left: 43%; width: 50%; }
-    .duration { top: 55.6%; left: 35%; }
-    .exam-month { top: 59.7%; left: 55%; }
+    .dob { top: 48%; left: 35%; }
+    .course { top: 52%; left: 35%; }
+    .center { top: 56%; left: 40%; width: 50%; }
+    .duration { top: 60%; left: 35%; }
+    .exam-month { top: 64%; left: 55%; }
     
-    .marks-obt { top: 63.8%; left: 40%; }
-    .marks-max { top: 63.8%; left: 70%; }
+    .marks-obt { top: 68%; left: 40%; }
+    .marks-max { top: 68%; left: 60%; }
     
     .grade { top: 68%; left: 29%; }
     .issue-date { top: 72.6%; left: 29%; }
+    
+    /* QR Code Position: Below Date of Issue */
+    .qr-code { top: 76%; left: 30%; }
     
     .reg-top { top: 8%; left: 40%; font-size: 14px; }
     
@@ -212,6 +249,8 @@ $html = '
         
         <div class="field grade">' . $final_grade . '</div>
         <div class="field issue-date">' . $issue_date . '</div>
+        
+        <div class="field qr-code">' . $qrCodeHtml . '</div>
     </div>
 </body>
 </html>
