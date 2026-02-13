@@ -324,44 +324,83 @@ try {
         </table>';
         
         // 4.5 Fetch Admin Signature & Stamp
-        // 4.5 Fetch Admin Signature & Stamp
-        // Matched logic from student/id-card/download-id-card.php to ensure consistency
-        // Uses static assets 'scre-sign.png' and 'scre-stamp.png'
+        // 4.5 Fetch Admin Signature & Stamp (GD Merge Approach)
+        // Matched logic from student/id-card/download-id-card.php
         
-        $signImg = '';
-        $stampImg = '';
+        $mergedImageHtml = '';
 
-        // Determine base directory (Root of project)
+        // Determine base directory
         $baseDir = realpath(__DIR__ . '/../../');
         
-        // Static Paths (Admin Assets)
+        // Static Paths
         $stampPath = $baseDir . '/admin/assets/scre-stamp.png';
         $signaturePath = $baseDir . '/admin/assets/scre-sign.png';
 
-        // Check Stamp
-        if (file_exists($stampPath)) {
-            // Convert to Base64
-            $type = pathinfo($stampPath, PATHINFO_EXTENSION);
-            $data = file_get_contents($stampPath);
-            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        if (file_exists($stampPath) && file_exists($signaturePath)) {
+            // 1. Load Images
+            $stamp = imagecreatefrompng($stampPath);
+            $sign = imagecreatefrompng($signaturePath);
             
-            // ID Card Style: Width ~85px
-            // Centered (160-85)/2 = 37.5 -> 38px
-            // Positioned lower so it appears "below" or behind the signature text
-            $stampImg = '<img src="' . $base64 . '" style="width: 85px; position: absolute; bottom: -20px; left: 38px; opacity: 1; z-index: 1;">';
+            if ($stamp && $sign) {
+                // 2. Get Dimensions
+                $sw = imagesx($stamp);
+                $sh = imagesy($stamp);
+                $siw = imagesx($sign);
+                $sih = imagesy($sign);
+                
+                // 3. Create Container (Size of Stamp or slightly larger to fit signature if wider)
+                // We'll use a fixed canvas size to ensure it fits well in the PDF
+                $canvasW = max($sw, $siw, 200); // Ensure minimal width
+                $canvasH = max($sh, $sih, 150); 
+                
+                $finalImg = imagecreatetruecolor($canvasW, $canvasH);
+                
+                // Handle Transparency
+                imagealphablending($finalImg, false);
+                imagesavealpha($finalImg, true);
+                $transparent = imagecolorallocatealpha($finalImg, 255, 255, 255, 127);
+                imagefill($finalImg, 0, 0, $transparent);
+                imagealphablending($finalImg, true);
+                
+                // 4. Position Stamp (Center Bottom-ish)
+                // Resize stamp to visually match target: ~100px width
+                $targetStampW = 100;
+                $targetStampH = ($sh / $sw) * $targetStampW;
+                $stampX = ($canvasW - $targetStampW) / 2;
+                $stampY = ($canvasH - $targetStampH) / 2; // Center vertically for now
+                
+                imagecopyresampled($finalImg, $stamp, $stampX, $stampY, 0, 0, $targetStampW, $targetStampH, $sw, $sh);
+                
+                // 5. Position Signature (Overlapping, Centered)
+                // Resize signature: ~140px width
+                $targetSignW = 140;
+                $targetSignH = ($sih / $siw) * $targetSignW;
+                $signX = ($canvasW - $targetSignW) / 2;
+                $signY = $stampY + 20; // Shift down slightly to overlap mid-to-bottom of stamp
+                
+                imagecopyresampled($finalImg, $sign, $signX, $signY, 0, 0, $targetSignW, $targetSignH, $siw, $sih);
+                
+                // 6. Output to Base64
+                ob_start();
+                imagepng($finalImg);
+                $imgData = ob_get_clean();
+                $base64 = 'data:image/png;base64,' . base64_encode($imgData);
+                
+                $mergedImageHtml = '<img src="' . $base64 . '" style="width: 140px;">';
+                
+                // Cleanup
+                imagedestroy($stamp);
+                imagedestroy($sign);
+                imagedestroy($finalImg);
+            }
+        } elseif (file_exists($stampPath)) {
+             // Fallback: Just Stamp
+             $type = pathinfo($stampPath, PATHINFO_EXTENSION);
+             $data = file_get_contents($stampPath);
+             $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+             $mergedImageHtml = '<img src="' . $base64 . '" style="width: 100px;">';
         }
-        
-        // Check Signature
-        if (file_exists($signaturePath)) {
-            // Convert to Base64
-            $type = pathinfo($signaturePath, PATHINFO_EXTENSION);
-            $data = file_get_contents($signaturePath);
-            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
 
-            // ID Card Style: Width ~160px, Overlapping Stamp
-            // Positioned slightly higher (bottom: 25px) to sit on top of the stamp visually
-            $signImg = '<img src="' . $base64 . '" style="width: 160px; position: absolute; bottom: 35px; left: 0px; z-index: 10;">';
-        }
 
         // Footer: Summary & Signatures
         $html .= '<div style="margin-top: 10px;">
@@ -382,10 +421,9 @@ try {
                          '.$qrCodeHtml.'
                     </td>
                     <td width="40%" valign="bottom" align="right">
-                         <!-- Fixed Dimensions Container for Overlap -->
-                         <div style="width: 160px; height: 110px; position: relative; margin-right: 20px; display: inline-block;">
-                            '.$stampImg.'
-                            '.$signImg.'
+                         <!-- Single Merged Image Container -->
+                         <div style="width: 160px; text-align: center; margin-right: 20px; display: inline-block;">
+                            '.$mergedImageHtml.'
                          </div>
                          <div class="signature-box" style="white-space: nowrap; clear: both; margin-top: 5px; float: right; margin-right: 20px;">
                             <b>Authorize Signature</b>
