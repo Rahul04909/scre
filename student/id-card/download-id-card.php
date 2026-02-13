@@ -90,11 +90,25 @@ if (!file_exists($font_path)) {
     // die("Font file not found at: " . $font_path);
 }
 
+
 // Create Image from Background
-$image = imagecreatefrompng($bg_image_path);
-if (!$image) {
+$image_source = imagecreatefrompng($bg_image_path);
+if (!$image_source) {
     die("Failed to load background image.");
 }
+
+// Resize to manageable dimensions (target width 1011px)
+$orig_w = imagesx($image_source);
+$orig_h = imagesy($image_source);
+$target_w = 1011;
+$target_h = intval(($orig_h / $orig_w) * $target_w); // Keep aspect ratio
+
+$image = imagecreatetruecolor($target_w, $target_h);
+// Preserve transparency if needed
+imagealphablending($image, false);
+imagesavealpha($image, true);
+imagecopyresampled($image, $image_source, 0, 0, 0, 0, $target_w, $target_h, $orig_w, $orig_h);
+imagedestroy($image_source); // Free memory
 
 // Colors
 $color_black = imagecolorallocate($image, 0, 0, 0);
@@ -112,13 +126,12 @@ function addText($image, $size, $angle, $x, $y, $color, $font, $text) {
 }
 
 // 6. Overlay Data
-// Coordinates based on 1011x639 image. 
-// These need to be adjusted based on the visual layout of 'school-id-card.png'.
-// Assuming a standard layout based on sample.
+// Target Width: 1011px
+// New Height: approx 718px (derived from 5732x4069)
 
 // Left Side Details
 $base_x = 55;
-$base_y = 180; // Moved further up from 240
+$base_y = 320; // Pushed down from 180 to clear header
 $line_height = 35;
 $font_size_label = 16; 
 $font_size_value = 16;
@@ -171,15 +184,13 @@ drawField($image, $font_path, $color_black, $base_x, $base_y, "Mobile", $student
 
 // 7. Right Side Images
 
-// 7. Right Side Images
-
 // Student Photo
 // Positioning estimate: Right side, aligned with top details.
 // Reduced size as requested (was 210x240)
 $photo_w = 170;
 $photo_h = 200;
 $photo_x = 780; // Centered roughly in the right area (was 760)
-$photo_y = 160; 
+$photo_y = 300; // Pushed down from 160
 
 // Load Photo
 $photo_path = '';
@@ -280,7 +291,7 @@ if ($qrContent) {
 
 // Signatures
 // Bottom Layout: Left (Center), Middle (Auth), Right (Student) or similar
-$sig_y = 575; // Moved down from 560
+$sig_y = $target_h - 100; // Fixed near bottom (approx 618px)
 $sig_h = 45; 
 
 // 1. Center Signature (Left)
@@ -347,5 +358,6 @@ if (!isset($_GET['preview'])) {
 
 imagepng($image);
 imagedestroy($image);
+
 
 ?>
