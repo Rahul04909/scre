@@ -77,7 +77,7 @@ try {
 
 // 4. Image Generation Setup
 // Paths
-$bg_image_path = __DIR__ . '/background/school-id-card.png';
+$bg_image_path = __DIR__ . '/background/background.png';
 // Use FreeSans for better compatibility
 $font_path = __DIR__ . '/../../vendor/mpdf/mpdf/ttfonts/FreeSans.ttf'; 
 
