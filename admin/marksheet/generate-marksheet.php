@@ -334,10 +334,12 @@ try {
 
         if ($adminAssets) {
             if (!empty($adminAssets['signature']) && file_exists('../../' . $adminAssets['signature'])) {
-                $signImg = '<img src="../../' . $adminAssets['signature'] . '" style="width: 100px; position: absolute; bottom: 20px; right: 20px; z-index: 2;">';
+                // Signature on top (z-index 2), slightly higher (bottom: 25px)
+                $signImg = '<img src="../../' . $adminAssets['signature'] . '" style="width: 120px; position: absolute; bottom: 15px; right: 20px; z-index: 2;">';
             }
             if (!empty($adminAssets['stamp']) && file_exists('../../' . $adminAssets['stamp'])) {
-                $stampImg = '<img src="../../' . $adminAssets['stamp'] . '" style="width: 90px; position: absolute; bottom: 10px; right: 40px; z-index: 1; opacity: 0.8;">';
+                // Stamp at bottom (z-index 1), centered relative to signature
+                $stampImg = '<img src="../../' . $adminAssets['stamp'] . '" style="width: 100px; position: absolute; bottom: 0px; right: 30px; z-index: 1; opacity: 0.8;">';
             }
         }
 
@@ -359,12 +361,12 @@ try {
                     <td width="20%" align="center" valign="middle">
                          '.$qrCodeHtml.'
                     </td>
-                    <td width="40%" valign="bottom" align="right" style="position: relative; height: 150px;">
-                         <div style="position: relative; width: 200px; float: right; margin-right: 40px; height: 100px;">
+                    <td width="40%" valign="bottom" align="right" style="position: relative; height: 140px;">
+                         <div style="position: relative; width: 180px; float: right; margin-right: 40px; height: 100px;">
                             '.$stampImg.'
                             '.$signImg.'
                          </div>
-                         <div class="signature-box" style="white-space: nowrap; clear: both; margin-top: 10px;">
+                         <div class="signature-box" style="white-space: nowrap; clear: both; margin-top: 5px;">
                             <b>Authorize Signature</b>
                          </div>
                     </td>
