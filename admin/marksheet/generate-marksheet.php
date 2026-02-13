@@ -374,7 +374,7 @@ try {
                 
                 // 5. Position Signature (Overlapping, Centered exactly on Stamp)
                 // Resize signature: ~300px width (Increased from 280)
-                $targetSignW = 300;
+                $targetSignW = 380;
                 $targetSignH = ($sih / $siw) * $targetSignW;
                 $signX = ($canvasW - $targetSignW) / 2;
                 // Center Vertically exactly (moved down slightly from -50 to -35)
