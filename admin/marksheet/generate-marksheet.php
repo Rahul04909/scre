@@ -340,7 +340,12 @@ try {
             if (!empty($adminAssets['stamp'])) {
                 $stampPath = $baseDir . '/' . $adminAssets['stamp'];
                 if (file_exists($stampPath)) {
-                    $stampImg = '<img src="' . $stampPath . '" style="width: 100px; position: absolute; bottom: 0; left: 30px; opacity: 0.8; z-index: 1;">';
+                    // Convert to Base64 to bypass mPDF path issues
+                    $type = pathinfo($stampPath, PATHINFO_EXTENSION);
+                    $data = file_get_contents($stampPath);
+                    $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                    
+                    $stampImg = '<img src="' . $base64 . '" style="width: 100px; position: absolute; bottom: 0; left: 30px; opacity: 0.8; z-index: 1;">';
                 }
             }
             
@@ -348,8 +353,13 @@ try {
             if (!empty($adminAssets['signature'])) {
                 $signaturePath = $baseDir . '/' . $adminAssets['signature'];
                 if (file_exists($signaturePath)) {
+                    // Convert to Base64
+                    $type = pathinfo($signaturePath, PATHINFO_EXTENSION);
+                    $data = file_get_contents($signaturePath);
+                    $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+
                     // Signature higher and on top
-                    $signImg = '<img src="' . $signaturePath . '" style="width: 140px; position: absolute; bottom: 15px; left: 10px; z-index: 10;">';
+                    $signImg = '<img src="' . $base64 . '" style="width: 140px; position: absolute; bottom: 15px; left: 10px; z-index: 10;">';
                 }
             }
         }
