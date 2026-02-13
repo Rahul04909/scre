@@ -364,13 +364,13 @@ if (file_exists($sign_path)) {
 if ($stamp_img) {
     $s_w = imagesx($stamp_img);
     $s_h = imagesy($stamp_img);
-    $new_s_w = 70; // Reduced stamp width (was 90)
+    $new_s_w = 85; // Increased stamp width (was 70)
     $new_s_h = ($s_h / $s_w) * $new_s_w;
     
     // Center stamp relative to text area roughly
     // Text is at $auth_sig_x. Let's center stamp there.
     $stamp_dest_x = $auth_sig_x + (150 - $new_s_w)/2; // Assuming ~150px width area
-    $stamp_dest_y = $sig_y - 45; 
+    $stamp_dest_y = $sig_y - 65; // Moved up (was -45)
     
     // Set opacity for stamp if possible (GD doesn't support easy opacity on imagecopy without merge, 
     // but PNG alpha channel should handle it if image has it. 
@@ -382,11 +382,11 @@ if ($stamp_img) {
 if ($sign_img) {
     $si_w = imagesx($sign_img);
     $si_h = imagesy($sign_img);
-    $new_si_w = 130; // Signature width increased to 130 (was 110)
+    $new_si_w = 140; // Signature width increased to 140 (was 130)
     $new_si_h = ($si_h / $si_w) * $new_si_w;
     
     $sign_dest_x = $auth_sig_x + (150 - $new_si_w)/2; // Center
-    $sign_dest_y = $sig_y - 35; // Slightly lower than stamp top to overlap
+    $sign_dest_y = $sig_y - 55; // Moved up (was -35)
     
     imagecopyresampled($image, $sign_img, $sign_dest_x, $sign_dest_y, 0, 0, $new_si_w, $new_si_h, $si_w, $si_h);
 }
