@@ -151,7 +151,7 @@ function addText($image, $size, $angle, $x, $y, $color, $font, $text) {
 
 // Left Side Details
 $base_x = 80; 
-$base_y = 260; // Moved up from 280
+$base_y = 240; // Moved up further from 260
 $line_height = 35;
 $font_size_label = 16; 
 $font_size_value = 16;
@@ -382,7 +382,7 @@ if ($stamp_img) {
 if ($sign_img) {
     $si_w = imagesx($sign_img);
     $si_h = imagesy($sign_img);
-    $new_si_w = 110; // Signature width
+    $new_si_w = 130; // Signature width increased to 130 (was 110)
     $new_si_h = ($si_h / $si_w) * $new_si_w;
     
     $sign_dest_x = $auth_sig_x + (150 - $new_si_w)/2; // Center
