@@ -351,7 +351,7 @@ try {
                 // 3. Create Container (Size of Stamp or slightly larger to fit signature if wider)
                 // Reduced height slightly to bring text closer, keeping width broad
                 $canvasW = max($sw, $siw, 500); // 500px Wide
-                $canvasH = max($sh, $sih, 420); // 420px High (Reduced from 450)
+                $canvasH = max($sh, $sih, 420); // 420px High
                 
                 $finalImg = imagecreatetruecolor($canvasW, $canvasH);
                 
@@ -363,22 +363,22 @@ try {
                 imagealphablending($finalImg, true);
                 
                 // 4. Position Stamp (Center)
-                // Resize stamp target: ~200px width for max visibility
+                // Resize stamp target: ~200px width
                 $targetStampW = 200;
                 $targetStampH = ($sh / $sw) * $targetStampW;
                 $stampX = ($canvasW - $targetStampW) / 2;
-                // Center Vertically exactly (slightly higher to leave room for text)
-                $stampY = ($canvasH - $targetStampH) / 2 - 30; // Shifted up more (-30) to make room for text
+                // Center Vertically exactly (slightly higher)
+                $stampY = ($canvasH - $targetStampH) / 2 - 30; 
                 
                 imagecopyresampled($finalImg, $stamp, $stampX, $stampY, 0, 0, $targetStampW, $targetStampH, $sw, $sh);
                 
                 // 5. Position Signature (Overlapping, Centered exactly on Stamp)
-                // Resize signature: ~280px width
-                $targetSignW = 280;
+                // Resize signature: ~300px width (Increased from 280)
+                $targetSignW = 300;
                 $targetSignH = ($sih / $siw) * $targetSignW;
                 $signX = ($canvasW - $targetSignW) / 2;
-                // Center Vertically exactly (slightly higher than stamp)
-                $signY = ($canvasH - $targetSignH) / 2 - 50; // Shifted up more to match stamp move
+                // Center Vertically exactly (moved down slightly from -50 to -35)
+                $signY = ($canvasH - $targetSignH) / 2 - 35; 
                 
                 imagecopyresampled($finalImg, $sign, $signX, $signY, 0, 0, $targetSignW, $targetSignH, $siw, $sih);
                 
@@ -394,8 +394,6 @@ try {
                 $text = "Authorize Signature";
                 
                 // Calculate position relative to the stamp bottom
-                // Stamp Bottom Y = $stampY + $targetStampH;
-                // Text Y = Stamp Bottom + 30px (Gap)
                 $stampBottomY = $stampY + $targetStampH;
                 $textY = $stampBottomY + 30;
 
