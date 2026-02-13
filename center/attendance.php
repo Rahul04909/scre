@@ -52,14 +52,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_attendance'])) {
 // Fetch Courses for Filter
 $courses = $pdo->query("SELECT id, course_name FROM courses ORDER BY course_name")->fetchAll(PDO::FETCH_KEY_PAIR);
 
+// Fetch Sessions for Filter
+$sessions = $pdo->query("SELECT id, session_name FROM academic_sessions ORDER BY id DESC")->fetchAll(PDO::FETCH_KEY_PAIR);
+
 // Fetch Students based on Filters
 $students = [];
 if ($filter_course) {
     try {
-        // Build Query
-        $sql = "SELECT s.id, s.first_name, s.last_name, s.enrollment_no, s.course_id, s.session, c.course_name 
+        // Build Query - Fixed session column
+        $sql = "SELECT s.id, s.first_name, s.last_name, s.enrollment_no, s.course_id, ses.session_name, c.course_name 
                 FROM students s 
                 LEFT JOIN courses c ON s.course_id = c.id
+                LEFT JOIN academic_sessions ses ON s.session_id = ses.id
                 WHERE s.center_id = ?";
         $params = [$center_id];
 
@@ -68,8 +72,8 @@ if ($filter_course) {
             $params[] = $filter_course;
         }
         if ($filter_session) {
-            $sql .= " AND s.session LIKE ?";
-            $params[] = "%$filter_session%";
+            $sql .= " AND s.session_id = ?";
+            $params[] = $filter_session;
         }
 
         $sql .= " ORDER BY s.first_name ASC";
@@ -149,8 +153,15 @@ if ($filter_course) {
                         </select>
                     </div>
                     <div class="col-md-3">
-                         <label class="form-label">Session (Optional)</label>
-                         <input type="text" name="session" class="form-control" placeholder="e.g. 2025-2026" value="<?php echo htmlspecialchars($filter_session); ?>">
+                         <label class="form-label">Session</label>
+                         <select name="session" class="form-select">
+                            <option value="">All Sessions</option>
+                            <?php foreach($sessions as $sid => $sname): ?>
+                                <option value="<?php echo $sid; ?>" <?php echo ($filter_session == $sid) ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($sname); ?>
+                                </option>
+                            <?php endforeach; ?>
+                         </select>
                     </div>
                     <div class="col-md-3">
                         <button type="submit" class="btn btn-primary w-100" style="background-color: #115E59; border-color: #115E59;">
@@ -198,7 +209,7 @@ if ($filter_course) {
                                                 <div class="fw-bold"><?php echo htmlspecialchars($student['first_name'] . ' ' . $student['last_name']); ?></div>
                                                 <small class="text-muted"><?php echo htmlspecialchars($student['course_name']); ?></small>
                                             </td>
-                                            <td><?php echo htmlspecialchars($student['session']); ?></td>
+                                            <td><?php echo htmlspecialchars($student['session_name']); ?></td>
                                             <td class="text-center" style="width: 300px;">
                                                 <div class="btn-group status-radio-group" role="group">
                                                     
