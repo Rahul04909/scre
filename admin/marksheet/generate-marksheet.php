@@ -334,12 +334,12 @@ try {
 
         if ($adminAssets) {
             if (!empty($adminAssets['signature']) && file_exists('../../' . $adminAssets['signature'])) {
-                // Signature on top (z-index 2), slightly higher (bottom: 25px)
-                $signImg = '<img src="../../' . $adminAssets['signature'] . '" style="width: 120px; position: absolute; bottom: 15px; right: 20px; z-index: 2;">';
+                // Signature: Fixed position (higher)
+                $signImg = '<img src="../../' . $adminAssets['signature'] . '" style="width: 120px; position: absolute; bottom: 30px; right: 20px; z-index: 2;">';
             }
             if (!empty($adminAssets['stamp']) && file_exists('../../' . $adminAssets['stamp'])) {
-                // Stamp at bottom (z-index 1), centered relative to signature
-                $stampImg = '<img src="../../' . $adminAssets['stamp'] . '" style="width: 100px; position: absolute; bottom: 0px; right: 30px; z-index: 1; opacity: 0.8;">';
+                // Stamp: Moved "just below" (lower bottom value) and centered relative to sign
+                $stampImg = '<img src="../../' . $adminAssets['stamp'] . '" style="width: 100px; position: absolute; bottom: 10px; right: 30px; z-index: 1; opacity: 0.8;">';
             }
         }
 
@@ -362,7 +362,7 @@ try {
                          '.$qrCodeHtml.'
                     </td>
                     <td width="40%" valign="bottom" align="right" style="position: relative; height: 140px;">
-                         <div style="position: relative; width: 180px; float: right; margin-right: 40px; height: 100px;">
+                         <div style="position: relative; width: 180px; float: right; margin-right: 30px; height: 110px;">
                             '.$stampImg.'
                             '.$signImg.'
                          </div>
