@@ -174,12 +174,26 @@ drawField($image, $font_path, $color_black, $base_x, $base_y, "Session", $studen
 $base_y += $line_height;
 drawField($image, $font_path, $color_black, $base_x, $base_y, "Father's Name", $student['father_name'] ?? '', $label_width);
 
+// Mother's Name (New)
+$base_y += $line_height;
+drawField($image, $font_path, $color_black, $base_x, $base_y, "Mother's Name", $student['mother_name'] ?? '', $label_width);
+
 // Address / DOB / Mobile
 $base_y += $line_height;
 drawField($image, $font_path, $color_black, $base_x, $base_y, "DOB", $student['dob'] ?? '', $label_width);
 
 $base_y += $line_height;
 drawField($image, $font_path, $color_black, $base_x, $base_y, "Mobile", $student['mobile'] ?? '', $label_width);
+
+// Address (New)
+$base_y += $line_height;
+$address = $student['address'] ?? '';
+// Simple truncate if too long for now, or multi-line? 
+// Let's truncate to keep it simple as single line for ID card.
+if (strlen($address) > 40) {
+    $address = substr($address, 0, 37) . '...';
+}
+drawField($image, $font_path, $color_black, $base_x, $base_y, "Address", $address, $label_width);
 
 
 // 7. Right Side Images
@@ -295,7 +309,7 @@ $sig_y = $target_h - 100; // Fixed near bottom (approx 618px)
 $sig_h = 45; 
 
 // 1. Center Signature (Left)
-$center_sig_x = 80; // Adjusted Left
+$center_sig_x = 120; // Adjusted Left (Moved right from 80)
 if ($center_signature) {
     $c_path = __DIR__ . '/../../' . $center_signature;
     if (file_exists($c_path)) {
