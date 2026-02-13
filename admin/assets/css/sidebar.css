@@ -513,3 +513,12 @@ input[type="file"]::file-selector-button:hover {
     top: 50% !important;
     transform: translateY(-50%) !important;
 }
+
+/* Sidebar Menu Arrow Rotation */
+.menu-arrow {
+    transition: transform 0.3s ease;
+}
+
+.list-group-item[aria-expanded="true"] .menu-arrow {
+    transform: rotate(90deg);
+}

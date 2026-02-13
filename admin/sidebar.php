@@ -30,7 +30,7 @@
 
         <!-- Gallery Menu -->
         <a href="#gallerySubmenu" data-bs-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-            <i class="fas fa-images me-2"></i>Gallery <i class="fas fa-chevron-down ms-auto"></i>
+            <i class="fas fa-images me-2"></i>Gallery <i class="fas fa-chevron-right menu-arrow ms-auto"></i>
         </a>
         <div class="collapse" id="gallerySubmenu">
             <div class="sub-menu">
@@ -173,7 +173,7 @@
 
         <!-- Blogs Menu -->
         <a href="#blogSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-            <i class="fas fa-blog me-2"></i>Blogs <i class="fas fa-chevron-down ms-auto"></i>
+            <i class="fas fa-blog me-2"></i>Blogs <i class="fas fa-chevron-right menu-arrow ms-auto"></i>
         </a>
         <div class="collapse" id="blogSubmenu">
             <div class="sub-menu">
