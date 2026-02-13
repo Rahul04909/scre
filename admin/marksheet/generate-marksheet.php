@@ -392,21 +392,24 @@ try {
                 }
                 
                 $text = "Authorize Signature";
+                
+                // Calculate position relative to the stamp bottom
+                // Stamp Bottom Y = $stampY + $targetStampH;
+                // Text Y = Stamp Bottom + 30px (Gap)
+                $stampBottomY = $stampY + $targetStampH;
+                $textY = $stampBottomY + 30;
+
                 if (file_exists($fontPath)) {
                     // Calculate text width to center it
                     $bbox = imagettfbbox(18, 0, $fontPath, $text); // Font size 18
                     $textW = $bbox[2] - $bbox[0];
                     $textX = ($canvasW - $textW) / 2;
-                    // Position closer to stamp bottom
-                    // Stamp Bottom = $stampY + $targetStampH (~ 200 + 80 = 280)
-                    // Canvas H is 420.
-                    // Let's place text at Bottom - 20px
-                    $textY = $canvasH - 25; 
+                    
                     imagettftext($finalImg, 18, 0, $textX, $textY, $black, $fontPath, $text);
                 } else {
                     // Fallback to internal font
                     $textX = ($canvasW - (strlen($text) * 10)) / 2; // Approx width
-                    imagestring($finalImg, 5, $textX, $canvasH - 35, $text, $black);
+                    imagestring($finalImg, 5, $textX, $textY - 15, $text, $black);
                 }
 
                 // 7. Output to Base64
