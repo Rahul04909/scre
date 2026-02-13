@@ -10,16 +10,35 @@ $admin_id = $_SESSION['admin_id'];
 $msg = '';
 $msgType = '';
 
+// Fetch Current Admin Data (MOVED UP)
+$stmt = $pdo->prepare("SELECT * FROM admins WHERE id = ?");
+$stmt->execute([$admin_id]);
+$admin = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$admin) {
+    die("Admin not found");
+}
+
 // Handle Profile Update
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = trim($_POST['name']);
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
     
-    // Handle Stamp and Signature
+    // Initialize Paths from current DB values
+    $imagePath = $admin['image'];
     $signaturePath = $admin['signature'];
     $stampPath = $admin['stamp'];
     $uploadAssetsDir = '../../assets/uploads/admins/';
+
+    // Profile Image Upload
+    if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] == 0) {
+        $ext = pathinfo($_FILES['profile_image']['name'], PATHINFO_EXTENSION);
+        $fileName = 'admin_' . $admin_id . '_' . time() . '.' . $ext;
+        if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $uploadAssetsDir . $fileName)) {
+            $imagePath = 'assets/uploads/admins/' . $fileName;
+        }
+    }
 
     // Signature Upload
     if (isset($_FILES['signature_image']) && $_FILES['signature_image']['error'] == 0) {
@@ -62,6 +81,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Update Session
         $_SESSION['admin_name'] = $name;
         $_SESSION['admin_image'] = $imagePath;
+        
+        // Refresh Admin Data for display
+        $stmt = $pdo->prepare("SELECT * FROM admins WHERE id = ?");
+        $stmt->execute([$admin_id]);
+        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
         $msg = "Profile updated successfully!";
         $msgType = "success";
@@ -71,12 +95,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $msgType = "danger";
     }
 }
-
-// Fetch Current Admin Data
-$stmt = $pdo->prepare("SELECT * FROM admins WHERE id = ?");
-$stmt->execute([$admin_id]);
-$admin = $stmt->fetch(PDO::FETCH_ASSOC);
-
 ?>
 
 <!DOCTYPE html>
