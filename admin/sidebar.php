@@ -62,6 +62,11 @@
                 <a href="<?php echo $sidebarPrefix; ?>admin/students/index.php" class="list-group-item list-group-item-action bg-transparent">Manage Students</a>
             </div>
         </div>
+
+        <!-- Certificates (Added) -->
+        <a href="<?php echo $sidebarPrefix; ?>admin/certificate/index.php" class="list-group-item list-group-item-action bg-transparent">
+            <i class="fas fa-certificate menu-icon"></i> Manage Certificates
+        </a>
         
 
         <!-- Fees Collection Example with dropdown -->
