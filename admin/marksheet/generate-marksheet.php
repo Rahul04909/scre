@@ -349,9 +349,9 @@ try {
                 $sih = imagesy($sign);
                 
                 // 3. Create Container (Size of Stamp or slightly larger to fit signature if wider)
-                // Increased dimensions for larger output
-                $canvasW = max($sw, $siw, 300); // Increased width
-                $canvasH = max($sh, $sih, 220); // Increased height
+                // Increased dimensions significantly as per user request
+                $canvasW = max($sw, $siw, 400); // 400px Wide
+                $canvasH = max($sh, $sih, 300); // 300px High
                 
                 $finalImg = imagecreatetruecolor($canvasW, $canvasH);
                 
@@ -362,21 +362,24 @@ try {
                 imagefill($finalImg, 0, 0, $transparent);
                 imagealphablending($finalImg, true);
                 
-                // 4. Position Stamp (Center Bottom-ish)
-                // Resize stamp target: ~130px width (Increased from 100)
-                $targetStampW = 130;
+                // 4. Position Stamp (Center Bottom)
+                // Resize stamp target: ~160px width for max visibility
+                $targetStampW = 160;
                 $targetStampH = ($sh / $sw) * $targetStampW;
                 $stampX = ($canvasW - $targetStampW) / 2;
-                $stampY = ($canvasH - $targetStampH) / 2 + 20; // Shift down slightly
+                // Positioned lower so it appears "below" or behind the signature text 
+                // Using exact centering + vertical offset
+                $stampY = ($canvasH - $targetStampH) / 2 + 40; 
                 
                 imagecopyresampled($finalImg, $stamp, $stampX, $stampY, 0, 0, $targetStampW, $targetStampH, $sw, $sh);
                 
-                // 5. Position Signature (Overlapping, Centered)
-                // Resize signature: ~180px width (Increased from 140)
-                $targetSignW = 180;
+                // 5. Position Signature (Overlapping, Centered, Above Stamp visually)
+                // Resize signature: ~240px width
+                $targetSignW = 240;
                 $targetSignH = ($sih / $siw) * $targetSignW;
                 $signX = ($canvasW - $targetSignW) / 2;
-                $signY = $stampY - 30; // Shift up to overlap top of stamp
+                // Shift up to overlap top of stamp significantly
+                $signY = $stampY - 60; 
                 
                 imagecopyresampled($finalImg, $sign, $signX, $signY, 0, 0, $targetSignW, $targetSignH, $siw, $sih);
                 
@@ -386,7 +389,8 @@ try {
                 $imgData = ob_get_clean();
                 $base64 = 'data:image/png;base64,' . base64_encode($imgData);
                 
-                $mergedImageHtml = '<img src="' . $base64 . '" style="width: 180px;">';
+                // HTML Output Width: 240px
+                $mergedImageHtml = '<img src="' . $base64 . '" style="width: 240px;">';
                 
                 // Cleanup
                 imagedestroy($stamp);
@@ -398,7 +402,7 @@ try {
              $type = pathinfo($stampPath, PATHINFO_EXTENSION);
              $data = file_get_contents($stampPath);
              $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-             $mergedImageHtml = '<img src="' . $base64 . '" style="width: 130px;">';
+             $mergedImageHtml = '<img src="' . $base64 . '" style="width: 160px;">';
         }
 
 
@@ -422,7 +426,7 @@ try {
                     </td>
                     <td width="40%" valign="bottom" align="right">
                          <!-- Single Merged Image Container -->
-                         <div style="width: 200px; text-align: center; margin-right: 20px; display: inline-block;">
+                         <div style="width: 260px; text-align: center; margin-right: 10px; display: inline-block;">
                             '.$mergedImageHtml.'
                          </div>
                          <div class="signature-box" style="white-space: nowrap; clear: both; margin-top: 5px; float: right; margin-right: 20px;">
