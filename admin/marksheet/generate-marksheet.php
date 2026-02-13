@@ -333,13 +333,13 @@ try {
         $stampImg = '';
 
         if ($adminAssets) {
-            if (!empty($adminAssets['signature']) && file_exists('../../' . $adminAssets['signature'])) {
-                // Signature: Fixed position (higher)
-                $signImg = '<img src="../../' . $adminAssets['signature'] . '" style="width: 120px; position: absolute; bottom: 30px; right: 20px; z-index: 2;">';
-            }
+            // Using standard positioning with negative margins for better mPDF compatibility
             if (!empty($adminAssets['stamp']) && file_exists('../../' . $adminAssets['stamp'])) {
-                // Stamp: Moved "just below" (lower bottom value) and centered relative to sign
-                $stampImg = '<img src="../../' . $adminAssets['stamp'] . '" style="width: 100px; position: absolute; bottom: 10px; right: 30px; z-index: 1; opacity: 0.8;">';
+                $stampImg = '<img src="../../' . $adminAssets['stamp'] . '" style="width: 100px; opacity: 0.8; display: block; margin: 0 auto;">';
+            }
+            if (!empty($adminAssets['signature']) && file_exists('../../' . $adminAssets['signature'])) {
+                // Negative margin to pull signature up over the stamp
+                $signImg = '<img src="../../' . $adminAssets['signature'] . '" style="width: 120px; display: block; margin: -60px auto 0 auto; position: relative; z-index: 10;">';
             }
         }
 
@@ -361,13 +361,14 @@ try {
                     <td width="20%" align="center" valign="middle">
                          '.$qrCodeHtml.'
                     </td>
-                    <td width="40%" valign="bottom" align="right" style="position: relative; height: 140px;">
-                         <div style="position: relative; width: 180px; float: right; margin-right: 30px; height: 110px;">
+                    <td width="40%" valign="bottom" align="right" style="padding-bottom: 20px;">
+                         <!-- Container for Sign/Stamp -->
+                         <div style="width: 200px; text-align: center; float: right; margin-right: 20px;">
                             '.$stampImg.'
                             '.$signImg.'
-                         </div>
-                         <div class="signature-box" style="white-space: nowrap; clear: both; margin-top: 5px;">
-                            <b>Authorize Signature</b>
+                            <div class="signature-box" style="margin-top: 10px; border-top: 1px solid #000; padding-top: 5px;">
+                                <b>Authorize Signature</b>
+                            </div>
                          </div>
                     </td>
                 </tr>
