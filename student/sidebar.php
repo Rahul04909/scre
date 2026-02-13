@@ -6,7 +6,8 @@
     <!-- Profile Section -->
     <div class="text-center py-4 border-bottom profile-section">
         <?php 
-            $s_img = !empty($_SESSION['student_image']) ? '../'.$_SESSION['student_image'] : 'https://ui-avatars.com/api/?name='.urlencode($_SESSION['student_name'] ?? 'Student');
+            // Use ../../ to ensure path works from deep subdirectories like certificate/
+            $s_img = !empty($_SESSION['student_image']) ? '../../'.$_SESSION['student_image'] : 'https://ui-avatars.com/api/?name='.urlencode($_SESSION['student_name'] ?? 'Student');
         ?>
         <img src="<?php echo $s_img; ?>" class="rounded-circle shadow-sm mb-2" style="width: 80px; height: 80px; object-fit: cover; border: 3px solid #fff;">
         <div class="fw-bold" style="color: #0F172A;"><?php echo htmlspecialchars($_SESSION['student_name'] ?? 'Student'); ?></div>
@@ -40,6 +41,17 @@
         </a>
         <a href="../../student/certificate/index.php" class="list-group-item list-group-item-action <?php echo (strpos($current_page, 'certificate') !== false) ? 'active' : ''; ?>">
             <i class="fas fa-certificate me-2"></i>Certificate
+        </a>
+        
+        <!-- New Menu Items -->
+        <a href="https://www.1024terabox.com/" target="_blank" class="list-group-item list-group-item-action">
+            <i class="fas fa-cloud-download-alt me-2"></i>Terabox
+        </a>
+        <a href="../../typing-master/index.php" class="list-group-item list-group-item-action">
+            <i class="fas fa-keyboard me-2"></i>Typing Master
+        </a>
+        <a href="../../online-exam/index.php" class="list-group-item list-group-item-action">
+            <i class="fas fa-laptop-code me-2"></i>Online Exam
         </a>
         <a href="../../student/logout.php" class="list-group-item list-group-item-action text-danger fw-bold mt-4">
             <i class="fas fa-power-off me-2"></i>Logout
