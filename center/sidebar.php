@@ -60,6 +60,14 @@ $center_code = $_SESSION['center_code'] ?? 'CODE123';
             </a>
         </li>
 
+        <!-- Attendance -->
+        <li class="nav-item">
+            <a href="../../center/attendance.php" class="nav-link <?php echo isActive('attendance.php') ? 'active' : ''; ?>">
+                <i class="fas fa-calendar-check"></i>
+                <span>Attendance</span>
+            </a>
+        </li>
+
         <!-- Students (Collapsible) -->
         <li class="nav-item">
             <a href="#menuStudents" data-bs-toggle="collapse" class="nav-link <?php echo isExpanded(['students']) ? 'active' : ''; ?> d-flex justify-content-between align-items-center" aria-expanded="<?php echo isExpanded(['students']) ? 'true' : 'false'; ?>">
