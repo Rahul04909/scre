@@ -15,13 +15,40 @@ $stmtFee = $pdo->prepare("
     SELECT 
         (c.course_fees + c.admission_fees) as total_fee,
         c.course_name,
-        s.first_name, s.last_name, s.enrollment_no, s.student_image, s.dob
+        s.first_name, s.last_name, s.enrollment_no, s.student_image, s.dob, s.email
     FROM students s
     JOIN courses c ON s.course_id = c.id
     WHERE s.id = ?
 ");
 $stmtFee->execute([$student_id]);
 $student = $stmtFee->fetch();
+
+// Check if review already submitted
+$stmtReviewCheck = $pdo->prepare("SELECT COUNT(*) FROM student_reviews WHERE student_id = ?");
+$stmtReviewCheck->execute([$student_id]);
+$review_exists = $stmtReviewCheck->fetchColumn() > 0;
+
+// Handle Review Submission
+$review_msg = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_review'])) {
+    if (!$review_exists) {
+        $rating = intval($_POST['rating'] ?? 0);
+        $message = trim($_POST['review_message'] ?? '');
+        
+        if ($rating >= 1 && $rating <= 5 && !empty($message)) {
+            try {
+                $stmtInsert = $pdo->prepare("INSERT INTO student_reviews (student_id, rating, review_message) VALUES (?, ?, ?)");
+                $stmtInsert->execute([$student_id, $rating, $message]);
+                $review_exists = true; // Hide form immediately
+                $review_msg = "<div class='alert alert-success'>Thank you! Your review has been submitted.</div>";
+            } catch (PDOException $e) {
+                $review_msg = "<div class='alert alert-danger'>Error submitting review. Please try again.</div>";
+            }
+        } else {
+            $review_msg = "<div class='alert alert-warning'>Please select a rating and write a message.</div>";
+        }
+    }
+}
 
 // Calculate Paid
 $stmtPaid = $pdo->prepare("SELECT SUM(amount) FROM student_fees WHERE student_id = ?");
@@ -198,7 +225,86 @@ $is_birthday = true;
                     <?php endif; ?>
                 </div>
 
-            </div>
+                <!-- Review Section (One-time only) -->
+                <?php if (!$review_exists): ?>
+                <div class="row g-4 mt-2">
+                    <div class="col-12">
+                        <?php if (!empty($review_msg)) echo $review_msg; ?>
+                        <div class="content-card">
+                            <div class="card-header-clean">
+                                <h5 class="card-title-clean">
+                                    <i class="fas fa-star text-warning"></i> Write a Review
+                                </h5>
+                            </div>
+                            <div class="p-4">
+                                <form method="POST" action="">
+                                    <div class="row">
+                                        <!-- Readonly Info -->
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label text-muted small">Full Name</label>
+                                            <input type="text" class="form-control bg-light" value="<?php echo htmlspecialchars($student['first_name'] . ' ' . $student['last_name']); ?>" readonly>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label text-muted small">Email Address</label>
+                                            <input type="text" class="form-control bg-light" value="<?php echo htmlspecialchars($student['email']); ?>" readonly>
+                                        </div>
+
+                                        <!-- Rating -->
+                                        <div class="col-12 mb-3">
+                                            <label class="form-label">Rate your experience</label>
+                                            <div class="rating-stars">
+                                                <input type="radio" name="rating" id="star5" value="5" required> <label for="star5" title="5 stars">★</label>
+                                                <input type="radio" name="rating" id="star4" value="4"> <label for="star4" title="4 stars">★</label>
+                                                <input type="radio" name="rating" id="star3" value="3"> <label for="star3" title="3 stars">★</label>
+                                                <input type="radio" name="rating" id="star2" value="2"> <label for="star2" title="2 stars">★</label>
+                                                <input type="radio" name="rating" id="star1" value="1"> <label for="star1" title="1 star">★</label>
+                                            </div>
+                                        </div>
+
+                                        <!-- Message -->
+                                        <div class="col-12 mb-3">
+                                            <label class="form-label">Your Review</label>
+                                            <textarea name="review_message" class="form-control" rows="4" placeholder="Share your feedback..." required></textarea>
+                                        </div>
+
+                                        <div class="col-12 text-end">
+                                            <button type="submit" name="submit_review" class="btn btn-primary px-5">Submit Review</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <style>
+                    /* Simple Star Rating CSS */
+                    .rating-stars {
+                        display: flex;
+                        flex-direction: row-reverse;
+                        justify-content: flex-end;
+                    }
+                    .rating-stars input {
+                        display: none;
+                    }
+                    .rating-stars label {
+                        font-size: 2rem;
+                        color: #ddd;
+                        cursor: pointer;
+                        padding: 0 5px;
+                    }
+                    .rating-stars input:checked ~ label,
+                    .rating-stars input:hover ~ label,
+                    .rating-stars label:hover ~ input:checked ~ label {
+                         color: #ffc107;
+                    }
+                    /* Ensure hover fills up to the hovered star */
+                    .rating-stars label:hover,
+                    .rating-stars label:hover ~ label {
+                        color: #ffc107;
+                    }
+                </style>
+                <?php endif; ?>
         </div>
     </div>
     
