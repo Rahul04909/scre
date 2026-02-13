@@ -386,7 +386,7 @@ if ($sign_img) {
     $new_si_h = ($si_h / $si_w) * $new_si_w;
     
     $sign_dest_x = $auth_sig_x + (150 - $new_si_w)/2; // Center
-    $sign_dest_y = $sig_y - 40; // Slightly lower than stamp top to overlap
+    $sign_dest_y = $sig_y - 35; // Slightly lower than stamp top to overlap
     
     imagecopyresampled($image, $sign_img, $sign_dest_x, $sign_dest_y, 0, 0, $new_si_w, $new_si_h, $si_w, $si_h);
 }
