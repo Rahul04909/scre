@@ -15,7 +15,7 @@ $stmtFee = $pdo->prepare("
     SELECT 
         (c.course_fees + c.admission_fees) as total_fee,
         c.course_name,
-        s.first_name, s.last_name, s.enrollment_no, s.student_image
+        s.first_name, s.last_name, s.enrollment_no, s.student_image, s.dob
     FROM students s
     JOIN courses c ON s.course_id = c.id
     WHERE s.id = ?
@@ -35,6 +35,15 @@ $stmtTxn = $pdo->prepare("SELECT * FROM student_fees WHERE student_id = ? ORDER 
 $stmtTxn->execute([$student_id]);
 $recent_txns = $stmtTxn->fetchAll();
 
+// Check for Birthday
+$is_birthday = false;
+if (!empty($student['dob'])) {
+    $today_md = date('m-d');
+    $dob_md = date('m-d', strtotime($student['dob']));
+    if ($today_md === $dob_md) {
+        $is_birthday = true;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -128,7 +137,7 @@ $recent_txns = $stmtTxn->fetchAll();
                 <div class="row g-4">
                     
                     <!-- Recent Payments -->
-                    <div class="col-lg-8">
+                    <div class="<?php echo $is_birthday ? 'col-lg-8' : 'col-lg-12'; ?>">
                         <div class="content-card h-100">
                             <div class="card-header-clean">
                                 <h5 class="card-title-clean">
@@ -164,37 +173,26 @@ $recent_txns = $stmtTxn->fetchAll();
                         </div>
                     </div>
                     
-                    <!-- Notifications -->
+                    <!-- Birthday Wish Section (Only if Birthday) -->
+                    <?php if ($is_birthday): ?>
                     <div class="col-lg-4">
-                         <div class="content-card h-100">
-                            <div class="card-header-clean">
-                                <h5 class="card-title-clean">
-                                    <i class="far fa-bell text-muted"></i> Notifications
-                                </h5>
-                            </div>
-                            <div class="d-flex flex-column">
-                                <a href="#" class="notification-item">
-                                    <div class="notif-icon">
-                                        <i class="fas fa-info"></i>
-                                    </div>
-                                    <div>
-                                        <div class="notif-title">Welcome to PACE!</div>
-                                        <div class="notif-desc">Start your learning journey today. Check your course details.</div>
-                                    </div>
-                                </a>
-                                <!-- Example Notification 2 -->
-                                <a href="#" class="notification-item">
-                                    <div class="notif-icon" style="background-color: #DCFCE7; color: #16A34A;">
-                                        <i class="fas fa-check"></i>
-                                    </div>
-                                    <div>
-                                        <div class="notif-title">Admission Confirmed</div>
-                                        <div class="notif-desc">Your admission process is complete. Explore your dashboard.</div>
-                                    </div>
-                                </a>
+                         <div class="content-card h-100 border-0" style="background: linear-gradient(135deg, #FFD700 0%, #FDB931 100%); color: #fff;">
+                            <div class="card-body d-flex flex-column justify-content-center align-items-center text-center p-4">
+                                <div class="mb-3" style="font-size: 3rem;">
+                                    🎂
+                                </div>
+                                <h3 class="fw-bold mb-2 text-dark">Happy Birthday!</h3>
+                                <h5 class="mb-3 text-dark"><?php echo htmlspecialchars($student['first_name']); ?></h5>
+                                <p class="mb-0 text-dark opacity-75">
+                                    Wishing you a fantastic day filled with joy and a year ahead full of success and learning!
+                                </p>
+                                <div class="mt-4">
+                                    <i class="fas fa-gift fa-2x text-dark opacity-50"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <?php endif; ?>
                 </div>
 
             </div>
