@@ -128,6 +128,14 @@ $center_code = $_SESSION['center_code'] ?? 'CODE123';
             </div>
         </li>
 
+        <!-- Enquiries -->
+        <li class="nav-item">
+            <a href="../../center/enquiry/index.php" class="nav-link <?php echo isActive('enquiry/index.php') ? 'active' : ''; ?>">
+                <i class="fas fa-envelope-open-text"></i>
+                <span>Enquiries</span>
+            </a>
+        </li>
+
         <!-- Courses (Collapsible) -->
         <li class="nav-item">
             <a href="#menuCourses" data-bs-toggle="collapse" class="nav-link <?php echo isExpanded(['courses']) ? 'active' : ''; ?> d-flex justify-content-between align-items-center">
