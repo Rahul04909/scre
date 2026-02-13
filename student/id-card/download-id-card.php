@@ -327,14 +327,14 @@ addText($image, 10, 0, $center_sig_x, $sig_y + 20, $color_black, $font_path, "Ce
 $auth_sig_x = 440; // Adjusted Middle
 
 // Load Stamp
-$stamp_path = __DIR__ . '/../../assets/scre-stamp.png';
+$stamp_path = __DIR__ . '/../assets/scre-stamp.png';
 $stamp_img = null;
 if (file_exists($stamp_path)) {
     $stamp_img = imagecreatefrompng($stamp_path);
 }
 
 // Load Signature
-$sign_path = __DIR__ . '/../../assets/scre-sign.png';
+$sign_path = __DIR__ . '/../assets/scre-sign.png';
 $sign_img = null;
 if (file_exists($sign_path)) {
     $sign_img = imagecreatefrompng($sign_path);
