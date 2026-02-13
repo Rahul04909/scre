@@ -378,7 +378,7 @@ try {
                 $targetSignH = ($sih / $siw) * $targetSignW;
                 $signX = ($canvasW - $targetSignW) / 2;
                 // Center Vertically exactly (moved down slightly from -50 to -35)
-                $signY = ($canvasH - $targetSignH) / 2 - 27; 
+                $signY = ($canvasH - $targetSignH) / 2 - 18; 
                 
                 imagecopyresampled($finalImg, $sign, $signX, $signY, 0, 0, $targetSignW, $targetSignH, $siw, $sih);
                 
