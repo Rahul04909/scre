@@ -332,14 +332,25 @@ try {
         $signImg = '';
         $stampImg = '';
 
+        // Determine base directory (Root of project)
+        $baseDir = realpath(__DIR__ . '/../../');
+
         if ($adminAssets) {
-            // Approach: Relative Container with Absolute Children
-            if (!empty($adminAssets['stamp']) && file_exists('../../' . $adminAssets['stamp'])) {
-                $stampImg = '<img src="../../' . $adminAssets['stamp'] . '" style="width: 100px; position: absolute; bottom: 0; left: 30px; opacity: 0.8; z-index: 1;">';
+            // Check Stamp
+            if (!empty($adminAssets['stamp'])) {
+                $stampPath = $baseDir . '/' . $adminAssets['stamp'];
+                if (file_exists($stampPath)) {
+                    $stampImg = '<img src="' . $stampPath . '" style="width: 100px; position: absolute; bottom: 0; left: 30px; opacity: 0.8; z-index: 1;">';
+                }
             }
-            if (!empty($adminAssets['signature']) && file_exists('../../' . $adminAssets['signature'])) {
-                // Signature higher and on top
-                $signImg = '<img src="../../' . $adminAssets['signature'] . '" style="width: 140px; position: absolute; bottom: 15px; left: 10px; z-index: 10;">';
+            
+            // Check Signature
+            if (!empty($adminAssets['signature'])) {
+                $signaturePath = $baseDir . '/' . $adminAssets['signature'];
+                if (file_exists($signaturePath)) {
+                    // Signature higher and on top
+                    $signImg = '<img src="' . $signaturePath . '" style="width: 140px; position: absolute; bottom: 15px; left: 10px; z-index: 10;">';
+                }
             }
         }
 
