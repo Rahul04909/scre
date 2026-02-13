@@ -326,8 +326,8 @@ try {
         // 4.5 Fetch Admin Signature & Stamp (MOVED OUTSIDE HTML STRING CONCATENATION)
         // Use specific static assets as requested
         $adminAssets = [
-            'stamp' => '../assets/scre-stamp.png',
-            'signature' => '../assets/scre-sign.png'
+            'stamp' => '/../assets/scre-stamp.png',
+            'signature' => '/../assets/scre-sign.png'
         ];
 
         $signImg = '';
