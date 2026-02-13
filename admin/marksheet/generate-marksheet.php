@@ -349,9 +349,9 @@ try {
                 $sih = imagesy($sign);
                 
                 // 3. Create Container (Size of Stamp or slightly larger to fit signature if wider)
-                // Increased dimensions significantly + Added space for text
+                // Reduced height slightly to bring text closer, keeping width broad
                 $canvasW = max($sw, $siw, 500); // 500px Wide
-                $canvasH = max($sh, $sih, 450); // 450px High (Added 50px for text)
+                $canvasH = max($sh, $sih, 420); // 420px High (Reduced from 450)
                 
                 $finalImg = imagecreatetruecolor($canvasW, $canvasH);
                 
@@ -368,7 +368,7 @@ try {
                 $targetStampH = ($sh / $sw) * $targetStampW;
                 $stampX = ($canvasW - $targetStampW) / 2;
                 // Center Vertically exactly (slightly higher to leave room for text)
-                $stampY = ($canvasH - $targetStampH) / 2 - 20; 
+                $stampY = ($canvasH - $targetStampH) / 2 - 30; // Shifted up more (-30) to make room for text
                 
                 imagecopyresampled($finalImg, $stamp, $stampX, $stampY, 0, 0, $targetStampW, $targetStampH, $sw, $sh);
                 
@@ -378,15 +378,17 @@ try {
                 $targetSignH = ($sih / $siw) * $targetSignW;
                 $signX = ($canvasW - $targetSignW) / 2;
                 // Center Vertically exactly (slightly higher than stamp)
-                $signY = ($canvasH - $targetSignH) / 2 - 40; 
+                $signY = ($canvasH - $targetSignH) / 2 - 50; // Shifted up more to match stamp move
                 
                 imagecopyresampled($finalImg, $sign, $signX, $signY, 0, 0, $targetSignW, $targetSignH, $siw, $sih);
                 
                 // 6. Add Text "Authorize Signature"
                 $black = imagecolorallocate($finalImg, 0, 0, 0);
-                $fontPath = __DIR__ . '/../../vendor/mpdf/mpdf/ttfonts/FreeSerif.ttf';
+                
+                // Use Bold Font if available
+                $fontPath = __DIR__ . '/../../vendor/mpdf/mpdf/ttfonts/FreeSerifBold.ttf';
                 if (!file_exists($fontPath)) {
-                    $fontPath = __DIR__ . '/../../vendor/mpdf/mpdf/ttfonts/FreeSans.ttf';
+                     $fontPath = __DIR__ . '/../../vendor/mpdf/mpdf/ttfonts/FreeSerif.ttf';
                 }
                 
                 $text = "Authorize Signature";
@@ -395,12 +397,16 @@ try {
                     $bbox = imagettfbbox(18, 0, $fontPath, $text); // Font size 18
                     $textW = $bbox[2] - $bbox[0];
                     $textX = ($canvasW - $textW) / 2;
-                    $textY = $canvasH - 30; // 30px from bottom
+                    // Position closer to stamp bottom
+                    // Stamp Bottom = $stampY + $targetStampH (~ 200 + 80 = 280)
+                    // Canvas H is 420.
+                    // Let's place text at Bottom - 20px
+                    $textY = $canvasH - 25; 
                     imagettftext($finalImg, 18, 0, $textX, $textY, $black, $fontPath, $text);
                 } else {
                     // Fallback to internal font
                     $textX = ($canvasW - (strlen($text) * 10)) / 2; // Approx width
-                    imagestring($finalImg, 5, $textX, $canvasH - 40, $text, $black);
+                    imagestring($finalImg, 5, $textX, $canvasH - 35, $text, $black);
                 }
 
                 // 7. Output to Base64
