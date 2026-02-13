@@ -321,10 +321,28 @@ try {
                     <td>'.$overall_status.'</td>
                 </tr>
             </tbody>
-        </table>
+        </table>';
         
-        <!-- Footer: Summary & Signatures -->
-        <div style="margin-top: 10px;">
+        // 4.5 Fetch Admin Signature & Stamp (MOVED OUTSIDE HTML STRING CONCATENATION)
+        $admin_id = $_SESSION['admin_id'] ?? 1; 
+        $stmtAdmin = $pdo->prepare("SELECT signature, stamp FROM admins WHERE id = ?");
+        $stmtAdmin->execute([$admin_id]);
+        $adminAssets = $stmtAdmin->fetch(PDO::FETCH_ASSOC);
+
+        $signImg = '';
+        $stampImg = '';
+
+        if ($adminAssets) {
+            if (!empty($adminAssets['signature']) && file_exists('../../' . $adminAssets['signature'])) {
+                $signImg = '<img src="../../' . $adminAssets['signature'] . '" style="width: 100px; position: absolute; bottom: 20px; right: 20px; z-index: 2;">';
+            }
+            if (!empty($adminAssets['stamp']) && file_exists('../../' . $adminAssets['stamp'])) {
+                $stampImg = '<img src="../../' . $adminAssets['stamp'] . '" style="width: 90px; position: absolute; bottom: 10px; right: 40px; z-index: 1; opacity: 0.8;">';
+            }
+        }
+
+        // Footer: Summary & Signatures
+        $html .= '<div style="margin-top: 10px;">
             <table width="100%">
                 <tr>
                     <td width="40%" valign="top">
@@ -341,10 +359,12 @@ try {
                     <td width="20%" align="center" valign="middle">
                          '.$qrCodeHtml.'
                     </td>
-                    <td width="40%" valign="bottom" align="right">
-                         <br><br>
-                         <div class="signature-box" style="white-space: nowrap;">
-                            <br>
+                    <td width="40%" valign="bottom" align="right" style="position: relative; height: 150px;">
+                         <div style="position: relative; width: 200px; float: right; margin-right: 40px; height: 100px;">
+                            '.$stampImg.'
+                            '.$signImg.'
+                         </div>
+                         <div class="signature-box" style="white-space: nowrap; clear: both; margin-top: 10px;">
                             <b>Authorize Signature</b>
                          </div>
                     </td>
