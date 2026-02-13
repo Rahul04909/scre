@@ -7,9 +7,10 @@ try {
         student_id INT NOT NULL,
         rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
         review_message TEXT,
+        review_message TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
-    )";
+        INDEX (student_id)
+    ) ENGINE=MyISAM";
 
     $pdo->exec($sql);
     echo "Table 'student_reviews' created successfully.";
