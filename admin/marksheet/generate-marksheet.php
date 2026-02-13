@@ -346,7 +346,9 @@ try {
             $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
             
             // ID Card Style: Width ~85px
-            $stampImg = '<img src="' . $base64 . '" style="width: 85px; position: absolute; bottom: 5px; left: 40px; opacity: 1; z-index: 1;">';
+            // Centered (160-85)/2 = 37.5 -> 38px
+            // Positioned lower so it appears "below" or behind the signature text
+            $stampImg = '<img src="' . $base64 . '" style="width: 85px; position: absolute; bottom: 20px; left: 38px; opacity: 1; z-index: 1;">';
         }
         
         // Check Signature
@@ -357,8 +359,8 @@ try {
             $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
 
             // ID Card Style: Width ~160px, Overlapping Stamp
-            // Positioned slightly higher (bottom: 20px) to overlap stamp's top/middle
-            $signImg = '<img src="' . $base64 . '" style="width: 160px; position: absolute; bottom: 20px; left: 0px; z-index: 10;">';
+            // Positioned slightly higher (bottom: 25px) to sit on top of the stamp visually
+            $signImg = '<img src="' . $base64 . '" style="width: 160px; position: absolute; bottom: 35px; left: 0px; z-index: 10;">';
         }
 
         // Footer: Summary & Signatures
