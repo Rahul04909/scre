@@ -130,8 +130,8 @@ function addText($image, $size, $angle, $x, $y, $color, $font, $text) {
 // New Height: approx 718px (derived from 5732x4069)
 
 // Left Side Details
-$base_x = 80; // Moved right from 55
-$base_y = 280; // Moved up from 320
+$base_x = 80; 
+$base_y = 260; // Moved up from 280
 $line_height = 35;
 $font_size_label = 16; 
 $font_size_value = 16;
@@ -173,10 +173,6 @@ drawField($image, $font_path, $color_black, $base_x, $base_y, "Session", $studen
 // Father's Name
 $base_y += $line_height;
 drawField($image, $font_path, $color_black, $base_x, $base_y, "Father's Name", $student['father_name'] ?? '', $label_width);
-
-// Mother's Name (New)
-$base_y += $line_height;
-drawField($image, $font_path, $color_black, $base_x, $base_y, "Mother's Name", $student['mother_name'] ?? '', $label_width);
 
 // Address / DOB / Mobile
 $base_y += $line_height;
