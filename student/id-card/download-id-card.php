@@ -107,13 +107,33 @@ $image = imagecreatetruecolor($target_w, $target_h);
 // Preserve transparency if needed
 imagealphablending($image, false);
 imagesavealpha($image, true);
-imagecopyresampled($image, $image_source, 0, 0, 0, 0, $target_w, $target_h, $orig_w, $orig_h);
-imagedestroy($image_source); // Free memory
+    imagecopyresampled($image, $image_source, 0, 0, 0, 0, $target_w, $target_h, $orig_w, $orig_h);
+    imagedestroy($image_source); // Free memory
+    
+    // Enable blending for subsequent overlays (text, images) so transparency works
+    imagealphablending($image, true);
 
-// Colors
-$color_black = imagecolorallocate($image, 0, 0, 0);
-$color_dark_blue = imagecolorallocate($image, 13, 71, 161); // #0d47a1
-$color_white = imagecolorallocate($image, 255, 255, 255);
+    // Colors
+    $color_black = imagecolorallocate($image, 0, 0, 0);
+    $color_dark_blue = imagecolorallocate($image, 13, 71, 161); // #0d47a1
+    $color_white = imagecolorallocate($image, 255, 255, 255);
+
+    // ... (rest of code) ...
+
+    // 1. Draw Stamp
+    if ($stamp_img) {
+        $s_w = imagesx($stamp_img);
+        $s_h = imagesy($stamp_img);
+        $new_s_w = 70; // Reduced stamp width (was 90)
+        $new_s_h = ($s_h / $s_w) * $new_s_w;
+        
+        // Center stamp relative to text area roughly
+        // Text is at $auth_sig_x. Let's center stamp there.
+        $stamp_dest_x = $auth_sig_x + (150 - $new_s_w)/2; // Assuming ~150px width area
+        $stamp_dest_y = $sig_y - 45; // Adjusted slightly
+        
+        imagecopyresampled($image, $stamp_img, $stamp_dest_x, $stamp_dest_y, 0, 0, $new_s_w, $new_s_h, $s_w, $s_h);
+    }
 
 // 5. Helper function for text
 function addText($image, $size, $angle, $x, $y, $color, $font, $text) {
@@ -344,13 +364,13 @@ if (file_exists($sign_path)) {
 if ($stamp_img) {
     $s_w = imagesx($stamp_img);
     $s_h = imagesy($stamp_img);
-    $new_s_w = 90; // Stamp width
+    $new_s_w = 70; // Reduced stamp width (was 90)
     $new_s_h = ($s_h / $s_w) * $new_s_w;
     
     // Center stamp relative to text area roughly
     // Text is at $auth_sig_x. Let's center stamp there.
     $stamp_dest_x = $auth_sig_x + (150 - $new_s_w)/2; // Assuming ~150px width area
-    $stamp_dest_y = $sig_y - 50; 
+    $stamp_dest_y = $sig_y - 45; 
     
     // Set opacity for stamp if possible (GD doesn't support easy opacity on imagecopy without merge, 
     // but PNG alpha channel should handle it if image has it. 
