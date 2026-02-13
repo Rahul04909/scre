@@ -3,11 +3,6 @@ session_start();
 require_once '../../database/config.php';
 require_once '../../vendor/autoload.php';
 
-// Enable Errors
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
@@ -116,21 +111,36 @@ $center_name = $student['center_name'] . ' (' . $student['center_code'] . ')';
 // Duration
 $duration = $student['duration_value'] . ' ' . $student['duration_type'];
 
-// Session
-$start_date = DateTime::createFromFormat('!m', $student['start_month']);
-$end_date = DateTime::createFromFormat('!m', $student['end_month']);
-$session_start = $start_date->format('F') . ' ' . $student['start_year'];
-$session_end = $end_date->format('F') . ' ' . $student['end_year'];
+// Session (Simplified Logic)
+$session_start = '';
+$session_end = '';
+if (!empty($student['start_month']) && !empty($student['end_month'])) {
+    
+    // Check if numeric, enhance if possible, else use raw
+    $s_month = $student['start_month'];
+    if (is_numeric($s_month)) {
+         $dt = DateTime::createFromFormat('!m', $s_month);
+         if ($dt) $s_month = $dt->format('F');
+    }
+    
+    $e_month = $student['end_month'];
+    if (is_numeric($e_month)) {
+         $dt = DateTime::createFromFormat('!m', $e_month);
+         if ($dt) $e_month = $dt->format('F');
+    }
+
+    $session_start = $s_month . ' ' . $student['start_year'];
+    $session_end = $e_month . ' ' . $student['end_year'];
+}
 
 // DOB
 $dob = date('d-m-Y', strtotime($student['dob']));
 
-// Exam Month (Assume end of session for now)
-$exam_month = $session_end;
+// Exam Month (Assume end of session for now or Today)
+$exam_month = $session_end ?: date('F Y');
 
 // Issue Date
 $issue_date = date('d-m-Y');
-
 
 // 6. QR Code (Using QuickChart API, same as student module)
 $qrData = "Name: $name\nEnrollment: $enrollment_no\nCourse: $course_name\nGrade: $final_grade\nSerial: $certificate_serial\nVerify at: www.screduc.com";
