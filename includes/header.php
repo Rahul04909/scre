@@ -710,7 +710,7 @@ $baseUrl = $protocol . $domain . ($basePath === '/' ? '' : $basePath);
             </style>
 
             <button id="enquiry-btn" class="btn btn-primary">ENQUIRY NOW</button>
-            <button class="btn btn-secondary">VERIFICATION LETTER</button>
+            <button class="btn btn-secondary"><a href="<?php echo $baseUrl; ?>/verification-letter.php">VERIFICATION LETTER</a></button>
         </div>
 
 
