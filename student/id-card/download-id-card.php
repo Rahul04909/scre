@@ -382,7 +382,7 @@ if ($stamp_img) {
 if ($sign_img) {
     $si_w = imagesx($sign_img);
     $si_h = imagesy($sign_img);
-    $new_si_w = 140; // Signature width increased to 140 (was 130)
+    $new_si_w = 160; // Signature width increased to 160 (was 140)
     $new_si_h = ($si_h / $si_w) * $new_si_w;
     
     $sign_dest_x = $auth_sig_x + (150 - $new_si_w)/2; // Center
