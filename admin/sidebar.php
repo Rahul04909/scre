@@ -46,6 +46,7 @@
                 <a href="<?php echo $sidebarPrefix; ?>admin/centers/add-center.php" class="list-group-item list-group-item-action bg-transparent">Add Center</a>
                 <a href="<?php echo $sidebarPrefix; ?>admin/centers/manage-center-wallet.php" class="list-group-item list-group-item-action bg-transparent">Wallet Management</a>
                 <a href="<?php echo $sidebarPrefix; ?>admin/centers/manage-center-franchise-fees.php" class="list-group-item list-group-item-action bg-transparent">Franchise Fees</a>
+                <a href="<?php echo $sidebarPrefix; ?>admin/center-requests/index.php" class="list-group-item list-group-item-action bg-transparent">Center Requests</a>
             </div>
         </div>
 
