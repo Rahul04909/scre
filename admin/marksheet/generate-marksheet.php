@@ -350,8 +350,8 @@ try {
                 
                 // 3. Create Container (Size of Stamp or slightly larger to fit signature if wider)
                 // Increased dimensions significantly as per user request
-                $canvasW = max($sw, $siw, 400); // 400px Wide
-                $canvasH = max($sh, $sih, 300); // 300px High
+                $canvasW = max($sw, $siw, 500); // 500px Wide
+                $canvasH = max($sh, $sih, 400); // 400px High
                 
                 $finalImg = imagecreatetruecolor($canvasW, $canvasH);
                 
@@ -362,24 +362,25 @@ try {
                 imagefill($finalImg, 0, 0, $transparent);
                 imagealphablending($finalImg, true);
                 
-                // 4. Position Stamp (Center Bottom)
-                // Resize stamp target: ~160px width for max visibility
-                $targetStampW = 160;
+                // 4. Position Stamp (Center)
+                // Resize stamp target: ~200px width for max visibility
+                $targetStampW = 200;
                 $targetStampH = ($sh / $sw) * $targetStampW;
                 $stampX = ($canvasW - $targetStampW) / 2;
-                // Positioned lower so it appears "below" or behind the signature text 
-                // Using exact centering + vertical offset
-                $stampY = ($canvasH - $targetStampH) / 2 + 40; 
+                // Center Vertically exactly
+                $stampY = ($canvasH - $targetStampH) / 2; 
                 
                 imagecopyresampled($finalImg, $stamp, $stampX, $stampY, 0, 0, $targetStampW, $targetStampH, $sw, $sh);
                 
-                // 5. Position Signature (Overlapping, Centered, Above Stamp visually)
-                // Resize signature: ~240px width
-                $targetSignW = 240;
+                // 5. Position Signature (Overlapping, Centered exactly on Stamp)
+                // Resize signature: ~280px width
+                $targetSignW = 280;
                 $targetSignH = ($sih / $siw) * $targetSignW;
                 $signX = ($canvasW - $targetSignW) / 2;
-                // Shift up to overlap top of stamp significantly
-                $signY = $stampY - 80; 
+                // Center Vertically exactly (might adjust slightly up if needed, but "center me" implies pure center)
+                // Let's shift up slightly just to make it look natural over text, but keep it mostly centered.
+                // -20px shift to lift sign slightly above stamp center line
+                $signY = ($canvasH - $targetSignH) / 2 - 20; 
                 
                 imagecopyresampled($finalImg, $sign, $signX, $signY, 0, 0, $targetSignW, $targetSignH, $siw, $sih);
                 
@@ -389,8 +390,8 @@ try {
                 $imgData = ob_get_clean();
                 $base64 = 'data:image/png;base64,' . base64_encode($imgData);
                 
-                // HTML Output Width: 240px
-                $mergedImageHtml = '<img src="' . $base64 . '" style="width: 240px;">';
+                // HTML Output Width: 260px
+                $mergedImageHtml = '<img src="' . $base64 . '" style="width: 260px;">';
                 
                 // Cleanup
                 imagedestroy($stamp);
@@ -402,7 +403,8 @@ try {
              $type = pathinfo($stampPath, PATHINFO_EXTENSION);
              $data = file_get_contents($stampPath);
              $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-             $mergedImageHtml = '<img src="' . $base64 . '" style="width: 160px;">';
+             // Larger fallback
+             $mergedImageHtml = '<img src="' . $base64 . '" style="width: 200px;">';
         }
 
 
@@ -426,7 +428,7 @@ try {
                     </td>
                     <td width="40%" valign="bottom" align="right">
                          <!-- Single Merged Image Container -->
-                         <div style="width: 260px; text-align: center; margin-right: 10px; display: inline-block;">
+                         <div style="width: 300px; text-align: center; margin-right: 10px; display: inline-block;">
                             '.$mergedImageHtml.'
                          </div>
                          <div class="signature-box" style="white-space: nowrap; clear: both; margin-top: 5px; float: right; margin-right: 20px;">
