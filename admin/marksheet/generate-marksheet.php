@@ -323,24 +323,23 @@ try {
             </tbody>
         </table>';
         
-        // 4.5 Fetch Admin Signature & Stamp (MOVED OUTSIDE HTML STRING CONCATENATION)
-        // Use specific static assets as requested
-        $adminAssets = [
-            'stamp' => '/../assets/scre-stamp.png',
-            'signature' => '/../assets/scre-sign.png'
-        ];
+        // 4.5 Fetch Admin Signature & Stamp
+        $admin_id = $_SESSION['admin_id'] ?? 1; 
+        $stmtAdmin = $pdo->prepare("SELECT signature, stamp FROM admins WHERE id = ?");
+        $stmtAdmin->execute([$admin_id]);
+        $adminAssets = $stmtAdmin->fetch(PDO::FETCH_ASSOC);
 
         $signImg = '';
         $stampImg = '';
 
         if ($adminAssets) {
             // Approach: Relative Container with Absolute Children
-            if (file_exists('../' . $adminAssets['stamp'])) {
-                $stampImg = '<img src="../' . $adminAssets['stamp'] . '" style="width: 100px; position: absolute; bottom: 0; left: 30px; opacity: 0.8; z-index: 1;">';
+            if (!empty($adminAssets['stamp']) && file_exists('../../' . $adminAssets['stamp'])) {
+                $stampImg = '<img src="../../' . $adminAssets['stamp'] . '" style="width: 100px; position: absolute; bottom: 0; left: 30px; opacity: 0.8; z-index: 1;">';
             }
-            if (file_exists('../' . $adminAssets['signature'])) {
+            if (!empty($adminAssets['signature']) && file_exists('../../' . $adminAssets['signature'])) {
                 // Signature higher and on top
-                $signImg = '<img src="../' . $adminAssets['signature'] . '" style="width: 140px; position: absolute; bottom: 15px; left: 10px; z-index: 10;">';
+                $signImg = '<img src="../../' . $adminAssets['signature'] . '" style="width: 140px; position: absolute; bottom: 15px; left: 10px; z-index: 10;">';
             }
         }
 
