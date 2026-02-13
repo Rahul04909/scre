@@ -10,13 +10,16 @@
 
     <div class="sidebar-profile">
         <div class="profile-img-container">
-            <img src="https://i.pravatar.cc/150?img=11" alt="Admin" class="profile-img">
+            <?php 
+                $profileImg = isset($_SESSION['admin_image']) && !empty($_SESSION['admin_image']) ? $sidebarPrefix . $_SESSION['admin_image'] : "https://ui-avatars.com/api/?name=" . urlencode($_SESSION['admin_name'] ?? 'Admin');
+            ?>
+            <img src="<?php echo $profileImg; ?>" alt="Admin" class="profile-img">
             <div class="status-indicator"></div>
         </div>
         <div class="profile-info">
-            <h6>Saurabh Goel</h6>
-            <span class="role-text">super_admin</span>
-            <a href="#" class="btn-edit-profile"><i class="fas fa-user-edit"></i> Edit Profile</a>
+            <h6><?php echo htmlspecialchars($_SESSION['admin_name'] ?? 'Admin'); ?></h6>
+            <span class="role-text"><?php echo htmlspecialchars($_SESSION['admin_role'] ?? 'super_admin'); ?></span>
+            <a href="<?php echo $sidebarPrefix; ?>admin/profile/index.php" class="btn-edit-profile"><i class="fas fa-user-edit"></i> Edit Profile</a>
         </div>
     </div>
 
