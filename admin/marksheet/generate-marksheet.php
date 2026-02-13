@@ -335,7 +335,7 @@ try {
         if ($adminAssets) {
             // Approach: Relative Container with Absolute Children
             if (!empty($adminAssets['stamp']) && file_exists('../../' . $adminAssets['stamp'])) {
-                $stampImg = '<img src="../../' . $adminAssets['stamp'] . '" style="width: 100px; position: absolute; bottom: 0; left: 30px; opacity: 0.8; z-index: 1;">';
+                $stampImg = '<img src="../../' . $adminAssets['stamp'] . '" style="width: 100px; position: absolute; bottom: 0; left: 80px; opacity: 0.8; z-index: 1;">';
             }
             if (!empty($adminAssets['signature']) && file_exists('../../' . $adminAssets['signature'])) {
                 // Signature higher and on top
