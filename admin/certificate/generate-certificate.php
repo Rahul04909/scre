@@ -365,7 +365,6 @@ $html = '
         
         <div class="field merged-sign">
             ' . $mergedImageHtml . '
-            <div class="auth-sign-text">Authorized Signatory</div>
         </div>
     </div>
 </body>
