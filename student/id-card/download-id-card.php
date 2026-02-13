@@ -325,17 +325,50 @@ addText($image, 10, 0, $center_sig_x, $sig_y + 20, $color_black, $font_path, "Ce
 
 // 2. Authorize Signatory (Middle)
 $auth_sig_x = 440; // Adjusted Middle
-// If a static file exists, load it:
-$static_auth_path = __DIR__ . '/../../assets/images/auth_sign.png'; 
-if (file_exists($static_auth_path)) {
-    $a_sig_img = imagecreatefrompng($static_auth_path);
-    if ($a_sig_img) {
-        $orig_w = imagesx($a_sig_img);
-        $orig_h = imagesy($a_sig_img);
-        $new_w = ($orig_w / $orig_h) * $sig_h;
-        $img_x = $auth_sig_x + (120 - $new_w)/2; // Center relative to text
-        imagecopyresampled($image, $a_sig_img, $img_x, $sig_y - 40, 0, 0, $new_w, $sig_h, $orig_w, $orig_h);
-    }
+
+// Load Stamp
+$stamp_path = __DIR__ . '/../../assets/scre-stamp.png';
+$stamp_img = null;
+if (file_exists($stamp_path)) {
+    $stamp_img = imagecreatefrompng($stamp_path);
+}
+
+// Load Signature
+$sign_path = __DIR__ . '/../../assets/scre-sign.png';
+$sign_img = null;
+if (file_exists($sign_path)) {
+    $sign_img = imagecreatefrompng($sign_path);
+}
+
+// 1. Draw Stamp
+if ($stamp_img) {
+    $s_w = imagesx($stamp_img);
+    $s_h = imagesy($stamp_img);
+    $new_s_w = 90; // Stamp width
+    $new_s_h = ($s_h / $s_w) * $new_s_w;
+    
+    // Center stamp relative to text area roughly
+    // Text is at $auth_sig_x. Let's center stamp there.
+    $stamp_dest_x = $auth_sig_x + (150 - $new_s_w)/2; // Assuming ~150px width area
+    $stamp_dest_y = $sig_y - 50; 
+    
+    // Set opacity for stamp if possible (GD doesn't support easy opacity on imagecopy without merge, 
+    // but PNG alpha channel should handle it if image has it. 
+    // If not, we just copy).
+    imagecopyresampled($image, $stamp_img, $stamp_dest_x, $stamp_dest_y, 0, 0, $new_s_w, $new_s_h, $s_w, $s_h);
+}
+
+// 2. Draw Signature (Overlapping)
+if ($sign_img) {
+    $si_w = imagesx($sign_img);
+    $si_h = imagesy($sign_img);
+    $new_si_w = 110; // Signature width
+    $new_si_h = ($si_h / $si_w) * $new_si_w;
+    
+    $sign_dest_x = $auth_sig_x + (150 - $new_si_w)/2; // Center
+    $sign_dest_y = $sig_y - 40; // Slightly lower than stamp top to overlap
+    
+    imagecopyresampled($image, $sign_img, $sign_dest_x, $sign_dest_y, 0, 0, $new_si_w, $new_si_h, $si_w, $si_h);
 }
 addText($image, 10, 0, $auth_sig_x, $sig_y + 20, $color_black, $font_path, "Authorized Signatory");
 
