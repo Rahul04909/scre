@@ -42,6 +42,9 @@
         <a href="../../student/certificate/index.php" class="list-group-item list-group-item-action <?php echo (strpos($current_page, 'certificate') !== false) ? 'active' : ''; ?>">
             <i class="fas fa-certificate me-2"></i>Certificate
         </a>
+        <a href="../../student/attendance.php" class="list-group-item list-group-item-action <?php echo ($current_page == 'attendance.php') ? 'active' : ''; ?>">
+            <i class="fas fa-calendar-alt me-2"></i>Attendance
+        </a>
         
         <!-- New Menu Items -->
         <a href="https://www.1024terabox.com/" target="_blank" class="list-group-item list-group-item-action">
