@@ -349,9 +349,9 @@ try {
                 $sih = imagesy($sign);
                 
                 // 3. Create Container (Size of Stamp or slightly larger to fit signature if wider)
-                // We'll use a fixed canvas size to ensure it fits well in the PDF
-                $canvasW = max($sw, $siw, 200); // Ensure minimal width
-                $canvasH = max($sh, $sih, 150); 
+                // Increased dimensions for larger output
+                $canvasW = max($sw, $siw, 300); // Increased width
+                $canvasH = max($sh, $sih, 220); // Increased height
                 
                 $finalImg = imagecreatetruecolor($canvasW, $canvasH);
                 
@@ -363,20 +363,20 @@ try {
                 imagealphablending($finalImg, true);
                 
                 // 4. Position Stamp (Center Bottom-ish)
-                // Resize stamp to visually match target: ~100px width
-                $targetStampW = 100;
+                // Resize stamp target: ~130px width (Increased from 100)
+                $targetStampW = 130;
                 $targetStampH = ($sh / $sw) * $targetStampW;
                 $stampX = ($canvasW - $targetStampW) / 2;
-                $stampY = ($canvasH - $targetStampH) / 2; // Center vertically for now
+                $stampY = ($canvasH - $targetStampH) / 2 + 20; // Shift down slightly
                 
                 imagecopyresampled($finalImg, $stamp, $stampX, $stampY, 0, 0, $targetStampW, $targetStampH, $sw, $sh);
                 
                 // 5. Position Signature (Overlapping, Centered)
-                // Resize signature: ~140px width
-                $targetSignW = 140;
+                // Resize signature: ~180px width (Increased from 140)
+                $targetSignW = 180;
                 $targetSignH = ($sih / $siw) * $targetSignW;
                 $signX = ($canvasW - $targetSignW) / 2;
-                $signY = $stampY + 20; // Shift down slightly to overlap mid-to-bottom of stamp
+                $signY = $stampY - 30; // Shift up to overlap top of stamp
                 
                 imagecopyresampled($finalImg, $sign, $signX, $signY, 0, 0, $targetSignW, $targetSignH, $siw, $sih);
                 
@@ -386,7 +386,7 @@ try {
                 $imgData = ob_get_clean();
                 $base64 = 'data:image/png;base64,' . base64_encode($imgData);
                 
-                $mergedImageHtml = '<img src="' . $base64 . '" style="width: 140px;">';
+                $mergedImageHtml = '<img src="' . $base64 . '" style="width: 180px;">';
                 
                 // Cleanup
                 imagedestroy($stamp);
@@ -398,7 +398,7 @@ try {
              $type = pathinfo($stampPath, PATHINFO_EXTENSION);
              $data = file_get_contents($stampPath);
              $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-             $mergedImageHtml = '<img src="' . $base64 . '" style="width: 100px;">';
+             $mergedImageHtml = '<img src="' . $base64 . '" style="width: 130px;">';
         }
 
 
@@ -422,7 +422,7 @@ try {
                     </td>
                     <td width="40%" valign="bottom" align="right">
                          <!-- Single Merged Image Container -->
-                         <div style="width: 160px; text-align: center; margin-right: 20px; display: inline-block;">
+                         <div style="width: 200px; text-align: center; margin-right: 20px; display: inline-block;">
                             '.$mergedImageHtml.'
                          </div>
                          <div class="signature-box" style="white-space: nowrap; clear: both; margin-top: 5px; float: right; margin-right: 20px;">
