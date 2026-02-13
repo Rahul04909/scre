@@ -74,6 +74,11 @@
                 <a href="<?php echo $sidebarPrefix; ?>admin/courses/add-subject.php" class="list-group-item list-group-item-action bg-transparent">Add Subject</a>
             </div>
         </div>
+
+        <!-- Study Material -->
+        <a href="<?php echo $sidebarPrefix; ?>admin/study-material/index.php" class="list-group-item list-group-item-action bg-transparent">
+            <i class="fas fa-file-pdf menu-icon"></i> Study Material
+        </a>
         <!-- sessions -->
         <a href="#sessionsSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action bg-transparent">
             <i class="fas fa-calendar-alt menu-icon"></i>Sessions<i class="fas fa-chevron-right menu-arrow ms-auto"></i>
