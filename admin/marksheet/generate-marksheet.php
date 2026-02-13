@@ -379,7 +379,7 @@ try {
                 $targetSignH = ($sih / $siw) * $targetSignW;
                 $signX = ($canvasW - $targetSignW) / 2;
                 // Shift up to overlap top of stamp significantly
-                $signY = $stampY - 60; 
+                $signY = $stampY - 80; 
                 
                 imagecopyresampled($finalImg, $sign, $signX, $signY, 0, 0, $targetSignW, $targetSignH, $siw, $sih);
                 
