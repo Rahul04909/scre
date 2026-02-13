@@ -777,8 +777,8 @@ $baseUrl = $protocol . $domain . ($basePath === '/' ? '' : $basePath);
                 <li class="menu-item"><a href="../../index.php" class="menu-link"><i class="fas fa-home"></i>Home</a></li>
                 <li class="menu-item"><a href="<?php echo $baseUrl; ?>/courses.php" class="menu-link"><i class="fas fa-book"></i>Courses</a></li>
                 <li class="menu-item"><a href="../../apply.php" class="menu-link"><i class="fas fa-user-graduate"></i>Admission</a></li>
-                <li class="menu-item"><a href="../../register.php" class="menu-link"><i class="fas fa-edit"></i>Registration</a></li>
-                <li class="menu-item"><a href="../../center-register.php" class="menu-link"><i class="fas fa-university"></i>Center Registration</a></li>
+                <li class="menu-item"><a href="../../blog.php" class="menu-link"><i class="fas fa-edit"></i>Blogs</a></li>
+                <li class="menu-item"><a href="../../center-registration.php" class="menu-link"><i class="fas fa-university"></i>Center Registration</a></li>
                 <li class="menu-item"><a href="../../gallery.php" class="menu-link"><i class="fas fa-images"></i>Gallery</a></li>
                 <li class="menu-item"><a href="../../centers.php" class="menu-link"><i class="fas fa-handshake"></i>Partners</a></li>
                 <li clas="menu-item"><a href="../../contact.php" class="menu-link"><i class="fas fa-user"></i>Login</a></li>
