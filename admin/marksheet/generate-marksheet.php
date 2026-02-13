@@ -324,44 +324,41 @@ try {
         </table>';
         
         // 4.5 Fetch Admin Signature & Stamp
-        $admin_id = $_SESSION['admin_id'] ?? 1; 
-        $stmtAdmin = $pdo->prepare("SELECT signature, stamp FROM admins WHERE id = ?");
-        $stmtAdmin->execute([$admin_id]);
-        $adminAssets = $stmtAdmin->fetch(PDO::FETCH_ASSOC);
-
+        // 4.5 Fetch Admin Signature & Stamp
+        // Matched logic from student/id-card/download-id-card.php to ensure consistency
+        // Uses static assets 'scre-sign.png' and 'scre-stamp.png'
+        
         $signImg = '';
         $stampImg = '';
 
         // Determine base directory (Root of project)
         $baseDir = realpath(__DIR__ . '/../../');
+        
+        // Static Paths (Admin Assets)
+        $stampPath = $baseDir . '/admin/assets/scre-stamp.png';
+        $signaturePath = $baseDir . '/admin/assets/scre-sign.png';
 
-        if ($adminAssets) {
-            // Check Stamp
-            if (!empty($adminAssets['stamp'])) {
-                $stampPath = $baseDir . '/' . $adminAssets['stamp'];
-                if (file_exists($stampPath)) {
-                    // Convert to Base64 to bypass mPDF path issues
-                    $type = pathinfo($stampPath, PATHINFO_EXTENSION);
-                    $data = file_get_contents($stampPath);
-                    $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-                    
-                    $stampImg = '<img src="' . $base64 . '" style="width: 100px; position: absolute; bottom: 0; left: 30px; opacity: 0.8; z-index: 1;">';
-                }
-            }
+        // Check Stamp
+        if (file_exists($stampPath)) {
+            // Convert to Base64
+            $type = pathinfo($stampPath, PATHINFO_EXTENSION);
+            $data = file_get_contents($stampPath);
+            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
             
-            // Check Signature
-            if (!empty($adminAssets['signature'])) {
-                $signaturePath = $baseDir . '/' . $adminAssets['signature'];
-                if (file_exists($signaturePath)) {
-                    // Convert to Base64
-                    $type = pathinfo($signaturePath, PATHINFO_EXTENSION);
-                    $data = file_get_contents($signaturePath);
-                    $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            // ID Card Style: Width ~85px
+            $stampImg = '<img src="' . $base64 . '" style="width: 85px; position: absolute; bottom: 5px; left: 40px; opacity: 1; z-index: 1;">';
+        }
+        
+        // Check Signature
+        if (file_exists($signaturePath)) {
+            // Convert to Base64
+            $type = pathinfo($signaturePath, PATHINFO_EXTENSION);
+            $data = file_get_contents($signaturePath);
+            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
 
-                    // Signature higher and on top
-                    $signImg = '<img src="' . $base64 . '" style="width: 140px; position: absolute; bottom: 15px; left: 10px; z-index: 10;">';
-                }
-            }
+            // ID Card Style: Width ~160px, Overlapping Stamp
+            // Positioned slightly higher (bottom: 20px) to overlap stamp's top/middle
+            $signImg = '<img src="' . $base64 . '" style="width: 160px; position: absolute; bottom: 20px; left: 0px; z-index: 10;">';
         }
 
         // Footer: Summary & Signatures
