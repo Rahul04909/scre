@@ -44,6 +44,9 @@ if (!empty($student['dob'])) {
         $is_birthday = true;
     }
 }
+// For testing purposes, uncomment to force show:
+$is_birthday = true; 
+
 ?>
 
 <!DOCTYPE html>
