@@ -44,18 +44,16 @@
         </a>
         <a href="../../student/attendance.php" class="list-group-item list-group-item-action <?php echo ($current_page == 'attendance.php') ? 'active' : ''; ?>">
             <i class="fas fa-calendar-alt me-2"></i>Attendance
-        </a>
         
         <!-- New Menu Items -->
         <a href="https://www.1024terabox.com/" target="_blank" class="list-group-item list-group-item-action">
             <i class="fas fa-cloud-download-alt me-2"></i>Terabox
         </a>
-        <a href="../../typing-master/index.php" class="list-group-item list-group-item-action">
-            <i class="fas fa-keyboard me-2"></i>Typing Master
-        </a>
-        <a href="../../online-exam/index.php" class="list-group-item list-group-item-action">
-            <i class="fas fa-laptop-code me-2"></i>Online Exam
-        </a>
+        <a href="../../typing-master/index.php" class="list-group-item list-group-item-action bg-transparent text-white border-0"><i class="fas fa-keyboard me-2"></i> Typing Master</a>
+        <a href="../../online-exam/index.php" class="list-group-item list-group-item-action bg-transparent text-white border-0"><i class="fas fa-laptop-code me-2"></i> Online Exam</a>
+        <a href="../../student/live-class.php" class="list-group-item list-group-item-action bg-transparent text-white border-0"><i class="fas fa-video me-2"></i> Live Classes</a>
+        <a href="../../student/attendance.php" class="list-group-item list-group-item-action bg-transparent text-white border-0"><i class="fas fa-calendar-check me-2"></i> Attendance</a>
+        
         <a href="../../student/logout.php" class="list-group-item list-group-item-action text-danger fw-bold mt-4">
             <i class="fas fa-power-off me-2"></i>Logout
         </a>
