@@ -16,31 +16,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
     
-    // File Upload
-    $imagePath = $_SESSION['admin_image']; // Default to current
-    if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] == 0) {
-        $uploadDir = '../../assets/uploads/admins/';
-        if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
-        
-        $ext = pathinfo($_FILES['profile_image']['name'], PATHINFO_EXTENSION);
-        $fileName = 'admin_' . $admin_id . '_' . time() . '.' . $ext;
-        $targetFile = $uploadDir . $fileName;
-        
-        if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $targetFile)) {
-            $imagePath = 'assets/uploads/admins/' . $fileName;
+    // Handle Stamp and Signature
+    $signaturePath = $admin['signature'];
+    $stampPath = $admin['stamp'];
+    $uploadAssetsDir = '../../assets/uploads/admins/';
+
+    // Signature Upload
+    if (isset($_FILES['signature_image']) && $_FILES['signature_image']['error'] == 0) {
+        $ext = pathinfo($_FILES['signature_image']['name'], PATHINFO_EXTENSION);
+        $fileName = 'sign_' . $admin_id . '_' . time() . '.' . $ext;
+        if (move_uploaded_file($_FILES['signature_image']['tmp_name'], $uploadAssetsDir . $fileName)) {
+            $signaturePath = 'assets/uploads/admins/' . $fileName;
         }
+    }
+    // Remove Signature
+    if (isset($_POST['remove_signature']) && $_POST['remove_signature'] == '1') {
+        $signaturePath = NULL;
+    }
+
+    // Stamp Upload
+    if (isset($_FILES['stamp_image']) && $_FILES['stamp_image']['error'] == 0) {
+        $ext = pathinfo($_FILES['stamp_image']['name'], PATHINFO_EXTENSION);
+        $fileName = 'stamp_' . $admin_id . '_' . time() . '.' . $ext;
+        if (move_uploaded_file($_FILES['stamp_image']['tmp_name'], $uploadAssetsDir . $fileName)) {
+            $stampPath = 'assets/uploads/admins/' . $fileName;
+        }
+    }
+    // Remove Stamp
+    if (isset($_POST['remove_stamp']) && $_POST['remove_stamp'] == '1') {
+        $stampPath = NULL;
     }
 
     try {
         if (!empty($password)) {
             $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-            $sql = "UPDATE admins SET name = ?, email = ?, password = ?, image = ? WHERE id = ?";
+            $sql = "UPDATE admins SET name = ?, email = ?, password = ?, image = ?, signature = ?, stamp = ? WHERE id = ?";
             $stmt = $pdo->prepare($sql);
-            $stmt->execute([$name, $email, $hashed_password, $imagePath, $admin_id]);
+            $stmt->execute([$name, $email, $hashed_password, $imagePath, $signaturePath, $stampPath, $admin_id]);
         } else {
-            $sql = "UPDATE admins SET name = ?, email = ?, image = ? WHERE id = ?";
+            $sql = "UPDATE admins SET name = ?, email = ?, image = ?, signature = ?, stamp = ? WHERE id = ?";
             $stmt = $pdo->prepare($sql);
-            $stmt->execute([$name, $email, $imagePath, $admin_id]);
+            $stmt->execute([$name, $email, $imagePath, $signaturePath, $stampPath, $admin_id]);
         }
 
         // Update Session
@@ -174,6 +190,36 @@ $admin = $stmt->fetch(PDO::FETCH_ASSOC);
                             <div class="mb-4">
                                 <label class="form-label">New Password <small class="text-muted">(Leave blank to keep current)</small></label>
                                 <input type="password" name="password" class="form-control" placeholder="Enter new password">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label fw-bold">Signature</label>
+                                    <input type="file" name="signature_image" class="form-control mb-2" accept="image/*">
+                                    <?php if (!empty($admin['signature'])): ?>
+                                        <div class="d-flex align-items-center mt-2 border rounded p-2 bg-light">
+                                            <img src="../../<?php echo htmlspecialchars($admin['signature']); ?>" height="50" class="me-2">
+                                            <div class="form-check ms-auto">
+                                                <input class="form-check-input" type="checkbox" name="remove_signature" value="1" id="remove_sign">
+                                                <label class="form-check-label text-danger small fw-bold" for="remove_sign">Remove</label>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label fw-bold">Stamp</label>
+                                    <input type="file" name="stamp_image" class="form-control mb-2" accept="image/*">
+                                    <?php if (!empty($admin['stamp'])): ?>
+                                        <div class="d-flex align-items-center mt-2 border rounded p-2 bg-light">
+                                            <img src="../../<?php echo htmlspecialchars($admin['stamp']); ?>" height="50" class="me-2">
+                                            <div class="form-check ms-auto">
+                                                <input class="form-check-input" type="checkbox" name="remove_stamp" value="1" id="remove_stamp">
+                                                <label class="form-check-label text-danger small fw-bold" for="remove_stamp">Remove</label>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
                             </div>
 
                             <button type="submit" class="btn btn-warning w-100 fw-bold py-2 text-dark">
