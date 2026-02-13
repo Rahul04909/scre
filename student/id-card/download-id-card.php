@@ -370,7 +370,7 @@ if ($stamp_img) {
     // Center stamp relative to text area roughly
     // Text is at $auth_sig_x. Let's center stamp there.
     $stamp_dest_x = $auth_sig_x + (150 - $new_s_w)/2; // Assuming ~150px width area
-    $stamp_dest_y = $sig_y - 65; // Moved up (was -45)
+    $stamp_dest_y = $sig_y - 70; // Moved up (was -45)
     
     // Set opacity for stamp if possible (GD doesn't support easy opacity on imagecopy without merge, 
     // but PNG alpha channel should handle it if image has it. 
