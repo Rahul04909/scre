@@ -78,6 +78,10 @@ try {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="assets/css/sidebar.css?v=<?php echo time(); ?>" rel="stylesheet">
     <!-- Custom styles handled in sidebar.css for WP Theme -->
+    <style>
+        .folder-card { transition: all 0.3s ease; }
+        .folder-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important; }
+    </style>
 </head>
 <body>
     <div id="wrapper">
@@ -165,6 +169,67 @@ try {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="row mb-5">
+                    <div class="col-12">
+                        <h5 class="fw-bold text-dark mb-3">Quick Actions</h5>
+                    </div>
+                    
+                    <div class="col-md-2 col-6 mb-3">
+                        <a href="centers/add-center.php" class="card text-decoration-none shadow-sm h-100 folder-card border-0">
+                            <div class="card-body text-center">
+                                <i class="fas fa-building fa-2x text-primary mb-2"></i>
+                                <h6 class="text-dark small mb-0 fw-bold">Add Center</h6>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-2 col-6 mb-3">
+                        <a href="courses/add-course.php" class="card text-decoration-none shadow-sm h-100 folder-card border-0">
+                            <div class="card-body text-center">
+                                <i class="fas fa-book-open fa-2x text-success mb-2"></i>
+                                <h6 class="text-dark small mb-0 fw-bold">Add Course</h6>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-2 col-6 mb-3">
+                        <a href="students/index.php" class="card text-decoration-none shadow-sm h-100 folder-card border-0">
+                            <div class="card-body text-center">
+                                <i class="fas fa-user-graduate fa-2x text-info mb-2"></i>
+                                <h6 class="text-dark small mb-0 fw-bold">Manage Students</h6>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-2 col-6 mb-3">
+                        <a href="components/manage-news.php" class="card text-decoration-none shadow-sm h-100 folder-card border-0">
+                            <div class="card-body text-center">
+                                <i class="fas fa-bullhorn fa-2x text-warning mb-2"></i>
+                                <h6 class="text-dark small mb-0 fw-bold">Add News</h6>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-2 col-6 mb-3">
+                        <a href="marksheet/generate-marksheet.php" class="card text-decoration-none shadow-sm h-100 folder-card border-0">
+                            <div class="card-body text-center">
+                                <i class="fas fa-file-invoice fa-2x text-danger mb-2"></i>
+                                <h6 class="text-dark small mb-0 fw-bold">Gen. Marksheet</h6>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="col-md-2 col-6 mb-3">
+                        <a href="center-requests/index.php" class="card text-decoration-none shadow-sm h-100 folder-card border-0">
+                            <div class="card-body text-center">
+                                <i class="fas fa-envelope-open-text fa-2x text-secondary mb-2"></i>
+                                <h6 class="text-dark small mb-0 fw-bold">Center Requests</h6>
+                            </div>
+                        </a>
                     </div>
                 </div>
 

@@ -181,6 +181,15 @@
                 <a href="<?php echo $sidebarPrefix; ?>admin/blog/manage-blogs.php" class="list-group-item list-group-item-action bg-transparent">Manage Blogs</a>
             </div>
         </div>
+
+        <div class="mt-4 border-top pt-2 pb-5">
+            <a href="<?php echo $sidebarPrefix; ?>admin/profile/index.php" class="list-group-item list-group-item-action bg-transparent text-primary fw-bold">
+                <i class="fas fa-user-circle menu-icon"></i> Profile
+            </a>
+            <a href="<?php echo $sidebarPrefix; ?>admin/logout.php" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold">
+                <i class="fas fa-sign-out-alt menu-icon"></i> Logout
+            </a>
+        </div>
     </div>
 </div>
 <!-- /#sidebar-wrapper -->
