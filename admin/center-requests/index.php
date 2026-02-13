@@ -72,6 +72,13 @@ $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
         .status-pending { background-color: #ffeeba; color: #856404; }
         .status-approved { background-color: #d4edda; color: #155724; }
         .status-rejected { background-color: #f8d7da; color: #721c24; }
+        
+        /* Fix for DataTables Select Arrow Overlap */
+        .dataTables_wrapper .dataTables_length select {
+            padding-right: 30px !important;
+            background-position: right 10px center !important;
+            min-width: 60px;
+        }
     </style>
 </head>
 <body>
