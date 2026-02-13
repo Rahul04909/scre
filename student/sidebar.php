@@ -50,6 +50,11 @@
         <a href="../../student/live-class.php" class="list-group-item list-group-item-action <?php echo ($current_page == 'live-class.php') ? 'active' : ''; ?>">
             <i class="fas fa-video me-2"></i>Live Classes
         </a>
+        
+        <!-- Study Material -->
+        <a href="../../student/study-material.php" class="list-group-item list-group-item-action <?php echo ($current_page == 'study-material.php') ? 'active' : ''; ?>">
+            <i class="fas fa-book-reader me-2"></i>Study Material
+        </a>
 
         <!-- Online Exam -->
         <a href="../../online-exam/index.php" class="list-group-item list-group-item-action <?php echo ($current_page == 'online-exam') ? 'active' : ''; ?>">
