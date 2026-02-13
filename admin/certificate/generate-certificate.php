@@ -3,10 +3,10 @@ session_start();
 require_once '../../database/config.php';
 require_once '../../vendor/autoload.php';
 
-// Enable Errors
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// Disable Errors
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+error_reporting(0);
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -176,25 +176,17 @@ try {
 }
 
 // 7. Signature & Stamp (Merged Image Logic - Same as Marksheet)
-// Fetch Admin (ID 1 for now)
-$stmtAdmin = $pdo->prepare("SELECT signature_path, stamp_path FROM admins WHERE id = 1");
-$stmtAdmin->execute();
-$adminAssets = $stmtAdmin->fetch(PDO::FETCH_ASSOC);
-
-$signPath = $adminAssets['signature_path'];
-$stampPath = $adminAssets['stamp_path'];
-
-// Absolute paths
-$baseDir = "d:/wamp/www/pace-foundation/"; // Hardcoded for this environment
-$signAbsPath = $baseDir . $signPath;
-$stampAbsPath = $baseDir . $stampPath;
+// Use Static Paths to match Marksheet logic and avoid DB errors
+$baseDir = realpath(__DIR__ . '/../../');
+$stampPath = $baseDir . '/admin/assets/scre-stamp.png';
+$signaturePath = $baseDir . '/admin/assets/scre-sign.png';
 
 $mergedImageHtml = '';
 
-if (!empty($signPath) && file_exists($signAbsPath) && !empty($stampPath) && file_exists($stampAbsPath)) {
+if (file_exists($stampPath) && file_exists($signaturePath)) {
     // GD Merge
-    $sign = imagecreatefrompng($signAbsPath);
-    $stamp = imagecreatefrompng($stampAbsPath);
+    $stamp = imagecreatefrompng($stampPath);
+    $sign = imagecreatefrompng($signaturePath);
     
     if ($sign && $stamp) {
         $sw = imagesx($stamp);
@@ -223,20 +215,48 @@ if (!empty($signPath) && file_exists($signAbsPath) && !empty($stampPath) && file
         
         imagecopyresampled($finalImg, $stamp, $stampX, $stampY, 0, 0, $targetStampW, $targetStampH, $sw, $sh);
         
-        // Signature Position (Centered, slightly lower)
-        $targetSignW = 300;
+        // Signature Position (Updated to match Marksheet: Width 480, Offset -18)
+        $targetSignW = 480;
         $targetSignH = ($sih / $siw) * $targetSignW;
         $signX = ($canvasW - $targetSignW) / 2;
-        $signY = ($canvasH - $targetSignH) / 2 - 35; 
+        $signY = ($canvasH - $targetSignH) / 2 - 18; 
         
         imagecopyresampled($finalImg, $sign, $signX, $signY, 0, 0, $targetSignW, $targetSignH, $siw, $sih);
+        
+        // Add Text "Authorize Signature" (Matched Marksheet)
+        $black = imagecolorallocate($finalImg, 0, 0, 0);
+        
+        // Use Bold Font if available
+        $fontPath = __DIR__ . '/../../vendor/mpdf/mpdf/ttfonts/FreeSerifBold.ttf';
+        if (!file_exists($fontPath)) {
+             $fontPath = __DIR__ . '/../../vendor/mpdf/mpdf/ttfonts/FreeSerif.ttf';
+        }
+        
+        $text = "Authorize Signature";
+        
+        // Calculate position relative to the stamp bottom
+        $stampBottomY = $stampY + $targetStampH;
+        $textY = $stampBottomY + 30;
+
+        if (file_exists($fontPath)) {
+            // Calculate text width to center it
+            $bbox = imagettfbbox(18, 0, $fontPath, $text); // Font size 18
+            $textW = $bbox[2] - $bbox[0];
+            $textX = ($canvasW - $textW) / 2;
+            
+            imagettftext($finalImg, 18, 0, $textX, $textY, $black, $fontPath, $text);
+        } else {
+            // Fallback to internal font
+            $textX = ($canvasW - (strlen($text) * 10)) / 2; // Approx width
+            imagestring($finalImg, 5, $textX, $textY - 15, $text, $black);
+        }
         
         // Output
         ob_start();
         imagepng($finalImg);
         $imgData = ob_get_clean();
         $base64 = 'data:image/png;base64,' . base64_encode($imgData);
-        $mergedImageHtml = '<img src="' . $base64 . '" style="width: 200px;">'; // Keep it reasonably sized for certificate
+        $mergedImageHtml = '<img src="' . $base64 . '" style="width: 200px;">';
         
         imagedestroy($stamp);
         imagedestroy($sign);
