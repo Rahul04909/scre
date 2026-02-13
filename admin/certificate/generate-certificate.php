@@ -126,16 +126,34 @@ $exam_month = $session_end;
 // Issue Date
 $issue_date = date('d-m-Y');
 
-// 6. QR Code
-require_once '../../vendor/phpqrcode/qrlib.php';
-$qrTempDir = '../../assets/qrcodes/';
-if (!file_exists($qrTempDir)) mkdir($qrTempDir, 0755, true);
-$qrData = "Name: $name\nEnrollment: $enrollment_no\nCourse: $course_name\nGrade: $final_grade\nSerial: $certificate_serial";
-$qrFile = $qrTempDir . 'cert_' . $enrollment_no . '.png';
-QRcode::png($qrData, $qrFile, QR_ECLEVEL_L, 3);
-$qrCodeData = file_get_contents($qrFile);
-$qrCodeBase64 = 'data:image/png;base64,' . base64_encode($qrCodeData);
-$qrCodeHtml = '<img src="' . $qrCodeBase64 . '" style="width: 80px;">';
+
+// 6. QR Code (Using QuickChart API, same as student module)
+$qrData = "Name: $name\nEnrollment: $enrollment_no\nCourse: $course_name\nGrade: $final_grade\nSerial: $certificate_serial\nVerify at: www.screduc.com";
+
+$qrCodeHtml = '';
+$apiUrl = "https://quickchart.io/qr?text=" . urlencode($qrData) . "&size=150&margin=0";
+
+try {
+    $imageData = false;
+    if (ini_get('allow_url_fopen')) {
+        $imageData = @file_get_contents($apiUrl);
+    }
+    if ($imageData === false && function_exists('curl_init')) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $apiUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+        $imageData = curl_exec($ch);
+        curl_close($ch);
+    }
+    
+    if ($imageData !== false && !empty($imageData)) {
+         $base64 = 'data:image/png;base64,' . base64_encode($imageData);
+         $qrCodeHtml = '<img src="' . $base64 . '" style="width: 80px;">';
+    }
+} catch (\Throwable $e) {
+    // Ignore error
+}
 
 // 7. Signature & Stamp (Merged Image Logic - Same as Marksheet)
 // Fetch Admin (ID 1 for now)
@@ -212,7 +230,7 @@ $options->set('isRemoteEnabled', true);
 $dompdf = new Dompdf($options);
 
 // Load Background
-$bgPath = '../../assets/certificate-bg.jpg'; 
+$bgPath = '../../student/certificate/background/compressed-bg.png'; 
 if (file_exists($bgPath)) {
     $bgData = base64_encode(file_get_contents($bgPath));
     $bgSrc = 'data:image/jpeg;base64,' . $bgData;
