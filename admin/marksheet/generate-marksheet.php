@@ -349,9 +349,9 @@ try {
                 $sih = imagesy($sign);
                 
                 // 3. Create Container (Size of Stamp or slightly larger to fit signature if wider)
-                // Increased dimensions significantly as per user request
+                // Increased dimensions significantly + Added space for text
                 $canvasW = max($sw, $siw, 500); // 500px Wide
-                $canvasH = max($sh, $sih, 400); // 400px High
+                $canvasH = max($sh, $sih, 450); // 450px High (Added 50px for text)
                 
                 $finalImg = imagecreatetruecolor($canvasW, $canvasH);
                 
@@ -367,8 +367,8 @@ try {
                 $targetStampW = 200;
                 $targetStampH = ($sh / $sw) * $targetStampW;
                 $stampX = ($canvasW - $targetStampW) / 2;
-                // Center Vertically exactly
-                $stampY = ($canvasH - $targetStampH) / 2; 
+                // Center Vertically exactly (slightly higher to leave room for text)
+                $stampY = ($canvasH - $targetStampH) / 2 - 20; 
                 
                 imagecopyresampled($finalImg, $stamp, $stampX, $stampY, 0, 0, $targetStampW, $targetStampH, $sw, $sh);
                 
@@ -377,14 +377,33 @@ try {
                 $targetSignW = 280;
                 $targetSignH = ($sih / $siw) * $targetSignW;
                 $signX = ($canvasW - $targetSignW) / 2;
-                // Center Vertically exactly (might adjust slightly up if needed, but "center me" implies pure center)
-                // Let's shift up slightly just to make it look natural over text, but keep it mostly centered.
-                // -20px shift to lift sign slightly above stamp center line
-                $signY = ($canvasH - $targetSignH) / 2 - 20; 
+                // Center Vertically exactly (slightly higher than stamp)
+                $signY = ($canvasH - $targetSignH) / 2 - 40; 
                 
                 imagecopyresampled($finalImg, $sign, $signX, $signY, 0, 0, $targetSignW, $targetSignH, $siw, $sih);
                 
-                // 6. Output to Base64
+                // 6. Add Text "Authorize Signature"
+                $black = imagecolorallocate($finalImg, 0, 0, 0);
+                $fontPath = __DIR__ . '/../../vendor/mpdf/mpdf/ttfonts/FreeSerif.ttf';
+                if (!file_exists($fontPath)) {
+                    $fontPath = __DIR__ . '/../../vendor/mpdf/mpdf/ttfonts/FreeSans.ttf';
+                }
+                
+                $text = "Authorize Signature";
+                if (file_exists($fontPath)) {
+                    // Calculate text width to center it
+                    $bbox = imagettfbbox(18, 0, $fontPath, $text); // Font size 18
+                    $textW = $bbox[2] - $bbox[0];
+                    $textX = ($canvasW - $textW) / 2;
+                    $textY = $canvasH - 30; // 30px from bottom
+                    imagettftext($finalImg, 18, 0, $textX, $textY, $black, $fontPath, $text);
+                } else {
+                    // Fallback to internal font
+                    $textX = ($canvasW - (strlen($text) * 10)) / 2; // Approx width
+                    imagestring($finalImg, 5, $textX, $canvasH - 40, $text, $black);
+                }
+
+                // 7. Output to Base64
                 ob_start();
                 imagepng($finalImg);
                 $imgData = ob_get_clean();
@@ -430,7 +449,7 @@ try {
                          <!-- Unified Container for Image and Text -->
                          <div style="width: 260px; text-align: center; margin-right: 20px; display: inline-block;">
                             '.$mergedImageHtml.'
-                            <div style="font-weight: bold; margin-top: 5px; white-space: nowrap;">Authorize Signature</div>
+                            <!-- Text is merged in image now -->
                          </div>
                     </td>
                 </tr>
