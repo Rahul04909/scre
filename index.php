@@ -3,6 +3,7 @@
 <?php include 'components/teachers.php'; ?>
 <?php include 'components/courses.php'; ?>
 <?php include 'components/students.php'; ?>
+<?php include 'components/student-reviews.php'; ?>
 <?php include 'components/partners.php'; ?>
 <?php include 'components/news-ticker.php'; ?>
 <?php include 'includes/footer.php'; ?>
