@@ -130,8 +130,8 @@ function addText($image, $size, $angle, $x, $y, $color, $font, $text) {
 // New Height: approx 718px (derived from 5732x4069)
 
 // Left Side Details
-$base_x = 55;
-$base_y = 320; // Pushed down from 180 to clear header
+$base_x = 80; // Moved right from 55
+$base_y = 280; // Moved up from 320
 $line_height = 35;
 $font_size_label = 16; 
 $font_size_value = 16;
