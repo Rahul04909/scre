@@ -186,11 +186,11 @@ drawField($image, $font_path, $color_black, $base_x, $base_y, "Mobile", $student
 
 // Student Photo
 // Positioning estimate: Right side, aligned with top details.
-// Reduced size as requested (was 210x240)
-$photo_w = 170;
-$photo_h = 200;
-$photo_x = 780; // Centered roughly in the right area (was 760)
-$photo_y = 300; // Pushed down from 160
+// Reduced size as requested (was 170x200)
+$photo_w = 150;
+$photo_h = 180;
+$photo_x = 790; // Center adjustments (was 780)
+$photo_y = 250; // Pushed up from 300 to clear signature area
 
 // Load Photo
 $photo_path = '';
@@ -247,7 +247,7 @@ if (file_exists($font_path)) {
     $bbox = imagettfbbox(18, 0, $font_path, $enroll_text);
     $text_w = $bbox[2] - $bbox[0];
     $enroll_x = $photo_x + ($photo_w - $text_w) / 2;
-    addText($image, 18, 0, $enroll_x, $photo_y + $photo_h + 25, $color_black, $font_path, $enroll_text);
+    addText($image, 18, 0, $enroll_x, $photo_y + $photo_h + 20, $color_black, $font_path, $enroll_text);
 } else {
     imagestring($image, 5, $photo_x, $photo_y + $photo_h + 10, $enroll_text, $color_black);
 }
@@ -255,10 +255,10 @@ if (file_exists($font_path)) {
 
 // QR Code
 // Position: Moved to Bottom Right (Below Photo and Enrollment)
-$qr_size = 100;
+$qr_size = 90; // Slightly smaller to fit
 // Center under photo
 $qr_x = $photo_x + ($photo_w - $qr_size)/2; 
-$qr_y = $photo_y + $photo_h + 40; // Below enrollment text (which is +25)
+$qr_y = $photo_y + $photo_h + 35; // Below enrollment text
 
 // Use QuickChart API (like marksheet) to avoid dependency issues
 $qrData = "Valid: " . $student['enrollment_no'] . "\nName: " . $student['first_name'];
