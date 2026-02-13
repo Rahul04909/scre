@@ -94,6 +94,11 @@ $center_code = $_SESSION['center_code'] ?? 'CODE123';
                             <span>Student Fees</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="../../center/students/attendance-register.php" class="nav-link sub-link <?php echo isActive('attendance-register.php') ? 'active-sub' : ''; ?>">
+                            <span>Attendance Register</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </li>
