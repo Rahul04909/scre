@@ -427,12 +427,10 @@ try {
                          '.$qrCodeHtml.'
                     </td>
                     <td width="40%" valign="bottom" align="right">
-                         <!-- Single Merged Image Container -->
-                         <div style="width: 300px; text-align: center; margin-right: 10px; display: inline-block;">
+                         <!-- Unified Container for Image and Text -->
+                         <div style="width: 260px; text-align: center; margin-right: 20px; display: inline-block;">
                             '.$mergedImageHtml.'
-                         </div>
-                         <div class="signature-box" style="white-space: nowrap; clear: both; margin-top: 5px; float: right; margin-right: 20px;">
-                            <b>Authorize Signature</b>
+                            <div style="font-weight: bold; margin-top: 5px; white-space: nowrap;">Authorize Signature</div>
                          </div>
                     </td>
                 </tr>
