@@ -91,7 +91,7 @@ if ($filter_course) {
         }
 
     } catch (PDOException $e) {
-        $message = "<div class='alert alert-danger'>Error fetching students.</div>";
+        $message = "<div class='alert alert-danger'>Error fetching students: " . $e->getMessage() . "</div>";
     }
 }
 ?>
