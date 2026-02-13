@@ -348,7 +348,7 @@ try {
             // ID Card Style: Width ~85px
             // Centered (160-85)/2 = 37.5 -> 38px
             // Positioned lower so it appears "below" or behind the signature text
-            $stampImg = '<img src="' . $base64 . '" style="width: 85px; position: absolute; bottom: 20px; left: 38px; opacity: 1; z-index: 1;">';
+            $stampImg = '<img src="' . $base64 . '" style="width: 85px; position: absolute; bottom: -20px; left: 38px; opacity: 1; z-index: 1;">';
         }
         
         // Check Signature
