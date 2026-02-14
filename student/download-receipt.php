@@ -33,48 +33,9 @@ if (!$txn) {
     die("Receipt not found or access denied.");
 }
 
-// 2. Prepare Signatory Image (Copied from Hall Ticket)
+// 2. Prepare Signatory Image (Removed as per request)
 $mergedImageHtml = '';
-$baseDir = realpath(__DIR__ . '/../'); 
-$stampPath = $baseDir . '/student/assets/scre-stamp.png';
-$signaturePath = $baseDir . '/student/assets/scre-sign.png';
 
-$mergedBase64 = '';
-
-if (file_exists($stampPath) && file_exists($signaturePath)) {
-    $stamp = imagecreatefrompng($stampPath);
-    $sign = imagecreatefrompng($signaturePath);
-    if ($stamp && $sign) {
-        $sw = imagesx($stamp); $sh = imagesy($stamp);
-        $siw = imagesx($sign); $sih = imagesy($sign);
-        $canvasW = max($sw, $siw, 500); $canvasH = max($sh, $sih, 420);
-        $finalImg = imagecreatetruecolor($canvasW, $canvasH);
-        imagealphablending($finalImg, false);
-        imagesavealpha($finalImg, true);
-        $transparent = imagecolorallocatealpha($finalImg, 255, 255, 255, 127);
-        imagefill($finalImg, 0, 0, $transparent);
-        imagealphablending($finalImg, true);
-        $targetStampW = 200; $targetStampH = ($sh / $sw) * $targetStampW;
-        $stampX = ($canvasW - $targetStampW) / 2;
-        $stampY = ($canvasH - $targetStampH) / 2 - 30; 
-        imagecopyresampled($finalImg, $stamp, $stampX, $stampY, 0, 0, $targetStampW, $targetStampH, $sw, $sh);
-        $targetSignW = 480; $targetSignH = ($sih / $siw) * $targetSignW;
-        $signX = ($canvasW - $targetSignW) / 2;
-        $signY = ($canvasH - $targetSignH) / 2 - 18; 
-        imagecopyresampled($finalImg, $sign, $signX, $signY, 0, 0, $targetSignW, $targetSignH, $siw, $sih);
-        ob_start(); imagepng($finalImg); $imgData = ob_get_clean();
-        $mergedBase64 = 'data:image/png;base64,' . base64_encode($imgData);
-        imagedestroy($stamp); imagedestroy($sign); imagedestroy($finalImg);
-    }
-} elseif (file_exists($stampPath)) {
-     $type = pathinfo($stampPath, PATHINFO_EXTENSION);
-     $data = file_get_contents($stampPath);
-     $mergedBase64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-}
-
-if ($mergedBase64) {
-    $mergedImageHtml = '<img src="' . $mergedBase64 . '" style="width: 150px;">';
-}
 
 // 3. HTML Content
 $html = '
@@ -159,7 +120,7 @@ $html = '
 
     <div class="footer">
         <div class="sig-block">
-            ' . ($mergedImageHtml ? $mergedImageHtml : '<br><br><br>') . '
+            <br><br><br>
             <p style="margin-top: -10px; font-weight: bold;">Authorized Signatory</p>
         </div>
     </div>
