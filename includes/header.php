@@ -710,40 +710,7 @@ $baseUrl = $protocol . $domain . ($basePath === '/' ? '' : $basePath);
             </style>
 
             <button id="enquiry-btn" class="btn btn-primary">ENQUIRY NOW</button>
-            <button class="btn btn-secondary"><a href="<?php echo $baseUrl; ?>/verification-letter.php">VERIFICATION LETTER</a></button>
-        </div>
-
-
-        <!-- Enquiry Form Modal -->
-        <div id="enquiry-modal" class="custom-modal">
-            <div class="modal-content">
-                <span class="close-modal">&times;</span>
-                <h2><i class="fas fa-envelope"></i> Submit an Enquiry</h2>
-                <form id="enquiry-form">
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="enquiry-name">Full Name:</label>
-                            <input type="text" id="enquiry-name" name="name" class="form-control" required>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="enquiry-email">Email Address:</label>
-                            <input type="email" id="enquiry-email" name="email" class="form-control" required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="enquiry-phone">Phone Number:</label>
-                            <input type="tel" id="enquiry-phone" name="phone" class="form-control" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="enquiry-message">Your Message:</label>
-                        <textarea id="enquiry-message" name="message" rows="4" class="form-control" required></textarea>
-                    </div>
-                    <button type="submit" id="enquiry-submit" class="btn btn-primary">Submit Enquiry</button>
-                    <div id="enquiry-result" class="mt-3" style="display: none;"></div>
-                </form>
-            </div>
+            <a href="<?php echo $baseUrl; ?>/verification-letter.php" class="btn btn-secondary" style="text-decoration: none; color: var(--dark-grey);">VERIFICATION LETTER</a>
         </div>
     </div>
 
@@ -755,10 +722,10 @@ $baseUrl = $protocol . $domain . ($basePath === '/' ? '' : $basePath);
         <div class="header-center">
             <div class="inst-name header-center-animated">SIR CHHOTU RAM EDUCATION PVT. LTD.</div>
             <div class="inst-hindi header-center-animated"><strong>AN ISO 9001-2015 Certified Organization</strong></div>
-            <div class="inst-hindi header-center-animated"><strong>Registred Under The Company ACT 2013 By The</strong></div>
+            <div class="inst-hindi header-center-animated"><strong>Registered Under The Company ACT 2013 By The</strong></div>
             <div class="inst-hindi header-center-animated"><strong>Ministry Of Corporate Affairs,</strong></div>
             <div class="inst-hindi header-center-animated"><strong>Ministry of Micro, Small & Medium Enterprises</strong></div>
-            <div class="inst-name header-center-animated"><strong>Goverment Of India</strong></div>
+            <div class="inst-name header-center-animated"><strong>Government Of India</strong></div>
         </div> 
         <div class="header-badges">
             <img src="<?php echo $baseUrl; ?>/assets/logo/iso.webp" alt="ISO Certified" class="main-logo" />
@@ -785,7 +752,38 @@ $baseUrl = $protocol . $domain . ($basePath === '/' ? '' : $basePath);
 
             </ul>
         </div>
-    </nav>
+
+    <!-- Enquiry Form Modal (Moved here) -->
+    <div id="enquiry-modal" class="custom-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2><i class="fas fa-envelope"></i> Submit an Enquiry</h2>
+            <form id="enquiry-form">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="enquiry-name">Full Name:</label>
+                        <input type="text" id="enquiry-name" name="name" class="form-control" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="enquiry-email">Email Address:</label>
+                        <input type="email" id="enquiry-email" name="email" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="enquiry-phone">Phone Number:</label>
+                        <input type="tel" id="enquiry-phone" name="phone" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="enquiry-message">Your Message:</label>
+                    <textarea id="enquiry-message" name="message" rows="4" class="form-control" required></textarea>
+                </div>
+                <button type="submit" id="enquiry-submit" class="btn btn-primary">Submit Enquiry</button>
+                <div id="enquiry-result" class="mt-3" style="display: none;"></div>
+            </form>
+        </div>
+    </div>
 
     <script>
         // Toggle hamburger menu
