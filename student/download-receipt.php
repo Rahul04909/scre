@@ -120,8 +120,7 @@ $html = '
 
     <div class="footer">
         <div class="sig-block">
-            <br><br><br>
-            <p style="margin-top: -10px; font-weight: bold;">Authorized Signatory</p>
+            <!-- Authorized Signatory Removed -->
         </div>
     </div>
     
