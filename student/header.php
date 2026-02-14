@@ -51,7 +51,7 @@
             <!-- Notification Bell -->
             <button class="nav-icon-btn position-relative">
                 <!-- <i class="far fa-bell fs-5"></i> -->
-                <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" style="width: 10px; height: 10px;"></span>
+                <!-- <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" style="width: 10px; height: 10px;"></span> -->
             </button>
 
             <!-- Profile Dropdown -->
