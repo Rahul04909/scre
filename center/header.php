@@ -13,12 +13,37 @@
                 <i class="fas fa-outdent text-primary"></i>
             </button>
 
-            <form class="d-flex">
-                <div class="input-group">
-                    <span class="input-group-text bg-light border-0"><i class="fas fa-search text-muted"></i></span>
-                    <input class="form-control border-0 bg-light" type="search" placeholder="Search..." aria-label="Search">
-                </div>
-            </form>
+            <!-- Google Translator -->
+            <div id="google_translate_element"></div>
+            <script type="text/javascript">
+                function googleTranslateElementInit() {
+                    new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+                }
+            </script>
+            <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+            <style>
+                .goog-te-gadget-simple {
+                    background-color: transparent !important;
+                    border: 1px solid rgba(0,0,0,0.1) !important;
+                    padding: 4px 8px !important;
+                    border-radius: 4px !important;
+                    font-family: inherit !important;
+                    font-size: 13px !important;
+                }
+                .goog-te-gadget-simple img {
+                    display: none !important;
+                }
+                .goog-te-menu-value {
+                    color: #333 !important;
+                }
+                .goog-te-menu-value span {
+                    color: #333 !important;
+                    border-left: none !important;
+                }
+                .goog-te-menu-value span:last-child {
+                    display: none !important;
+                }
+            </style>
         </div>
 
         <!-- Right Side Icons -->
