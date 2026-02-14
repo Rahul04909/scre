@@ -57,6 +57,9 @@ if (isset($_FILES['owner_image']) && $_FILES['owner_image']['error'] == 0) {
         // Update DB
         $stmtImg = $pdo->prepare("UPDATE centers SET owner_image = ? WHERE id = ?");
         if ($stmtImg->execute([$imagePath, $center_id])) {
+            // Update Session immediately
+            $_SESSION['owner_image'] = $imagePath;
+            
             $message = "Profile image updated successfully.";
             $messageType = "success";
         } else {
