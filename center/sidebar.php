@@ -21,9 +21,16 @@ function isExpanded($keywords = []) {
     return false;
 }
 
-$profile_img = $_SESSION['owner_image'] ?? 'https://ui-avatars.com/api/?name='.urlencode($_SESSION['center_name'] ?? 'Center').'&background=random';
 $center_name = $_SESSION['center_name'] ?? 'Demo Center';
 $center_code = $_SESSION['center_code'] ?? 'CODE123';
+
+// Fix: Adjust Image Path based on current directory depth
+$profile_img = $_SESSION['owner_image'] ?? 'https://ui-avatars.com/api/?name='.urlencode($center_name).'&background=random';
+if (strpos($profile_img, 'assets/') === 0) {
+    $base_dir = basename(getcwd());
+    $path_prefix = ($base_dir == 'center') ? '../' : '../../';
+    $profile_img = $path_prefix . $profile_img;
+}
 ?>
 
 <div class="sidebar d-flex flex-column" id="sidebar">

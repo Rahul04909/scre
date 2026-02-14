@@ -46,6 +46,12 @@
                     </div>
                     <?php 
                         $header_img = $_SESSION['owner_image'] ?? 'https://ui-avatars.com/api/?name='.urlencode($_SESSION['center_name'] ?? 'Admin').'&background=4361ee&color=fff';
+                        // Fix: Adjust Image Path based on directory
+                        if (strpos($header_img, 'assets/') === 0) {
+                            $base_dir = basename(getcwd());
+                            $path_prefix = ($base_dir == 'center') ? '../' : '../../';
+                            $header_img = $path_prefix . $header_img;
+                        }
                     ?>
                     <img src="<?php echo $header_img; ?>" class="rounded-circle border" width="40" height="40" alt="Avatar">
                 </a>
