@@ -6,11 +6,38 @@ if (!isset($_SESSION['center_id'])) {
 }
 require_once '../database/config.php';
 
-// Mock Stats (Replace with real DB queries later)
-$total_students = 120; // Example
-$active_courses = 8;
-$pending_fees = "₹24,000";
-$recent_admissions = 5;
+// Real Stats Queries
+$total_students = 0;
+$active_courses = 0;
+$total_enquiries = 0;
+$wallet_balance = 0.00;
+
+try {
+    $center_id = $_SESSION['center_id'];
+
+    // 1. Total Students
+    $stmtStd = $pdo->prepare("SELECT COUNT(*) FROM students WHERE center_id = ?");
+    $stmtStd->execute([$center_id]);
+    $total_students = $stmtStd->fetchColumn();
+
+    // 2. Assigned Courses
+    $stmtCrs = $pdo->prepare("SELECT COUNT(*) FROM center_course_allotment WHERE center_id = ?");
+    $stmtCrs->execute([$center_id]);
+    $active_courses = $stmtCrs->fetchColumn();
+
+    // 3. Total Enquiries (from applications table)
+    $stmtEnq = $pdo->prepare("SELECT COUNT(*) FROM applications WHERE center_id = ?");
+    $stmtEnq->execute([$center_id]);
+    $total_enquiries = $stmtEnq->fetchColumn();
+
+    // 4. Wallet Balance
+    $stmtWal = $pdo->prepare("SELECT wallet_balance FROM centers WHERE id = ?");
+    $stmtWal->execute([$center_id]);
+    $wallet_balance = $stmtWal->fetchColumn();
+
+} catch (PDOException $e) {
+    // Handle error silently or log
+}
 
 ?>
 
@@ -137,24 +164,25 @@ $recent_admissions = 5;
                 </div>
 
                 <!-- Stat 3: Monthly Revenue (Teal) -->
+                <!-- Stat 3: Total Enquiries (Teal) -->
                 <div class="col-xl-3 col-md-6">
                     <div class="stat-card bg-card-teal p-3 h-100">
                         <div class="card-body">
-                            <h2>0</h2> <!-- Placeholder for Revenue -->
-                            <p>Monthly Revenue</p>
+                            <h2><?php echo $total_enquiries; ?></h2>
+                            <p>Total Enquiries</p>
                         </div>
-                        <span class="icon-overlay fw-bold" style="font-family: sans-serif; bottom: 5px;">Rs</span>
+                        <i class="fas fa-envelope-open-text icon-overlay"></i>
                     </div>
                 </div>
 
-                <!-- Stat 4: Upcoming Exams (Yellow) -->
+                <!-- Stat 4: Wallet Balance (Yellow) -->
                 <div class="col-xl-3 col-md-6">
                     <div class="stat-card bg-card-yellow p-3 h-100">
-                         <div class="card-body">
-                            <h2>0</h2> <!-- Placeholder for Exams -->
-                            <p>Upcoming Exams</p>
+                        <div class="card-body">
+                            <h2>₹<?php echo number_format($wallet_balance, 2); ?></h2>
+                            <p>Wallet Balance</p>
                         </div>
-                        <i class="fas fa-calendar-alt icon-overlay"></i>
+                        <i class="fas fa-wallet icon-overlay"></i>
                     </div>
                 </div>
             </div>
