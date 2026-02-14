@@ -318,7 +318,16 @@ $html = '
     <img src="' . $bgSrc . '" class="background">
     
     <div class="content">
-        <div class="field reg-top">Serial Number: ' . $certificate_serial . '</div>
+        <!-- Header Meta (Matched Marksheet) -->
+        <div class="header-overlay" style="position: absolute; top: 8%; width: 100%; text-align: center;">
+            <table width="80%" style="margin: 0 auto; border-collapse: collapse;">
+                <tr>
+                    <td align="left" style="font-weight: bold; font-size: 14px;">National ID: ' . ($student['national_id_no'] ?? 'N/A') . '</td>
+                    <td align="center" style="font-weight: bold; font-size: 14px;">Serial No: ' . $certificate_serial . '</td>
+                    <td align="right" style="font-weight: bold; font-size: 14px;">Enrollment No: ' . $enrollment_no . '</td>
+                </tr>
+            </table>
+        </div>
         
         <div class="field name">' . $name . '</div>
         <div class="field father">' . $father_name . '</div>
