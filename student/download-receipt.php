@@ -43,20 +43,20 @@ $html = '
 <html>
 <head>
     <style>
-        body { font-family: sans-serif; font-size: 13px; color: #333; }
-        .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #00008B; padding-bottom: 10px; }
-        .company-name { font-size: 22px; font-weight: bold; color: #00008B; text-transform: uppercase; margin-bottom: 5px; }
-        .receipt-title { font-size: 18px; font-weight: bold; text-align: center; margin-bottom: 20px; text-decoration: underline; background: #eee; padding: 5px; }
+        body { font-family: sans-serif; font-size: 12px; color: #333; } /* Reduced font size from 13px to 12px */
+        .header { text-align: center; margin-bottom: 10px; border-bottom: 2px solid #00008B; padding-bottom: 5px; } /* Reduced margins */
+        .company-name { font-size: 20px; font-weight: bold; color: #00008B; text-transform: uppercase; margin-bottom: 2px; }
+        .receipt-title { font-size: 16px; font-weight: bold; text-align: center; margin-bottom: 10px; text-decoration: underline; background: #eee; padding: 3px; }
         
-        .info-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        .info-table td { padding: 8px; border-bottom: 1px solid #ddd; }
-        .label { font-weight: bold; width: 150px; color: #555; }
+        .info-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+        .info-table td { padding: 5px; border-bottom: 1px solid #ddd; }
+        .label { font-weight: bold; width: 140px; color: #555; }
         
-        .amount-table { width: 100%; border-collapse: collapse; margin-top: 20px; border: 1px solid #000; }
-        .amount-table th { background-color: #f2f2f2; border: 1px solid #000; padding: 10px; text-align: left; }
-        .amount-table td { border: 1px solid #000; padding: 10px; }
+        .amount-table { width: 100%; border-collapse: collapse; margin-top: 10px; border: 1px solid #000; }
+        .amount-table th { background-color: #f2f2f2; border: 1px solid #000; padding: 8px; text-align: left; }
+        .amount-table td { border: 1px solid #000; padding: 8px; }
         
-        .footer { margin-top: 50px; text-align: right; }
+        .footer { margin-top: 20px; text-align: right; } /* Reduced margin-top */
         .sig-block { display: inline-block; text-align: center; }
     </style>
 </head>
