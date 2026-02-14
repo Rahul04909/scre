@@ -71,8 +71,8 @@ if (!empty($student['dob'])) {
         $is_birthday = true;
     }
 }
-// For testing purposes, uncomment to force show:
-$is_birthday = true; 
+// Verified: Logic to show birthday wish only on birth date
+
 
 ?>
 
