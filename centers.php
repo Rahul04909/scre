@@ -64,201 +64,149 @@ try {
 
 <!-- Bootstrap 5 CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<!-- Bootstrap 5 JS Bundle -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <style>
     :root {
-        --primary-blue: #0F2027; /* Deep professional blue */
-        --accent-gold: #c94b4b; /* Subtle brand accent */
-        --bg-gray: #f2f4f8;
-        --card-shadow: 0 8px 30px rgba(0,0,0,0.06);
-        --hover-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        --warm-brown: #6d4c41;
+        --deep-brown: #4e342e;
+        --soft-ivory: #fff9f3;
+        --muted-gold: #c5a059;
+        --text-dark: #2d2f31;
     }
 
     body {
-        background-color: var(--bg-gray);
+        background-color: var(--soft-ivory);
         font-family: 'Poppins', sans-serif;
-    }
-
-    .centers-page-wrapper {
-        padding: 60px 0;
-        min-height: 80vh;
     }
 
     /* Page Header */
     .page-header {
-        background: linear-gradient(135deg, #203a43, #2c5364);
-        color: white;
-        padding: 40px 0;
+        background: linear-gradient(135deg, var(--deep-brown), #3e2723);
+        color: #fff;
+        padding: 60px 0;
+        text-align: center;
         margin-bottom: 40px;
-        border-radius: 0 0 20px 20px;
-        margin-top: -60px; /* Offset wrapper padding for top placement */
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    }
-
-    .page-title-main {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin: 0;
-    }
-
-    .page-subtitle {
-        font-size: 1.1rem;
-        opacity: 0.8;
-        margin-top: 10px;
+        position: relative;
+        overflow: hidden;
     }
     
-    /* Sidebar Filter Styles */
-    .filter-sidebar {
+    .page-header::after {
+        content: '';
+        position: absolute;
+        bottom: -30px;
+        left: -10%;
+        width: 120%;
+        height: 60px;
+        background: var(--soft-ivory);
+        transform: rotate(-2deg);
+    }
+
+    .page-title {
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    /* Sidebar */
+    .course-sidebar {
         background: #fff;
-        border-radius: 15px;
-        box-shadow: var(--card-shadow);
+        border-radius: 10px;
         padding: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        border: 1px solid #eee;
         position: sticky;
         top: 20px;
-        border: 1px solid rgba(0,0,0,0.03);
-    }
-    
-    .filter-title {
-        font-weight: 700;
-        color: var(--primary-blue);
-        margin-bottom: 25px;
-        padding-bottom: 15px;
-        border-bottom: 2px solid #eee;
-        text-transform: uppercase;
-        font-size: 0.95rem;
-        letter-spacing: 0.5px;
-        display: flex;
-        align-items: center;
     }
 
-    .form-label {
-        font-size: 0.85rem;
-        color: #666;
-        font-weight: 600;
-        text-transform: uppercase;
-        margin-bottom: 8px;
+    .widget-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--deep-brown);
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--muted-gold);
     }
 
     .form-control, .form-select {
-        border-radius: 8px;
-        padding: 10px 15px;
-        border: 1px solid #e0e0e0;
-        box-shadow: none;
-        transition: all 0.3s;
-        font-size: 0.95rem;
+        border-radius: 30px;
+        padding: 10px 20px;
+        border: 1px solid #ddd;
+        margin-bottom: 15px;
     }
-
-    .form-control:focus, .form-select:focus {
-        border-color: var(--primary-blue);
-        box-shadow: 0 0 0 3px rgba(15, 32, 39, 0.1);
-    }
-
+    
     .btn-apply {
-        background: var(--primary-blue);
-        color: white;
+        width: 100%;
+        background-color: var(--warm-brown);
+        color: #fff;
         border: none;
-        padding: 12px;
-        border-radius: 8px;
+        padding: 10px;
+        border-radius: 30px;
         font-weight: 600;
-        letter-spacing: 0.5px;
         transition: all 0.3s;
     }
 
     .btn-apply:hover {
-        background: #2c5364;
-        transform: translateY(-2px);
+        background-color: var(--deep-brown);
+        color: #fff;
     }
 
     .btn-reset {
-        border: 2px solid #ddd;
-        color: #666;
-        background: transparent;
-        padding: 10px;
-        border-radius: 8px;
-        font-weight: 600;
+        display: block;
+        text-align: center;
         margin-top: 10px;
+        color: #666;
+        text-decoration: none;
+        font-size: 0.9rem;
     }
-    
+
     .btn-reset:hover {
-        background: #eee;
-        color: #333;
+        color: var(--warm-brown);
     }
 
-    /* Centers Header in Content */
-    .results-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 25px;
-    }
-
-    .results-count {
-        font-weight: 600;
-        color: #555;
+    /* Center Cards (Grid View) */
+    .course-card {
         background: #fff;
-        padding: 8px 20px;
-        border-radius: 50px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-
-    /* Center Card Styles */
-    .center-card {
-        background: #fff;
-        border-radius: 15px;
-        border: none;
+        border-radius: 10px;
         overflow: hidden;
-        box-shadow: var(--card-shadow);
-        transition: all 0.3s ease;
+        border: 1px solid #eee;
+        transition: transform 0.3s, box-shadow 0.3s;
         height: 100%;
         display: flex;
         flex-direction: column;
+    }
+
+    .course-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    .course-thumb {
+        height: 180px;
+        background-color: #f0f0f0;
         position: relative;
-    }
-    
-    .center-card:hover {
-        transform: translateY(-8px);
-        box-shadow: var(--hover-shadow);
-    }
-    
-    .center-img-wrapper {
-        height: 220px;
         overflow: hidden;
-        position: relative;
-        background: #eee;
     }
-    
-    .center-img {
+
+    .course-thumb img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.6s ease;
+        transition: transform 0.5s;
     }
-    
-    .center-card:hover .center-img {
-        transform: scale(1.1);
+
+    .course-card:hover .course-thumb img {
+        transform: scale(1.05);
     }
-    
-    .verified-badge {
+
+    .course-badge {
         position: absolute;
         top: 15px;
         right: 15px;
-        background: rgba(40, 167, 69, 0.95);
-        backdrop-filter: blur(5px);
+        background: rgba(40, 167, 69, 0.9);
         color: #fff;
+        padding: 4px 10px;
+        border-radius: 4px;
         font-size: 0.75rem;
-        padding: 5px 12px;
-        border-radius: 50px;
-        font-weight: 600;
-        z-index: 2;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        display: flex;
-        align-items: center;
-    }
-
-    .verified-badge i {
-        margin-right: 5px;
+        backdrop-filter: blur(2px);
     }
 
     .center-code-badge {
@@ -266,249 +214,225 @@ try {
         top: 15px;
         left: 15px;
         background: rgba(0,0,0,0.6);
-        backdrop-filter: blur(5px);
         color: #fff;
+        padding: 4px 8px;
+        border-radius: 4px;
         font-size: 0.75rem;
-        padding: 5px 10px;
-        border-radius: 6px;
         font-family: monospace;
-        z-index: 2;
     }
 
-    .center-content {
-        padding: 25px;
+    .course-body {
+        padding: 20px;
         flex-grow: 1;
         display: flex;
         flex-direction: column;
     }
-    
-    .center-name {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: var(--primary-blue);
-        margin-bottom: 8px;
-        text-decoration: none;
-        line-height: 1.4;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-    
-    .center-name:hover {
-        color: var(--accent-gold);
-    }
 
-    .center-location {
-        color: #7f8c8d;
-        font-size: 0.9rem;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-    }
-    
-    .center-location i {
-        color: #e67e22;
-        margin-right: 8px;
-    }
-
-    .center-features {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-bottom: 20px;
-    }
-    
-    .feature-tag {
-        background: #f8f9fa;
-        color: #555;
+    .course-cat {
         font-size: 0.8rem;
-        padding: 6px 12px;
-        border-radius: 6px;
-        font-weight: 500;
-        border: 1px solid #eee;
+        color: var(--muted-gold);
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .course-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 10px;
+        line-height: 1.4;
+    }
+    
+    .course-info {
         display: flex;
-        align-items: center;
+        flex-direction: column;
+        gap: 5px;
+        font-size: 0.85rem;
+        color: #777;
+        margin-bottom: 15px;
+    }
+    
+    .course-info i {
+        color: var(--muted-gold);
+        width: 20px;
+        text-align: center;
+        margin-right: 5px;
     }
 
-    .feature-tag i {
-        margin-right: 6px;
-        color: #888;
+    .feature-tag {
+        font-size: 0.75rem;
+        background: #f8f9fa;
+        padding: 3px 8px;
+        border-radius: 4px;
+        display: inline-block;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        border: 1px solid #eee;
     }
 
-    .card-footer-custom {
+    .course-footer {
         margin-top: auto;
-        padding-top: 20px;
-        border-top: 1px solid #f0f0f0;
+        padding-top: 15px;
+        border-top: 1px solid #f5f5f5;
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
-    
-    .btn-details {
-        background: transparent;
-        color: var(--primary-blue);
+
+    .btn-view {
+        background-color: var(--soft-ivory);
+        color: var(--warm-brown);
+        border: 1px solid var(--warm-brown);
+        padding: 6px 15px;
+        border-radius: 5px;
         font-size: 0.9rem;
-        padding: 8px 16px;
-        border-radius: 50px;
-        text-decoration: none;
-        font-weight: 600;
-        border: 1px solid #ddd;
-        transition: all 0.3s;
-    }
-    
-    .btn-details:hover {
-        background: var(--primary-blue);
-        color: #fff;
-        border-color: var(--primary-blue);
-    }
-    
-    .contact-info {
-        font-size: 0.9rem;
-        color: #444;
         font-weight: 500;
+        transition: all 0.2s;
+        text-decoration: none;
+        width: 100%;
+        text-align: center;
     }
 
-    /* Mobile Responsive Sidebar */
-    @media (max-width: 991px) {
-        .filter-sidebar {
-            position: relative;
-            top: 0;
-            margin-bottom: 40px;
-        }
-        .page-header {
-            border-radius: 0;
-            margin-top: -60px;
-        }
+    .btn-view:hover {
+        background-color: var(--warm-brown);
+        color: #fff;
+    }
+
+    /* Filters Bar */
+    .filters-bar {
+        background: #fff;
+        padding: 15px 20px;
+        border-radius: 8px;
+        border: 1px solid #eee;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 </style>
 
-<!-- Hero / Page Header -->
+<!-- Main Page Content -->
 <div class="page-header">
-    <div class="container text-center">
-        <h1 class="page-title-main">Find a Training Center</h1>
-        <p class="page-subtitle">Locate verified institutes near you for the best technical education.</p>
+    <div class="container">
+        <h1 class="page-title">Find a Training Center</h1>
+        <p class="mb-0 opacity-75">Locate verified institutes near you for the best technical education</p>
     </div>
 </div>
 
-<div class="centers-page-wrapper">
-    <div class="container">
-        <div class="row">
-            <!-- Sidebar Filters -->
-            <div class="col-lg-3">
-                <div class="filter-sidebar">
-                    <h5 class="filter-title"><i class="fas fa-filter me-2"></i> Filter Results</h5>
-                    <form action="" method="GET" id="filterForm">
-                        <div class="mb-4">
-                            <label class="form-label">Search</label>
-                            <input type="text" name="q" class="form-control" placeholder="Name or Center Code" value="<?php echo htmlspecialchars($_GET['q'] ?? ''); ?>">
-                        </div>
-                        
-                        <div class="mb-4">
-                            <label class="form-label">Country</label>
-                            <select name="country" id="country" class="form-select">
-                                <option value="">All Countries</option>
-                                <?php foreach ($countries as $c): ?>
-                                    <option value="<?php echo $c['id']; ?>" <?php echo (isset($_GET['country']) && $_GET['country'] == $c['id']) ? 'selected' : ''; ?>>
-                                        <?php echo htmlspecialchars($c['name']); ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        
-                        <div class="mb-4">
-                            <label class="form-label">State</label>
-                            <select name="state" id="state" class="form-select" <?php echo empty($_GET['country']) ? 'disabled' : ''; ?>>
-                                <option value="">All States</option>
-                                <!-- Populated via JS -->
-                            </select>
-                        </div>
-                        
-                        <div class="mb-4">
-                            <label class="form-label">City</label>
-                            <select name="city" id="city" class="form-select" <?php echo empty($_GET['state']) ? 'disabled' : ''; ?>>
-                                <option value="">All Cities</option>
-                                <!-- Populated via JS -->
-                            </select>
-                        </div>
+<div class="container pb-5">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-3 mb-4">
+            <div class="course-sidebar">
+                <h5 class="widget-title"><i class="fas fa-filter me-2"></i> Filter Results</h5>
+                <form action="" method="GET" id="filterForm">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted">Search</label>
+                        <input type="text" name="q" class="form-control" placeholder="Name or Center Code" value="<?php echo htmlspecialchars($_GET['q'] ?? ''); ?>">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted">Country</label>
+                        <select name="country" id="country" class="form-select">
+                            <option value="">All Countries</option>
+                            <?php foreach ($countries as $c): ?>
+                                <option value="<?php echo $c['id']; ?>" <?php echo (isset($_GET['country']) && $_GET['country'] == $c['id']) ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($c['name']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted">State</label>
+                        <select name="state" id="state" class="form-select" <?php echo empty($_GET['country']) ? 'disabled' : ''; ?>>
+                            <option value="">All States</option>
+                            <!-- Populated via JS -->
+                        </select>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold text-muted">City</label>
+                        <select name="city" id="city" class="form-select" <?php echo empty($_GET['state']) ? 'disabled' : ''; ?>>
+                            <option value="">All Cities</option>
+                            <!-- Populated via JS -->
+                        </select>
+                    </div>
 
-                        <div class="d-grid">
-                            <button type="submit" class="btn-apply btn-block">Apply Filters</button>
-                            <a href="centers.php" class="btn-reset text-center">Reset All</a>
-                        </div>
-                    </form>
+                    <div class="d-grid">
+                        <button type="submit" class="btn-apply">Apply Filters</button>
+                        <a href="centers.php" class="btn-reset">Reset All</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-9">
+            
+            <!-- Filters Bar -->
+            <div class="filters-bar">
+                <div class="text-muted">
+                    Showing <strong><?php echo count($centers); ?></strong> Institutes Found
                 </div>
             </div>
 
             <!-- Centers Grid -->
-            <div class="col-lg-9">
-                <div class="results-header">
-                    <h4 class="mb-0 fw-bold text-dark">Our Training Centers</h4>
-                    <div class="results-count">
-                        <i class="fas fa-store-alt text-primary me-2"></i> 
-                        <strong><?php echo count($centers); ?></strong> Institutes Found
-                    </div>
-                </div>
-                
-                <?php if (count($centers) > 0): ?>
-                    <div class="row g-4">
-                        <?php foreach ($centers as $center): ?>
-                            <div class="col-md-6 col-lg-4">
-                                <div class="center-card">
-                                    <div class="center-img-wrapper">
-                                        <div class="center-code-badge"><?php echo htmlspecialchars($center['center_code']); ?></div>
-                                        <span class="verified-badge"><i class="fas fa-check-circle"></i> Verified</span>
-                                        <?php 
-                                        $imgSrc = !empty($center['banner_image']) ? $center['banner_image'] : 'assets/logo/frontpage-logo.webp'; // Fallback
-                                        ?>
-                                        <img src="<?php echo htmlspecialchars($imgSrc); ?>" alt="<?php echo htmlspecialchars($center['center_name']); ?>" class="center-img">
-                                    </div>
-                                    <div class="center-content">
-                                        <a href="center-details.php?id=<?php echo $center['id']; ?>" class="center-name">
-                                            <?php echo htmlspecialchars($center['center_name']); ?>
-                                        </a>
-                                        <div class="center-location">
-                                            <i class="fas fa-map-marker-alt"></i>
-                                            <span>
-                                                <?php echo htmlspecialchars($center['city_name'] ?? ''); ?>, 
-                                                <?php echo htmlspecialchars($center['state_name'] ?? ''); ?>
-                                            </span>
-                                        </div>
-                                        
-                                        <div class="center-features">
-                                            <?php if ($center['num_computers'] > 0): ?>
-                                                <span class="feature-tag"><i class="fas fa-desktop"></i> <?php echo $center['num_computers']; ?></span>
-                                            <?php endif; ?>
-                                            <?php if ($center['internet_avail'] == 'Yes'): ?>
-                                                <span class="feature-tag"><i class="fas fa-wifi"></i> WiFi</span>
-                                            <?php endif; ?>
-                                            <?php if ($center['power_backup'] == 'Yes'): ?>
-                                                <span class="feature-tag"><i class="fas fa-bolt"></i> Power</span>
-                                            <?php endif; ?>
-                                        </div>
-
-                                        <div class="card-footer-custom">
-                                            <div class="contact-info">
-                                                <i class="fas fa-phone-alt text-success me-2"></i> <?php echo htmlspecialchars($center['mobile']); ?>
-                                            </div>
-                                            <a href="center-details.php?id=<?php echo $center['id']; ?>" class="btn-details">
-                                                View <i class="fas fa-arrow-right ms-1"></i>
-                                            </a>
-                                        </div>
-                                    </div>
+            <?php if (count($centers) > 0): ?>
+            <div class="row g-4">
+                <?php foreach ($centers as $center): ?>
+                <div class="col-md-6 col-lg-4">
+                    <div class="course-card">
+                        <div class="course-thumb">
+                            <a href="center-details.php?id=<?php echo $center['id']; ?>">
+                                <?php 
+                                    $imgSrc = !empty($center['banner_image']) ? $center['banner_image'] : 'assets/logo/frontpage-logo.webp'; 
+                                ?>
+                                <img src="<?php echo htmlspecialchars($imgSrc); ?>" alt="<?php echo htmlspecialchars($center['center_name']); ?>">
+                            </a>
+                            <span class="center-code-badge"><?php echo htmlspecialchars($center['center_code']); ?></span>
+                            <span class="course-badge"><i class="fas fa-check-circle"></i> Verified</span>
+                        </div>
+                        <div class="course-body">
+                            <div class="course-cat"><?php echo htmlspecialchars($center['city_name'] ?? 'City'); ?>, <?php echo htmlspecialchars($center['state_name'] ?? 'State'); ?></div>
+                            <h3 class="course-title">
+                                <a href="center-details.php?id=<?php echo $center['id']; ?>" class="text-decoration-none text-dark">
+                                    <?php echo htmlspecialchars($center['center_name']); ?>
+                                </a>
+                            </h3>
+                            
+                            <div class="course-info">
+                                <div><i class="fas fa-phone-alt"></i> <?php echo htmlspecialchars($center['mobile']); ?></div>
+                                <div class="mt-2">
+                                    <?php if ($center['num_computers'] > 0): ?>
+                                        <span class="feature-tag"><i class="fas fa-desktop"></i> <?php echo $center['num_computers']; ?> PCs</span>
+                                    <?php endif; ?>
+                                    <?php if ($center['internet_avail'] == 'Yes'): ?>
+                                        <span class="feature-tag"><i class="fas fa-wifi"></i> WiFi</span>
+                                    <?php endif; ?>
                                 </div>
                             </div>
-                        <?php endforeach; ?>
+                            
+                            <div class="course-footer">
+                                <a href="center-details.php?id=<?php echo $center['id']; ?>" class="btn-view">
+                                    View Center Details
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                <?php else: ?>
-                    <div class="text-center py-5 bg-white rounded shadow-sm">
-                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
-                        <h4 class="text-muted">No centers found matching your criteria.</h4>
-                        <p class="text-secondary">Try adjusting your filters or search term.</p>
-                        <a href="centers.php" class="btn btn-primary mt-3">View All Centers</a>
-                    </div>
-                <?php endif; ?>
+                </div>
+                <?php endforeach; ?>
             </div>
+            <?php else: ?>
+            <div class="alert alert-light text-center py-5 shadow-sm">
+                <i class="fas fa-search fa-3x mb-3 text-muted"></i>
+                <h5>No centers found</h5>
+                <p>Try adjusting your search or filter criteria.</p>
+                <a href="centers.php" class="btn btn-primary mt-2">View All Centers</a>
+            </div>
+            <?php endif; ?>
+
         </div>
     </div>
 </div>
