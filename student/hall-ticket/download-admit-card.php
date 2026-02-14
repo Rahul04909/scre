@@ -80,8 +80,8 @@ $studentSign = getBase64Image($studentSignPath);
 // --- 2.5 Authorized Signatory Image (Merge Stamp & Sign) ---
 $mergedImageHtml = '';
 $baseDir = realpath(__DIR__ . '/../../'); // Root Directory
-$stampPath = $baseDir . '/admin/assets/scre-stamp.png';
-$signaturePath = $baseDir . '/admin/assets/scre-sign.png';
+$stampPath = $baseDir . '/student/assets/scre-stamp.png';
+$signaturePath = $baseDir . '/student/assets/scre-sign.png'; // Updated to student/assets
 
 $mergedBase64 = '';
 
@@ -365,13 +365,9 @@ $html .= '  </tbody>
 
         <!-- Signatory -->
         <!-- Signatory -->
+        <!-- Signatory -->
         <div class="footer-sig">
-            <?php if ($mergedImageHtml): ?>
-                <?php echo $mergedImageHtml; ?>
-                <br>
-            <?php else: ?>
-                <br><br><br>
-            <?php endif; ?>
+            ' . ($mergedImageHtml ? $mergedImageHtml . '<br>' : '<br><br><br>') . '
             <p>Authorized Signatory</p>
             <p style="font-size: 10px; font-weight: normal;">(Controller of Examination)</p>
         </div>
