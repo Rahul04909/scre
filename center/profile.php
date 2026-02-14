@@ -44,8 +44,39 @@ if (isset($_POST['update_password'])) {
     }
 }
 
-// Fetch Center Details
-$stmt = $pdo->prepare("SELECT * FROM centers WHERE id = ?");
+// Handle Profile Image Upload
+if (isset($_FILES['owner_image']) && $_FILES['owner_image']['error'] == 0) {
+    $uploadDir = '../assets/uploads/centers/';
+    if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
+
+    $ext = pathinfo($_FILES['owner_image']['name'], PATHINFO_EXTENSION);
+    $newName = 'owner_' . time() . '_' . $center_id . '.' . $ext;
+    
+    if (move_uploaded_file($_FILES['owner_image']['tmp_name'], $uploadDir . $newName)) {
+        $imagePath = 'assets/uploads/centers/' . $newName;
+        // Update DB
+        $stmtImg = $pdo->prepare("UPDATE centers SET owner_image = ? WHERE id = ?");
+        if ($stmtImg->execute([$imagePath, $center_id])) {
+            $message = "Profile image updated successfully.";
+            $messageType = "success";
+        } else {
+            $message = "Database update failed.";
+            $messageType = "danger";
+        }
+    } else {
+        $message = "File upload failed.";
+        $messageType = "danger";
+    }
+}
+
+// Fetch Center Details with Location Names
+$stmt = $pdo->prepare("
+    SELECT c.*, s.name as state_name, ci.name as city_name 
+    FROM centers c 
+    LEFT JOIN states s ON c.state = s.id 
+    LEFT JOIN cities ci ON c.city = ci.id 
+    WHERE c.id = ?
+");
 $stmt->execute([$center_id]);
 $center = $stmt->fetch();
 
@@ -141,7 +172,7 @@ if (!$center) {
                 <div class="row align-items-center">
                     <div class="col-md-8">
                         <h2 class="fw-bold mb-1"><?php echo htmlspecialchars($center['center_name']); ?></h2>
-                        <div class="opacity-75"><i class="fas fa-map-marker-alt me-2"></i><?php echo htmlspecialchars($center['city'] . ', ' . $center['state']); ?> | Code: <strong><?php echo htmlspecialchars($center['center_code']); ?></strong></div>
+                        <div class="opacity-75"><i class="fas fa-map-marker-alt me-2"></i><?php echo htmlspecialchars(($center['city_name'] ?? $center['city']) . ', ' . ($center['state_name'] ?? $center['state'])); ?> | Code: <strong><?php echo htmlspecialchars($center['center_code']); ?></strong></div>
                     </div>
                 </div>
             </div>
@@ -153,7 +184,15 @@ if (!$center) {
                         <div class="profile-card p-4 pt-5 position-relative mt-4">
                             <div class="position-absolute" style="top: -65px; left: 40px;">
                                 <?php $img = !empty($center['owner_image']) ? $center['owner_image'] : 'https://ui-avatars.com/api/?name='.urlencode($center['owner_name']); ?>
-                                <img src="<?php echo $img; ?>" class="profile-img-lg">
+                                <form method="POST" enctype="multipart/form-data" id="profileImageForm">
+                                    <label for="owner_image_input" style="cursor: pointer; position: relative; display: inline-block;">
+                                        <img src="<?php echo $img; ?>" class="profile-img-lg" id="profilePreview">
+                                        <div class="position-absolute bottom-0 end-0 bg-white rounded-circle p-2 shadow-sm border" style="width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-camera text-primary"></i>
+                                        </div>
+                                    </label>
+                                    <input type="file" name="owner_image" id="owner_image_input" class="d-none" accept="image/*" onchange="document.getElementById('profileImageForm').submit();">
+                                </form>
                             </div>
                             
                             <div class="d-flex justify-content-end mb-4">
@@ -186,7 +225,7 @@ if (!$center) {
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <div class="info-label">Full Address</div>
-                                        <div class="info-value"><?php echo htmlspecialchars($center['address'] . ', ' . $center['city'] . ' - ' . $center['pincode']); ?></div>
+                                        <div class="info-value"><?php echo htmlspecialchars($center['address'] . ', ' . ($center['city_name'] ?? $center['city']) . ' - ' . $center['pincode']); ?></div>
                                     </div>
                                 </div>
                             </div>
