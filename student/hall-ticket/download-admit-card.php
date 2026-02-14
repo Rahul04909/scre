@@ -368,7 +368,7 @@ $html .= '  </tbody>
         <!-- Signatory -->
         <div class="footer-sig">
             ' . ($mergedImageHtml ? $mergedImageHtml : '<br><br><br>') . '
-            <p style="margin-top: -10px;">Authorized Signatory</p>
+            <p style="margin-top: -40px;">Authorized Signatory</p>
         </div>
 
         <!-- Instructions -->
