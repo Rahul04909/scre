@@ -183,7 +183,13 @@ if (!$center) {
                     <div class="col-lg-8">
                         <div class="profile-card p-4 pt-5 position-relative mt-4">
                             <div class="position-absolute" style="top: -65px; left: 40px;">
-                                <?php $img = !empty($center['owner_image']) ? $center['owner_image'] : 'https://ui-avatars.com/api/?name='.urlencode($center['owner_name']); ?>
+                                <?php 
+                                    $img = !empty($center['owner_image']) ? $center['owner_image'] : 'https://ui-avatars.com/api/?name='.urlencode($center['owner_name']);
+                                    // Fix: Prepend ../ if path starts with assets/ and we are in center/ dir
+                                    if (strpos($img, 'assets/') === 0) {
+                                        $img = '../' . $img;
+                                    }
+                                ?>
                                 <form method="POST" enctype="multipart/form-data" id="profileImageForm">
                                     <label for="owner_image_input" style="cursor: pointer; position: relative; display: inline-block;">
                                         <img src="<?php echo $img; ?>" class="profile-img-lg" id="profilePreview">
