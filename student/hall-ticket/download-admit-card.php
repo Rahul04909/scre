@@ -77,6 +77,78 @@ $studentPhoto = getBase64Image($studentPhotoPath);
 $studentSign = getBase64Image($studentSignPath);
 
 
+// --- 2.5 Authorized Signatory Image (Merge Stamp & Sign) ---
+$mergedImageHtml = '';
+$baseDir = realpath(__DIR__ . '/../../'); // Root Directory
+$stampPath = $baseDir . '/admin/assets/scre-stamp.png';
+$signaturePath = $baseDir . '/admin/assets/scre-sign.png';
+
+$mergedBase64 = '';
+
+if (file_exists($stampPath) && file_exists($signaturePath)) {
+    // 1. Load Images
+    $stamp = imagecreatefrompng($stampPath);
+    $sign = imagecreatefrompng($signaturePath);
+    
+    if ($stamp && $sign) {
+        // 2. Get Dimensions
+        $sw = imagesx($stamp);
+        $sh = imagesy($stamp);
+        $siw = imagesx($sign);
+        $sih = imagesy($sign);
+        
+        // 3. Create Container
+        $canvasW = max($sw, $siw, 500);
+        $canvasH = max($sh, $sih, 420);
+        
+        $finalImg = imagecreatetruecolor($canvasW, $canvasH);
+        
+        // Handle Transparency
+        imagealphablending($finalImg, false);
+        imagesavealpha($finalImg, true);
+        $transparent = imagecolorallocatealpha($finalImg, 255, 255, 255, 127);
+        imagefill($finalImg, 0, 0, $transparent);
+        imagealphablending($finalImg, true);
+        
+        // 4. Position Stamp (Center)
+        $targetStampW = 200;
+        $targetStampH = ($sh / $sw) * $targetStampW;
+        $stampX = ($canvasW - $targetStampW) / 2;
+        $stampY = ($canvasH - $targetStampH) / 2 - 30; 
+        
+        imagecopyresampled($finalImg, $stamp, $stampX, $stampY, 0, 0, $targetStampW, $targetStampH, $sw, $sh);
+        
+        // 5. Position Signature (Overlapping)
+        $targetSignW = 480;
+        $targetSignH = ($sih / $siw) * $targetSignW;
+        $signX = ($canvasW - $targetSignW) / 2;
+        $signY = ($canvasH - $targetSignH) / 2 - 18; 
+        
+        imagecopyresampled($finalImg, $sign, $signX, $signY, 0, 0, $targetSignW, $targetSignH, $siw, $sih);
+        
+        // 6. Output to Base64
+        ob_start();
+        imagepng($finalImg);
+        $imgData = ob_get_clean();
+        $mergedBase64 = 'data:image/png;base64,' . base64_encode($imgData);
+        
+        imagedestroy($stamp);
+        imagedestroy($sign);
+        imagedestroy($finalImg);
+    }
+} elseif (file_exists($stampPath)) {
+     // Fallback: Just Stamp
+     $type = pathinfo($stampPath, PATHINFO_EXTENSION);
+     $data = file_get_contents($stampPath);
+     $mergedBase64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+}
+
+// Prepare HTML for Signature
+if ($mergedBase64) {
+    $mergedImageHtml = '<img src="' . $mergedBase64 . '" style="width: 150px;">'; // Smaller for Hall Ticket
+}
+
+
 // --- 3. HTML Layout ---
 // CSS notes: mPDF supports most CSS. @page margin is handled in constructor.
 
@@ -292,9 +364,15 @@ $html .= '  </tbody>
         </table>
 
         <!-- Signatory -->
+        <!-- Signatory -->
         <div class="footer-sig">
+            <?php if ($mergedImageHtml): ?>
+                <?php echo $mergedImageHtml; ?>
+                <br>
+            <?php else: ?>
+                <br><br><br>
+            <?php endif; ?>
             <p>Authorized Signatory</p>
-            <br>
             <p style="font-size: 10px; font-weight: normal;">(Controller of Examination)</p>
         </div>
 
