@@ -36,13 +36,11 @@ if (strpos($profile_img, 'assets/') === 0) {
 <div class="sidebar d-flex flex-column" id="sidebar">
     
     <!-- 1. Header -->
-    <div class="sidebar-header p-3 d-flex align-items-center justify-content-center mb-2">
-        <img src="<?php echo $path_prefix; ?>assets/logo/logo.jpeg" alt="PACE Logo" style="max-height: 50px; width: auto;">
-    </div>
-            PACE<br>EDU
+    <div class="sidebar-header p-3 d-flex align-items-center mb-2">
+        <div class="me-2 text-danger fw-bold" style="line-height: 1; font-size: 0.8rem; border-left: 3px solid #dc3545; padding-left: 5px;">
         </div>
         <div>
-            <h5 class="mb-0 text-warning fw-bold">PACE Center</h5>
+            <h5 class="mb-0 text-warning fw-bold">SCRE Center</h5>
             <small class="text-white-50" style="font-size: 0.75rem;">Franchise Portal</small>
         </div>
     </div>
