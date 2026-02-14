@@ -552,13 +552,12 @@
         }
 
         .modal-content {
-            background-color: #ffffff; /* Fixed: Solid white background */
+            background-color: #ffffff !important;
             margin: 10% auto;
             padding: 20px;
             border: 1px solid var(--cream-medium);
             border-radius: 10px;
             width: 80%;
-            opacity: 1;
             max-width: 600px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
             position: relative;
