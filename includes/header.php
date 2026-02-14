@@ -552,12 +552,13 @@
         }
 
         .modal-content {
-            background-color: var(--cream-light);
+            background-color: #ffffff; /* Fixed: Solid white background */
             margin: 10% auto;
             padding: 20px;
             border: 1px solid var(--cream-medium);
             border-radius: 10px;
             width: 80%;
+            opacity: 1;
             max-width: 600px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
             position: relative;
@@ -710,7 +711,7 @@ $baseUrl = $protocol . $domain . ($basePath === '/' ? '' : $basePath);
             </style>
 
             <button id="enquiry-btn" class="btn btn-primary">ENQUIRY NOW</button>
-            <a href="<?php echo $baseUrl; ?>/verification-letter.php" class="btn btn-secondary" style="text-decoration: none; color: var(--dark-grey);">VERIFICATION LETTER</a>
+            <a href="<?php echo $baseUrl; ?>/verification-letter.php" class="btn" style="text-decoration: none; color: white; background-color: var(--warm-brown);">VERIFICATION LETTER</a>
         </div>
     </div>
 
@@ -748,7 +749,7 @@ $baseUrl = $protocol . $domain . ($basePath === '/' ? '' : $basePath);
                 <li class="menu-item"><a href="../../center-registration.php" class="menu-link"><i class="fas fa-university"></i>Center Registration</a></li>
                 <li class="menu-item"><a href="../../gallery.php" class="menu-link"><i class="fas fa-images"></i>Gallery</a></li>
                 <li class="menu-item"><a href="../../centers.php" class="menu-link"><i class="fas fa-handshake"></i>Partners</a></li>
-                <li clas="menu-item"><a href="../../contact.php" class="menu-link"><i class="fas fa-user"></i>Login</a></li>
+                <li class="menu-item"><a href="../../contact.php" class="menu-link"><i class="fas fa-user"></i>Login</a></li>
 
             </ul>
         </div>
