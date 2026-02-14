@@ -211,7 +211,7 @@ try {
     <div class="header-overlay">
         <table width="100%" class="meta-table">
             <tr>
-                <td align="center">National ID: <span style="font-weight: bold;">'.($student['national_id'] ?? 'N/A').'</span></td>
+                <td align="center">National ID: <span style="font-weight: bold;">'.($student['national_id_no'] ?? 'N/A').'</span></td>
                 <td align="center">Serial No: <span style="font-weight: bold;">SC-'.str_pad($student['id'], 6, '0', STR_PAD_LEFT).'</span></td>
                 <td align="center">Enrollment No: <span style="font-weight: bold;">'.$student['enrollment_no'].'</span></td>
             </tr>
