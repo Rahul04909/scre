@@ -21,12 +21,12 @@
                 <div class="footer-column links-column" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
                     <h3 class="footer-heading">Quick Links</h3>
                     <ul class="footer-links">
-                        <li><a href="index.php"><i class="bi bi-chevron-right"></i> Home</a></li>
-                        <li><a href="courses.php"><i class="bi bi-chevron-right"></i> Courses</a></li>
-                        <li><a href="admission.php"><i class="bi bi-chevron-right"></i> Admission</a></li>
-                        <li><a href="registration.php"><i class="bi bi-chevron-right"></i> Registration</a></li>
-                        <li><a href="gallery.php"><i class="bi bi-chevron-right"></i> Gallery</a></li>
-                        <li><a href="downloads.php"><i class="bi bi-chevron-right"></i> Downloads</a></li>
+                        <li><a href="<?php echo $baseUrl; ?>/index.php"><i class="bi bi-chevron-right"></i> Home</a></li>
+                        <li><a href="<?php echo $baseUrl; ?>/courses.php"><i class="bi bi-chevron-right"></i> Courses</a></li>
+                        <li><a href="<?php echo $baseUrl; ?>/apply.php"><i class="bi bi-chevron-right"></i> Admission</a></li>
+                        <li><a href="<?php echo $baseUrl; ?>/blog.php"><i class="bi bi-chevron-right"></i> Blogs</a></li>
+                        <li><a href="<?php echo $baseUrl; ?>/gallery.php"><i class="bi bi-chevron-right"></i> Gallery</a></li>
+                        <li><a href="<?php echo $baseUrl; ?>/downloads.php"><i class="bi bi-chevron-right"></i> Downloads</a></li>
                     </ul>
                 </div>
 
