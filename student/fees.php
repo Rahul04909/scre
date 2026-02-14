@@ -193,10 +193,9 @@ $center = $stmtCenter->fetch();
                                                         </td>
                                                         <td class="small text-muted font-monospace"><?php echo htmlspecialchars($txn['transaction_id'] ?: '-'); ?></td>
                                                         <td class="text-center">
-                                                            <!-- Future: Link to download receipt -->
-                                                            <button class="btn btn-sm btn-outline-primary rounded-circle shadow-sm" title="Download Receipt">
+                                                            <a href="download-receipt.php?txn_id=<?php echo $txn['id']; ?>" class="btn btn-sm btn-outline-primary rounded-circle shadow-sm" title="Download Receipt" target="_blank">
                                                                 <i class="fas fa-download"></i>
-                                                            </button>
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 <?php endforeach; ?>
