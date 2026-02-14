@@ -35,6 +35,18 @@ try {
     $stmtWal->execute([$center_id]);
     $wallet_balance = $stmtWal->fetchColumn();
 
+    // 5. Recent Enrollments (Limit 5)
+    $stmtRecent = $pdo->prepare("
+        SELECT s.first_name, s.last_name,c.course_name, s.created_at, s.status 
+        FROM students s 
+        JOIN courses c ON s.course_id = c.id 
+        WHERE s.center_id = ? 
+        ORDER BY s.created_at DESC 
+        LIMIT 5
+    ");
+    $stmtRecent->execute([$center_id]);
+    $recent_enrollments = $stmtRecent->fetchAll();
+
 } catch (PDOException $e) {
     // Handle error silently or log
 }
@@ -179,7 +191,7 @@ try {
                 <div class="col-xl-3 col-md-6">
                     <div class="stat-card bg-card-yellow p-3 h-100">
                         <div class="card-body">
-                            <h2>₹<?php echo number_format($wallet_balance, 2); ?></h2>
+                            <h2>₹<?php echo number_format($wallet_balance, 0); ?></h2>
                             <p>Wallet Balance</p>
                         </div>
                         <i class="fas fa-wallet icon-overlay"></i>
@@ -204,15 +216,21 @@ try {
                         </a>
                     </div>
                     <div class="col-6 col-md-3 col-lg-2">
-                        <a href="exams/schedule-exam.php" class="action-btn">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span class="fw-bold small">Schedule Exam</span>
+                        <a href="attendance.php" class="action-btn">
+                            <i class="fas fa-calendar-check"></i>
+                            <span class="fw-bold small">Attendance</span>
                         </a>
                     </div>
                     <div class="col-6 col-md-3 col-lg-2">
-                        <a href="results/manage-results.php" class="action-btn">
-                            <i class="fas fa-chart-line"></i>
-                            <span class="fw-bold small">Results</span>
+                        <a href="wallet/wallet.php" class="action-btn">
+                            <i class="fas fa-wallet"></i>
+                            <span class="fw-bold small">Wallet</span>
+                        </a>
+                    </div>
+                     <div class="col-6 col-md-3 col-lg-2">
+                        <a href="enquiry/index.php" class="action-btn">
+                            <i class="fas fa-envelope-open-text"></i>
+                            <span class="fw-bold small">Enquiries</span>
                         </a>
                     </div>
                      <div class="col-6 col-md-3 col-lg-2">
@@ -221,50 +239,63 @@ try {
                             <span class="fw-bold small">Settings</span>
                         </a>
                     </div>
-                     <div class="col-6 col-md-3 col-lg-2">
-                        <a href="#" class="action-btn">
-                            <i class="fas fa-headset"></i>
-                            <span class="fw-bold small">Support</span>
-                        </a>
-                    </div>
                 </div>
             </div>
 
-            <!-- Recent Activity Table Mockup -->
-            <div class="card stat-card p-4">
+            <!-- Recent Enrollments Table -->
+            <div class="card stat-card bg-white text-dark p-4 shadow-sm" style="border-radius: 12px;">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h5 class="fw-bold mb-0">Recent Student Admissions</h5>
-                    <a href="students/manage-students.php" class="btn btn-sm btn-light text-primary fw-bold">View All</a>
+                    <h5 class="fw-bold mb-0">Recent Enrollments</h5>
+                    <a href="students/index.php" class="btn btn-sm btn-light text-primary fw-bold">View All</a>
                 </div>
                 <div class="table-responsive">
                     <table class="table align-middle">
                         <thead class="text-muted small text-uppercase">
                             <tr>
-                                <th>Student Name</th>
-                                <th>Course</th>
-                                <th>Date</th>
-                                <th>Status</th>
+                                <th style="border-bottom: 1px solid #eee;">Student Name</th>
+                                <th style="border-bottom: 1px solid #eee;">Course</th>
+                                <th style="border-bottom: 1px solid #eee;">Date</th>
+                                <th style="border-bottom: 1px solid #eee;">Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><div class="d-flex align-items-center"><div class="rounded-circle bg-light d-flex justify-content-center align-items-center me-2" style="width:32px;height:32px;">JD</div> <strong>John Doe</strong></div></td>
-                                <td>Web Development</td>
-                                <td>12 Jan 2026</td>
-                                <td><span class="badge bg-success bg-opacity-10 text-success">Active</span></td>
-                            </tr>
-                            <tr>
-                                <td><div class="d-flex align-items-center"><div class="rounded-circle bg-light d-flex justify-content-center align-items-center me-2" style="width:32px;height:32px;">AS</div> <strong>Alice Smith</strong></div></td>
-                                <td>Graphic Design</td>
-                                <td>11 Jan 2026</td>
-                                <td><span class="badge bg-warning bg-opacity-10 text-warning">Pending</span></td>
-                            </tr>
-                             <tr>
-                                <td><div class="d-flex align-items-center"><div class="rounded-circle bg-light d-flex justify-content-center align-items-center me-2" style="width:32px;height:32px;">MK</div> <strong>Mike Kohl</strong></div></td>
-                                <td>Digital Marketing</td>
-                                <td>10 Jan 2026</td>
-                                <td><span class="badge bg-success bg-opacity-10 text-success">Active</span></td>
-                            </tr>
+                            <?php if (count($recent_enrollments) > 0): ?>
+                                <?php foreach ($recent_enrollments as $student): ?>
+                                    <?php 
+                                        $initials = strtoupper(substr($student['first_name'], 0, 1) . substr($student['last_name'], 0, 1));
+                                        $fullName = htmlspecialchars($student['first_name'] . ' ' . $student['last_name']);
+                                        // Status Logic (Assuming status column exists, else default to Active)
+                                        $status = $student['status'] ?? 'Active'; 
+                                        $statusClass = (strtolower($status) == 'active') ? 'bg-success-subtle text-success' : 'bg-warning-subtle text-warning';
+                                    ?>
+                                    <tr>
+                                        <td class="py-3" style="border-bottom: 1px solid #f8f9fa;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3" 
+                                                     style="width: 40px; height: 40px; color: #555; font-weight: 600;">
+                                                    <?php echo $initials; ?>
+                                                </div>
+                                                <span class="fw-bold"><?php echo $fullName; ?></span>
+                                            </div>
+                                        </td>
+                                        <td style="border-bottom: 1px solid #f8f9fa; color: #555;">
+                                            <?php echo htmlspecialchars($student['course_name'] ?? 'N/A'); ?>
+                                        </td>
+                                        <td style="border-bottom: 1px solid #f8f9fa; color: #555;">
+                                            <?php echo date('d M Y', strtotime($student['created_at'])); ?>
+                                        </td>
+                                        <td style="border-bottom: 1px solid #f8f9fa;">
+                                            <span class="badge <?php echo $statusClass; ?> px-3 py-2 rounded-pill" style="font-weight: 500;">
+                                                <?php echo ucfirst($status); ?>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="4" class="text-center py-4 text-muted">No recent enrollments found.</td>
+                                </tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>

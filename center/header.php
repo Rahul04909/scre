@@ -25,7 +25,7 @@
         <div class="d-flex align-items-center gap-3">
             <!-- Notifications -->
             <div class="dropdown">
-                <a href="#" class="text-secondary position-relative" id="notifDropdown" data-bs-toggle="dropdown">
+                <!-- <a href="#" class="text-secondary position-relative" id="notifDropdown" data-bs-toggle="dropdown">
                     <i class="fas fa-bell fs-5"></i>
                     <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
                         <span class="visually-hidden">New alerts</span>
@@ -34,7 +34,7 @@
                 <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="notifDropdown">
                     <li class="dropdown-header fw-bold">Notifications</li>
                     <li><a class="dropdown-item small" href="#">No new notifications</a></li>
-                </ul>
+                </ul> -->
             </div>
 
             <!-- User Profile -->
