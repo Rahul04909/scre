@@ -649,6 +649,47 @@
                 max-width: 100%;
             }
         }
+
+        /* Login Modal Styles */
+        .login-modal-content {
+            max-width: 800px;
+            width: 90%;
+            margin: 10% auto;
+            padding: 40px;
+        }
+        .login-option-card {
+            display: block;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        .login-option-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-color: var(--warm-brown);
+        }
+        .icon-wrapper {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #fff;
+        }
+        .student-icon { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .center-icon { background: linear-gradient(135deg, #ff9966 0%, #ff5e62 100%); }
+        .admin-icon { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .login-option-card h3 { font-weight: 700; margin-bottom: 10px; color: #333; }
+        .login-option-card p { color: #777; font-size: 0.9rem; margin: 0; }
     </style>
 </head>
 <?php
@@ -872,7 +913,28 @@ $baseUrl = $protocol . $domain . ($basePath === '/' ? '' : $basePath);
                 if (event.target === enquiryModal) {
                     enquiryModal.style.display = 'none';
                 }
+                if (event.target === loginModal) {
+                    loginModal.style.display = 'none';
+                }
             });
+
+            // Login Modal Logic
+            const loginModal = document.getElementById('login-modal');
+            const loginBtn = document.getElementById('login-btn');
+            const closeLogin = document.querySelector('.close-login');
+
+            if(loginBtn) {
+                loginBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    loginModal.style.display = 'block';
+                });
+            }
+
+            if(closeLogin) {
+                closeLogin.addEventListener('click', function() {
+                    loginModal.style.display = 'none';
+                });
+            }
 
 
             // Enquiry form functionality
