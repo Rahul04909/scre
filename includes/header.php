@@ -748,7 +748,7 @@ $baseUrl = $protocol . $domain . ($basePath === '/' ? '' : $basePath);
                 <li class="menu-item"><a href="../../center-registration.php" class="menu-link"><i class="fas fa-university"></i>Center Registration</a></li>
                 <li class="menu-item"><a href="../../gallery.php" class="menu-link"><i class="fas fa-images"></i>Gallery</a></li>
                 <li class="menu-item"><a href="../../centers.php" class="menu-link"><i class="fas fa-handshake"></i>Partners</a></li>
-                <li class="menu-item"><a href="../../contact.php" class="menu-link"><i class="fas fa-user"></i>Login</a></li>
+                <li class="menu-item"><a href="#" id="login-btn" class="menu-link"><i class="fas fa-user"></i>Login</a></li>
 
             </ul>
         </div>
@@ -782,6 +782,46 @@ $baseUrl = $protocol . $domain . ($basePath === '/' ? '' : $basePath);
                 <button type="submit" id="enquiry-submit" class="btn btn-primary">Submit Enquiry</button>
                 <div id="enquiry-result" class="mt-3" style="display: none;"></div>
             </form>
+        </div>
+    </div>
+
+    <!-- Login Selection Modal -->
+    <div id="login-modal" class="custom-modal">
+        <div class="modal-content login-modal-content">
+            <span class="close-modal close-login">&times;</span>
+            <div class="text-center mb-4">
+                <h2 class="fw-bold text-dark">Welcome Back!</h2>
+                <p class="text-muted">Please select your login type</p>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <a href="<?php echo $baseUrl; ?>/student/login.php" class="login-option-card">
+                        <div class="icon-wrapper student-icon">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <h3>Student</h3>
+                        <p>Access your dashboard</p>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="<?php echo $baseUrl; ?>/center/login.php" class="login-option-card">
+                        <div class="icon-wrapper center-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <h3>Center</h3>
+                        <p>Manage your institute</p>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="<?php echo $baseUrl; ?>/admin/login.php" class="login-option-card">
+                        <div class="icon-wrapper admin-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h3>Admin</h3>
+                        <p>System administration</p>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
